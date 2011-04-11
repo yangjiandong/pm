@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+<hibernate-reverse-engineering>
+	<table-filter match-schema=".*" match-name="SS_LOG" exclude="true" />
+	<table-filter match-schema=".*" match-name="SS_.*"  package="org.springside.examples.showcase.common.entity"/>
+</hibernate-reverse-engineering>
