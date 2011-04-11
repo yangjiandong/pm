@@ -13,5 +13,20 @@ Personnel_Management System
      (mvn eclipse:configure-workspace eclipse:eclipse -Declipse.workspace=../workspace)
      bin/eclipse.bat
 
+   2. git remote
+
+   mkdir pm
+   cd pm
+   git init
+   touch README
+   git add README
+   git commit -m 'first commit'
+   git remote add origin git@github.com:yangjiandong/pm.git
+   git push -u origin master
+
+   Existing Git Repo?
+   cd existing_git_repo
+   git remote add origin git@github.com:yangjiandong/pm.git
+   git push -u origin master
 
    --END
