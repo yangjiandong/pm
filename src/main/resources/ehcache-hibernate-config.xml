@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="ehcache.xsd">
+
+  <diskStore path="java.io.tmpdir/sshapp" />
+
+  <cacheManagerPeerListenerFactory
+    class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory" />
+
+  <!--
+    DefaultCache setting. Modify ehcache-safe.xml for
+    timeToIdleSeconds,timeToLiveSecond,diskExpiryThreadIntervalSeconds.
+    Use ehcache-safe.xml default for
+    maxElementsInMemory,maxElementsOnDisk,overflowToDisk,eternal. Use
+    ehcache default for memoryStoreEvictionPolicy,diskPersistent.
+  -->
+  <!-- idle 5m or live 10 -->
+  <!-- timeToLiveSeconds default 0, so element live time max..-->
+  <defaultCache maxElementsInMemory="100000"
+                eternal="false"
+                timeToIdleSeconds="300"
+                timeToLiveSeconds="600"
+                overflowToDisk="true"
+                diskSpoolBufferSizeMB="30"
+                maxElementsOnDisk="10000000"
+                diskPersistent="false"
+                diskExpiryThreadIntervalSeconds="120"
+                memoryStoreEvictionPolicy="LRU"
+                />
+
+  <!-- http://ehcache.org/documentation/hibernate.html -->
+  <cache name="org.hibernate.cache.StandardQueryCache"
+    maxElementsInMemory="5" eternal="false" timeToLiveSeconds="120"
+    overflowToDisk="true" />
+
+  <cache name="org.hibernate.cache.UpdateTimestampsCache"
+    maxElementsInMemory="5000" eternal="true" overflowToDisk="true" />
+
+  <cache name="contentInfoCache" overflowToDisk="false" eternal="false"
+    diskPersistent="false" timeToLiveSeconds="3600" timeToIdleSeconds="3600"
+    maxElementsInMemory="10000" memoryStoreEvictionPolicy="LRU" />
+
+  <!-- method  cache-->
+  <cache name="org.ssh.app.cache.METHOD_CACHE" maxElementsInMemory="300"
+    eternal="false" timeToIdleSeconds="500" timeToLiveSeconds="500"
+    overflowToDisk="true" />
+
+  <!--
+    <cache name="com.ekingsoft.system.entities.Hz"
+    maxElementsInMemory="8000" overflowToDisk="true" eternal="true">
+    </cache>
+  -->
+
+  <!--
+    Special objects setting. <cache
+    name="org.springside.examples.miniweb.entity.security.User"
+    maxElementsInMemory="500" overflowToDisk="true" eternal="true">
+    </cache> <cache
+    name="org.springside.examples.miniweb.entity.security.User.roles"
+    maxElementsInMemory="500" overflowToDisk="true" eternal="true">
+    </cache> <cache
+    name="org.springside.examples.miniweb.entity.security.Role"
+    maxElementsInMemory="500" overflowToDisk="true" eternal="true">
+    </cache> <cache
+    name="org.springside.examples.miniweb.entity.security.Role.auths"
+    maxElementsInMemory="500" overflowToDisk="true" eternal="true">
+    </cache> <cache
+    name="org.springside.examples.miniweb.entity.security.Authority"
+    maxElementsInMemory="500" overflowToDisk="true" eternal="true" />
+  -->
+</ehcache>

@@ -1,0 +1,74 @@
+# use glob syntax.
+syntax: glob
+*.ser
+*.class
+*~
+*.bak
+*.off
+*.old
+.DS_Store
+spy.log
+*.log
+
+# logs
+logs
+derby.log
+lift_example
+
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+.externalToolBuilders
+
+# building
+target
+build
+null
+tmp*
+dist
+test-output
+
+# sbt
+target
+lib_managed
+src_managed
+project/boot
+
+# other scm
+.svn
+.CVS
+.hg*
+
+# switch to regexp syntax.
+#  syntax: regexp
+#  ^\.pc/
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+*.idea
+
+# Pax Runner (for easy OSGi launching)
+runner
+my.zip
+lift_proto.db.*
+
+# h2 database
+application/sshapp/sshappdatas.*
+
+# wiki
+docs/wiki/*.html
+
+#export data
+application/sshapp/src/test/resources/data/export-data.xml
+application/sshapp/src/test/resources/data/default-data.xml
+examples/showcase/src/test/resources/data/export-data.xml
+
+build.txt
+fop-userconfig.xml
+
+classes
+work

@@ -1,0 +1,43 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="defaultHandlerMapping"
+    class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+
+  <!--
+    <bean name="/myservice"
+    class="org.springframework.remoting.caucho.HessianServiceExporter">
+    <property name="service" ref="myService" />
+    <property name="serviceInterface" value="com.ekingsoft.supapp.service.remote.MyService" />
+    </bean>
+-->
+
+  <!--Spring HttpInvoke-->
+  <!--
+  <bean
+    class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property
+      name="urlMap">
+      <map>
+        <entry
+          key="httpInvoke"
+          value-ref="userService" />
+      </map>
+    </property>
+  </bean>
+
+  <bean
+    id="userService"
+    class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+    <property
+      name="service">
+      <bean
+        class="org.ssh.app.httpinvoke.service.impl.UserServiceImpl" />
+    </property>
+    <property
+      name="serviceInterface"
+      value="org.ssh.app.httpinvoke.service.UserService" />
+  </bean>
+  -->
+</beans>

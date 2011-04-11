@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sshapp-by-ant" default="generate-pdf" basedir=".">
+
+  <property file="build.txt" />
+  <property name="docs.dir" value="docs/wiki" />
+  <property name="docs.dist.dir" value="docs/wiki/dist" />
+  <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
+    <classpath>
+      <fileset dir="${fop.home}/lib">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="${fop.home}/build">
+        <include name="fop.jar" />
+        <include name="fop-hyph.jar" />
+      </fileset>
+    </classpath>
+  </taskdef>
+
+  <property name="wikitext.standalone" value="../../lib" />
+  <!-- path to wikitext standalone package -->
+  <path id="wikitext.classpath">
+    <fileset dir="${wikitext.standalone}">
+      <include name="org.eclipse.mylyn.wikitext.*core*.jar" />
+    </fileset>
+  </path>
+
+  <!-- 混淆 -->
+  <path id="yuard.classpath">
+    <fileset dir="${wikitext.standalone}">
+      <include name="yguard.jar" />
+    </fileset>
+  </path>
+
+  <taskdef classpathref="wikitext.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
+
+  <!-- depends="init" -->
+  <target name="generate-help" description="Generate Eclipse help from textile source">
+    <wikitext-to-eclipse-help markupLanguage="Textile" multipleOutputFiles="true" navigationImages="true" helpPrefix="help">
+      <fileset dir="${docs.dir}">
+        <include name="*.textile" />
+      </fileset>
+      <stylesheet url="styles/help.css" />
+      <stylesheet url="styles/main.css" />
+    </wikitext-to-eclipse-help>
+  </target>
+
+  <target name="generate-html" description="Generate HTML from textile source">
+    <wikitext-to-html markupLanguage="Textile">
+      <fileset dir="${docs.dir}">
+        <include name="*.textile" />
+      </fileset>
+      <stylesheet url="styles/main.css" />
+    </wikitext-to-html>
+  </target>
+
+  <target name="generate-docbook" description="Generate DOCBOOK from textile source">
+    <wikitext-to-docbook markupLanguage="Textile">
+      <fileset dir="${docs.dir}">
+        <include name="**/*.textile" />
+      </fileset>
+    </wikitext-to-docbook>
+  </target>
+
+  <target name="generate-dita" description="Generate dita from textile source">
+    <wikitext-to-dita markupLanguage="Textile">
+      <fileset dir="${docs.dir}" includes="*.textile" />
+    </wikitext-to-dita>
+  </target>
+
+  <!-- create XSL-FO -->
+  <target name="wikitext-to-xslfo" description="Generate xslfo from textile">
+    <wikitext-to-xslfo markupLanguage="Textile">
+      <fileset dir="${docs.dir}">
+        <include name="*.textile" />
+      </fileset>
+    </wikitext-to-xslfo>
+  </target>
+
+  <!-- create pdf from XSL-FO depends="wikitext-to-xslfo" -->
+  <target name="generate-pdf"  description="Generates a single PDF file">
+    <fop format="application/pdf" fofile="${docs.dir}/HelloWorld.fo" outfile="${docs.dir}/HelloWorld.pdf" messagelevel="verbose" force="true" userconfig="fop-userconfig.xml" />
+  </target>
+
+  <target name="yguard">
+    <taskdef name="yguard" classname="com.yworks.yguard.YGuardTask" classpath="../../lib/yguard.jar" />
+    <yguard>
+      <!-- insert your yguard elements here -->
+    </yguard>
+  </target>
+</project>

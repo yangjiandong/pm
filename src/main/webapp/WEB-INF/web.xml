@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+  version="2.5">
+
+  <display-name>Personnel Management</display-name>
+  <description>personnel management system</description>
+
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>sshapp.root</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>/WEB-INF/log4j.properties</param-value>
+  </context-param>
+
+  <!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔
+    此参数用于后面的Spring Context Loader -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath*:/applicationContext.xml,classpath*:/applicationContext-sshapp.xml</param-value>
+  </context-param>
+
+  <!-- 60 ms -->
+  <context-param>
+    <param-name>log4jRefreshInterval</param-name>
+    <param-value>60000</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+
+  <!--
+    <context-param>
+      <param-name>db.url</param-name>
+      <param-value>jdbc:h2:~/ssh.data</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db.user</param-name>
+      <param-value>sa</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db.password</param-name>
+      <param-value>sa</param-value>
+    </context-param>
+    <listener>
+      <listener-class>org.h2.server.web.DbStarter</listener-class>
+    </listener>
+    -->
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!-- Character Encoding filter -->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- multiple configure Hibernate Open Session In View filter-->
+  <filter>
+    <filter-name>hibernateOpenSessionInViewFilter</filter-name>
+    <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+  </filter>
+  <!--
+    <filter>
+      <filter-name>hibernateOpenSessionInViewFilter</filter-name>
+      <filter-class>
+        org.ssh.app.orm.hibernate.OpenSessionInViewFilter</filter-class>
+      <init-param>
+        <param-name>excludeSuffixs</param-name>
+        <param-value>js,css,jpg,gif</param-value>
+      </init-param>
+      <init-param>
+        <param-name>sessionFactoryBeanName</param-name>
+        <param-value>sessionFactory</param-value>
+      </init-param>
+    </filter>
+    -->
+  <filter-mapping>
+    <filter-name>hibernateOpenSessionInViewFilter</filter-name>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>hibernateOpenSessionInViewFilter</filter-name>
+    <url-pattern>/</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>hibernateOpenSessionInViewFilter</filter-name>
+    <url-pattern>/remote/*</url-pattern>
+  </filter-mapping>
+
+  <!-- SpringSecurity filter-->
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--
+        kaptcha: Make sure to start your JDK with -Djava.awt.headless=true
+    -->
+  <servlet>
+    <servlet-name>Kaptcha</servlet-name>
+    <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Kaptcha</servlet-name>
+    <url-pattern>/kaptcha.jpg</url-pattern>
+  </servlet-mapping>
+
+  <!-- Spring MVC's Servlet -->
+  <servlet>
+    <servlet-name>rest</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>
+        /WEB-INF/app-servlet.xml
+      </param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>rest</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>remote</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>remote</servlet-name>
+    <url-pattern>/remote/*</url-pattern>
+  </servlet-mapping>
+
+  <!--spring rest-->
+  <!--
+        浏览器不支持put,delete等 method,由该filter将/blog?_method=delete转换为标准的http  delete 方法
+    -->
+  <filter>
+    <filter-name>httpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>httpMethodFilter</filter-name>
+    <servlet-name>rest</servlet-name>
+  </filter-mapping>
+
+  <!-- Spring refresh Introspector to prevent memory leaks  -->
+  <listener>
+    <listener-class>
+      org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+
+  <!-- SpringSecuirty 控制并发Session -->
+  <listener>
+    <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+  </listener>
+
+  <!-- Liquibase 2.0 -->
+  <!--
+<context-param>
+    <param-name>liquibase.changelog</param-name>
+    <param-value>migration/db.changelog.xml</param-value>
+</context-param>
+
+<context-param>
+    <param-name>liquibase.datasource</param-name>
+    <param-value>java:comp/env/jdbc/default</param-value>
+</context-param>
+
+<context-param>
+    <param-name>liquibase.host.includes</param-name>
+    <param-value>production1.example.com, production2.example.com</param-value>
+</context-param>
+
+<context-param>
+    <param-name>liquibase.onerror.fail</param-name>
+    <param-value>true</param-value>
+</context-param>
+
+<context-param>
+    <param-name>liquibase.contexts</param-name>
+    <param-value>production</param-value>
+</context-param>
+
+<listener>
+    <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
+</listener>
+-->
+
+  <!-- define error pages -->
+  <error-page>
+    <exception-type>java.lang.Throwable</exception-type>
+    <location>/common/500.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/common/500.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/common/404.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/common/403.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>405</error-code>
+    <location>/common/405.jsp</location>
+  </error-page>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- ==================================================================== -->
+  <!-- Default MIME mappings                                                -->
+  <!-- The default MIME mappings are provided by the mime.properties        -->
+  <!-- resource in the org.mortbay.jetty.jar file.  Additional or modified  -->
+  <!-- mappings may be specified here                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  <!-- UNCOMMENT TO ACTIVATE
+    <mime-mapping>
+      <extension>mysuffix</extension>
+      <mime-type>image/x-png</mime-type>
+    </mime-mapping>
+    -->
+</web-app>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<fop version="1.0">
+  <base>.</base>
+  <renderers>
+    <renderer mime="application/pdf">
+      <filterList>
+        <value>flate</value>
+      </filterList>
+      <fonts>
+        <font metrics-url="file:///c:\font\simhei.xml" kerning="yes" embed-url="file:///c:\font\simhei.ttf">
+          <font-triplet name="simhei" style="normal" weight="normal"/>
+          <font-triplet name="simhei" style="normal" weight="bold"/>
+          <font-triplet name="simhei" style="italic" weight="normal"/>
+          <font-triplet name="simhei" style="italic" weight="bold"/>
+        </font>
+        <font metrics-url="file:///c:\font\simsun.xml" kerning="yes" embed-url="file:///c:\font\simsun.ttc">
+          <font-triplet name="simsun" style="normal" weight="normal"/>
+          <font-triplet name="simsun" style="normal" weight="bold"/>
+          <font-triplet name="simsun" style="italic" weight="normal"/>
+          <font-triplet name="simsun" style="italic" weight="bold"/>
+        </font>
+        <font metrics-url="file:///c:\font\yh.xml" kerning="yes" embed-url="file:///c:\font\YaHei.Consolas.1.11b.ttf">
+          <font-triplet name="YaHeiConsolasHybrid" style="normal" weight="normal"/>
+          <font-triplet name="YaHeiConsolasHybrid" style="normal" weight="bold"/>
+          <font-triplet name="YaHeiConsolasHybrid" style="italic" weight="normal"/>
+          <font-triplet name="YaHeiConsolasHybrid" style="italic" weight="bold"/>
+        </font>
+
+      </fonts>
+
+    </renderer>
+  </renderers>
+</fop>

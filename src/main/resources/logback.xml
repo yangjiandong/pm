@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <substitutionProperty name="log.base" value="${sshapp.root}/logs" />
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d [%-5p] \(%-20c{3}:%L\) - %m%n</Pattern>
+      <!--
+          %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
+          <pattern>%d [%-5p] \(%-20c{3}:%L\) - %m%n</pattern>
+        -->
+    </layout>
+  </appender>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <Encoding>UTF-8</Encoding>
+    <File>${log.base}/app.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <FileNamePattern>${log.base}/web.%i.log.zip</FileNamePattern>
+      <MinIndex>1</MinIndex>
+      <MaxIndex>9</MaxIndex>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>5MB</MaxFileSize>
+    </triggeringPolicy>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>
+      <!--
+        <pattern>%d [%-5p] \(%-20c{3}:%L\) - %m%n</pattern>
+        -->
+    </layout>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="CONSOLE"/>
+  </root>
+
+  <!--
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <root>
+        <level value="WARN"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <logger name="org.hibernate.type" >
+        <level value="TRACE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.base}/access.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${web.hom}/logs/access.%i.log.zip</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>9</MaxIndex>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d %m%n</pattern>
+        </layout>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>5MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    <appender name="HIBERNATE.SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.base}/h.log</File>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%date [%-5level] \(%logger{32}:%line\) %message%n</pattern>
+        </layout>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${webApp.root}/logs/h.%i.log.zip</FileNamePattern>
+            <maxIndex>20</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <logger name="org.hibernate" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate.SQL" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate.HQL" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate.type" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate.cache" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate.transaction" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate.jdbc" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="org.hibernate.stat" >
+        <level value="INFO"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="java.sql.Connection" >
+        <level value="DEBUG"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="java.sql.Statemnet" >
+        <level value="DEBUG"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+    <logger name="java.sql.PreparedStatemnet" >
+        <level value="DEBUG"/>
+        <appender-ref ref="HIBERNATE.SQL"/>
+    </logger>
+
+    <logger name="org.artifactory.repo.index">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.artifactory.info.InfoWriter">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.artifactory.security.AccessLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="ACCESS"/>
+    </logger>
+
+    <logger name="org.apache.jasper">
+        <level value="INFO"/>
+    </logger>
+    <logger name="httpclient.wire">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.apache.jackrabbit">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.mortbay">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.apache.commons.httpclient">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.springframework">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.apache.jackrabbit.extractor.XMLTextExtractor">
+        <level value="ERROR"/>
+    </logger>
+-->
+</configuration>
