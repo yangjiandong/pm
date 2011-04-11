@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+  default-lazy-init="true">
+
+  <description>Spring Jdbc Template配置</description>
+
+  <bean id="userJdbcDao" class="org.ssh.app.common.dao.UserJdbcDao">
+    <property name="searchUserSql">
+      <value><![CDATA[
+      SELECT id, name, login_name
+      FROM ss_user
+      WHERE 1=1
+
+      ## Dynamic Content
+      #if ($loginName)
+      AND login_name=:loginName
+      #end
+      #if ($name)
+      AND name=:name
+      #end
+
+      ORDER BY id
+      ]]></value>
+    </property>
+  </bean>
+</beans>

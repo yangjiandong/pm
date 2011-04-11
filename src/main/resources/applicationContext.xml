@@ -26,7 +26,7 @@
   <context:annotation-config />
 
   <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-  <context:component-scan base-package="org.ssh.app" />
+  <context:component-scan base-package="org.ssh.pm" />
 
   <!-- 以静态变量保存ApplicationContext -->
   <bean class="org.springside.modules.utils.spring.SpringContextHolder" lazy-init="false" />
@@ -73,28 +73,28 @@
       </props>
     </property>
     <!-- 放宽包名,只要是entity -->
-    <property name="packagesToScan" value="org.ssh.app.**.entity" />
+    <property name="packagesToScan" value="org.ssh.pm.**.entity" />
     <property name="eventListeners">
       <map>
         <entry key="save-update">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.AuditListener" />
+            <bean class="org.ssh.pm.orm.hibernate.AuditListener" />
             <bean class="org.hibernate.event.def.DefaultSaveOrUpdateEventListener" />
           </list>
         </entry>
         <entry key="post-insert">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.HistoryListener" />
+            <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
           </list>
         </entry>
         <entry key="post-update">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.HistoryListener" />
+            <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
           </list>
         </entry>
         <entry key="post-delete">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.HistoryListener" />
+            <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
           </list>
         </entry>
 

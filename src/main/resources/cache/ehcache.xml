@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+  <diskStore path="java.io.tmpdir" />
+
+  <!-- DefaultCache setting. -->
+  <defaultCache maxElementsInMemory="10000"
+    memoryStoreEvictionPolicy="LRU"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="300"
+    overflowToDisk="true"
+    diskSpoolBufferSizeMB="30"
+    maxElementsOnDisk="10000000"
+    diskPersistent="false"
+    diskExpiryThreadIntervalSeconds="120"
+    />
+
+  <Cache  name="instantCache"
+    maxElementsInMemory="100000"
+    eternal="false"
+    timeToIdleSeconds="120"
+    timeToLiveSeconds="300"
+    overflowToDisk="true"
+    diskSpoolBufferSizeMB="30"
+    maxElementsOnDisk="10000000"
+    diskPersistent="false"
+    diskExpiryThreadIntervalSeconds="120"
+    memoryStoreEvictionPolicy="LRU"
+    />
+  <Cache  name="fixCache"
+    maxElementsInMemory="100000"
+    eternal="true"
+    timeToIdleSeconds="120"
+    timeToLiveSeconds="120"
+    overflowToDisk="false"
+    diskSpoolBufferSizeMB="30"
+    maxElementsOnDisk="10000000"
+    diskPersistent="false"
+    diskExpiryThreadIntervalSeconds="120"
+    memoryStoreEvictionPolicy="LRU"
+    />
+  <Cache  name="methodCache"
+    maxElementsInMemory="100000"
+    eternal="false"
+    timeToIdleSeconds="300000"
+    timeToLiveSeconds="600000"
+    overflowToDisk="true"
+    diskSpoolBufferSizeMB="30"
+    maxElementsOnDisk="10000000"
+    diskPersistent="false"
+    diskExpiryThreadIntervalSeconds="120"
+    memoryStoreEvictionPolicy="LRU"
+    />
+
+  <!-- Special objects setting. -->
+  <!-- Refresh ContentInfoCache every hour. -->
+  <cache name="contentInfoCache"
+    overflowToDisk="false"
+    eternal="false"
+    diskPersistent="false"
+    timeToLiveSeconds="3600"
+    timeToIdleSeconds="3600"
+    maxElementsInMemory="10000"
+    memoryStoreEvictionPolicy="LRU"/>
+</ehcache>

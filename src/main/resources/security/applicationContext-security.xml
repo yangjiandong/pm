@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:s="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+  default-lazy-init="true">
+
+  <description>SpringSecurity安全配置</description>
+
+  <!-- http安全配置 -->
+  <s:http auto-config="true" use-expressions="true" access-denied-page="/common/accessDenied.jsp">
+    <s:intercept-url pattern="/" access="permitAll" />
+    <s:intercept-url pattern="/resources/**" access="permitAll" />
+    <s:intercept-url pattern="/**" access="isAuthenticated()" />
+
+    <s:intercept-url pattern="/book/*" filters="none" />
+    <s:intercept-url pattern="/index2.jsp" filters="none" />
+    <s:intercept-url pattern="/init/*" filters="none" />
+    <s:intercept-url pattern="/remote/**" filters="none" />
+
+    <s:intercept-url pattern="/common/user/*" access="isAuthenticated()" />
+
+    <s:form-login login-page="/" default-target-url="/user/loginsuccess" authentication-failure-url="/user/loginerror1" />
+    <s:logout logout-success-url="/" />
+    <s:session-management invalid-session-url="/">
+      <!--采用当前用户登录踢除上次登录-->
+      <s:concurrency-control max-sessions="1" error-if-maximum-exceeded="false" />
+    </s:session-management>
+
+    <s:custom-filter after="SECURITY_CONTEXT_FILTER" ref="autoLoginFilter" />
+  </s:http>
+
+  <!-- 方法安全配置 -->
+  <s:global-method-security secured-annotations="enabled" />
+
+  <!-- 认证配置 -->
+  <!--
+  通过userDetailsService和j_username查出用户的密码，再和j_password比较。
+  如果密码是加密的，先用passwordEncoder对 j_password加密，再与查出的密码比较
+  -->
+  <s:authentication-manager alias="authenticationManager">
+    <s:authentication-provider user-service-ref="userDetailsService">
+      <s:password-encoder hash="sha" />
+    </s:authentication-provider>
+  </s:authentication-manager>
+
+  <!-- 项目实现的用户查询服务  -->
+  <bean id="userDetailsService" class="org.ssh.app.security.UserDetailsServiceImpl" />
+
+  <!-- 开发时自动登录的filter -->
+  <bean id="autoLoginFilter" class="org.ssh.app.security.AutoLoginFilter">
+    <property name="enabled" value="${security.autologin.enabled}" />
+    <property name="defaultUserName" value="admin" />
+  </bean>
+
+  <!--JCaptcha验证码服务 -->
+  <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+    <property name="captchaEngine">
+      <bean class="org.springside.modules.security.jcaptcha.GMailEngine" />
+    </property>
+    <!--
+    默认生成的图片180秒过期 , 可另行设置
+    <property name="minGuarantedStorageDelayInSeconds" value="180" />
+    -->
+  </bean>
+</beans>

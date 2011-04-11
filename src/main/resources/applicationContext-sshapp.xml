@@ -29,22 +29,4 @@
   <import resource="jms/applicationContext-jms-advanced.xml" />
   <import resource="jmx/applicationContext-jmx-server.xml" />
   <import resource="jmx/applicationContext-jmx-client.xml" />
-  <import resource="dozer/applicationContext-dozer.xml" />
-  <import resource="script/applicationContext-groovy.xml" />
-
-
-  <!--
-  <import resource="camel/applicationContext-camel.xml" />
-
-  <bean id="springContextHolder" class="org.springside.modules.utils.SpringContextHolder"/>
-
-  <import resource="jmx/monitor.xml" />
-  <import resource="log/applicationContext-log.xml" />
-  <import resource="schedule/applicationContext-quartz-cron-local.xml" />
-  <import resource="schedule/applicationContext-quartz-timer-cluster.xml" />
-  <import resource="schedule/applicationContext-executor.xml" />
-  <import resource="security/applicationContext-security.xml" />
-  <import resource="webservice/applicationContext-cxf-server.xml" />
-  <import resource="webservice/applicationContext-jersey-server.xml" />
-  -->
 </beans>

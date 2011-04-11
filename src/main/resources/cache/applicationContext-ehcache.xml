@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+  default-lazy-init="true">
+
+  <description>EhCache配置文件</description>
+
+  <bean id="ehcacheManager"
+    class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    <property name="configLocation" value="classpath:cache/ehcache.xml" />
+  </bean>
+
+  <!-- 配置即时缓存 Start-->
+  <bean id="instantCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager">
+      <ref local="ehcacheManager" />
+    </property>
+    <property name="cacheName">
+      <value>instantCache</value>
+    </property>
+  </bean>
+  <!-- 配置即时缓存 End-->
+
+  <bean id="methodCacheInterceptor" class="org.ssh.app.cache.MethodCacheInterceptor">
+    <property name="cache">
+      <ref local="instantCache" />
+    </property>
+  </bean>
+
+  <bean id="methodCachePointCut"
+    class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice">
+      <ref local="methodCacheInterceptor" />
+    </property>
+    <property name="patterns">
+      <list>
+        <value>.*OnMethodCache</value>
+      </list>
+    </property>
+  </bean>
+
+  <!-- find/create cache拦截器 excludeMethods 过滤的方法-->
+  <!--
+  <bean id="methodCacheInterceptor" class="org.ssh.app.cache.MethodCacheInterceptor">
+    <property name="excludeMethods">
+      <value>deleteConfig,findConfig</value>
+    </property>
+  </bean>
+  -->
+  <!--
+  <bean id="myBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target">
+      <bean class="org.ssh.app.example.service.BookService" />
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>methodCachePointCut</value>
+      </list>
+    </property>
+  </bean>
+  -->
+  <!-- method cache -->
+
+  <!-- 配置固定缓存 Start-->
+  <bean id="fixCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager">
+      <ref local="ehcacheManager" />
+    </property>
+    <property name="cacheName">
+      <value>fixCache</value>
+    </property>
+  </bean>
+
+  <!-- 配置接口缓存 Start-->
+  <bean id="methodCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager">
+      <ref local="ehcacheManager" />
+    </property>
+    <property name="cacheName">
+      <value>methodCache</value>
+    </property>
+  </bean>
+
+</beans>

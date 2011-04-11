@@ -11,76 +11,78 @@
   <property name="clob.type" value="longtext" dbms="mysql"/>
 
   <!--
-    <changeSet id="1" author="joe">
-      <createTable tableName="${table.name}">
-        <column name="id" type="int"/>
-        <column name="${column1.name}" type="${clob.type}"/>
-        <column name="${column2.name}" type="int"/>
-      </createTable>
-    </changeSet>
+      <changeSet id="1" author="joe">
+        <createTable tableName="${table.name}">
+          <column name="id" type="int"/>
+          <column name="${column1.name}" type="${clob.type}"/>
+          <column name="${column2.name}" type="int"/>
+        </createTable>
+      </changeSet>
 
 <loadData tableName="users" file="com/sample/users.csv">
-      <column name="id" type="NUMERIC"/>
-      <column name="firstname" type="STRING"/>
-      <column name="lastname" type="STRING"/>
-      <column name="username" type="STRING"/>
+        <column name="id" type="NUMERIC"/>
+        <column name="firstname" type="STRING"/>
+        <column name="lastname" type="STRING"/>
+        <column name="username" type="STRING"/>
 </loadData>
 
 <loadUpdateData tableName="users" file="com/sample/users.csv" primaryKey="id">
-      <column name="id" type="NUMERIC"/>
-      <column name="firstname" type="STRING"/>
-      <column name="lastname" type="STRING"/>
-      <column name="username" type="STRING"/>
+        <column name="id" type="NUMERIC"/>
+        <column name="firstname" type="STRING"/>
+        <column name="lastname" type="STRING"/>
+        <column name="username" type="STRING"/>
 </loadUpdateData>
 
-  <preConditions>
-    <dbms type="mssql" />
-    <dbms type="h2" />
-  </preConditions>
+    <preConditions>
+      <dbms type="mssql" />
+      <dbms type="h2" />
+    </preConditions>
 
+      -->
+
+  <!--
+    <changeSet id="1" author="bob">
+      <preConditions onFail="MARK_RAN">
+        <not>
+          <tableExists tableName="t_department"/>
+        </not>
+      </preConditions>
+      <createTable tableName="t_department">
+        <column name="id" type="int">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="name" type="varchar(50)">
+          <constraints nullable="false"/>
+        </column>
+        <column name="active" type="boolean" defaultValueBoolean="true"/>
+      </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="yangjiandong">
+      <preConditions onFail="MARK_RAN">
+        <not>
+          <tableExists tableName="t_test"/>
+        </not>
+      </preConditions>
+
+      <createTable tableName="t_test">
+        <column name="id" type="int">
+          <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="name" type="varchar(50)">
+          <constraints nullable="false"/>
+        </column>
+      </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="yangjiandong">
+      <sql>delete t_test</sql>
+      <sql>insert into t_test values(1,'testname')</sql>
+    </changeSet>
+
+    <changeSet author='yangjiandong' id='4' runAlways='true'>
+      <sqlFile path="migration/sample.sql"/>
+    </changeSet>
     -->
-
-  <changeSet id="1" author="bob">
-    <preConditions onFail="MARK_RAN">
-      <not>
-        <tableExists tableName="t_department"/>
-      </not>
-    </preConditions>
-    <createTable tableName="t_department">
-      <column name="id" type="int">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="name" type="varchar(50)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="active" type="boolean" defaultValueBoolean="true"/>
-    </createTable>
-  </changeSet>
-
-  <changeSet id="2" author="yangjiandong">
-    <preConditions onFail="MARK_RAN">
-      <not>
-        <tableExists tableName="t_test"/>
-      </not>
-    </preConditions>
-
-    <createTable tableName="t_test">
-      <column name="id" type="int">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="name" type="varchar(50)">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-
-  <changeSet id="3" author="yangjiandong">
-    <sql>delete t_test</sql>
-    <sql>insert into t_test values(1,'testname')</sql>
-  </changeSet>
-
-  <changeSet author='yangjiandong' id='4' runAlways='true'>
-    <sqlFile path="migration/sample.sql"/>
-  </changeSet>
 </databaseChangeLog>
 

@@ -89,7 +89,6 @@
         <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
       </props>
     </property>
-    <property name="packagesToScan" value="org.ssh.app.**.entity" />
     <property name="eventListeners">
       <map>
         <entry key="save-update">

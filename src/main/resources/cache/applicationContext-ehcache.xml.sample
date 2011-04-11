@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+  default-lazy-init="true">
+
+  <description>EhCache配置文件</description>
+
+  <bean id="ehcacheManager"
+    class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    <property name="configLocation" value="classpath:cache/ehcache.xml" />
+  </bean>
+
+  <!-- 配置即时缓存 Start-->
+  <bean id="instantCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager">
+      <ref local="ehcacheManager" />
+    </property>
+    <property name="cacheName">
+      <value>instantCache</value>
+    </property>
+  </bean>
+  <!-- 配置即时缓存 End-->
+
+  <!-- 配置固定缓存 Start-->
+  <bean id="fixCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager">
+      <ref local="ehcacheManager" />
+    </property>
+    <property name="cacheName">
+      <value>fixCache</value>
+    </property>
+  </bean>
+  
+  <bean id="fixCacheInterceptor" class="org.ssh.app.cache.FixCacheInterceptor"></bean>
+  <bean id="fixCacheAfterAdvice" class="FixCacheAfterAdvice"></bean>
+
+  <bean id="fixCachePointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice">
+      <ref local="fixCacheInterceptor" />
+    </property>
+    <property name="patterns">
+      <list><!-- 不能为空，不然SpringHelper会报拿不到bean的错 -->
+        <value>.*OnMethodCache</value>
+        <!--
+        <value>.*findAllConfig.*</value>
+        <value>.*getConfig.*</value>
+        <value>.*queryConfig.*</value>
+        <value>.*listConfig.*</value>
+        <value>.*searchConfig.*</value>
+        <value>.*loadConfig.*</value>
+        -->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="fixCachePointCutAdivsor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice">
+      <ref local="fixCacheAfterAdvice" />
+    </property>
+    <property name="patterns">
+      <list>
+        <value>.*createConfig.*</value>
+        <!--value>.*saveConfig.*</value-->
+        <!--value>.*addConfig.*</value-->
+        <!--value>.*updateConfig.*</value-->
+        <!--value>.*delConfig.*</value>
+          <value>.*deleteConfig.*</value>
+          <value>.*modConfig.*</value-->
+        <value>.*freeConfig.*</value>
+        <value>.*bindConfig.*</value>
+      </list>
+    </property>
+  </bean>
+  <!-- 配置固定缓存 End-->
+
+  <!-- 配置接口缓存 Start-->
+  <bean id="methodCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager">
+      <ref local="ehcacheManager" />
+    </property>
+    <property name="cacheName">
+      <value>methodCache</value>
+    </property>
+  </bean>
+
+  <!-- find/create cache拦截器 excludeMethods 过滤的方法-->
+  <bean id="methodCacheInterceptor" class="org.ssh.app.cache.MethodCacheInterceptor">
+    <property name="excludeMethods">
+      <value>deleteConfig,findConfig</value>
+    </property>
+  </bean>
+
+  <!-- flush cache拦截器 excludeMethods 过滤的方法-->
+  <bean id="methodCacheAfterAdvice" class="MethodCacheAfterAdvice">
+    <property name="excludeMethods">
+      <value>deleteConfig,findConfig
+      </value>
+    </property>
+  </bean>
+  <bean id="methodCachePointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice">
+      <ref local="methodCacheInterceptor" />
+    </property>
+    <property name="patterns">
+      <list>
+        <value>.*find.*</value>
+        <value>.*get.*</value>
+        <value>.*query.*</value>
+        <value>.*list.*</value>
+        <value>.*search.*</value>
+        <value>.*load.*</value>
+      </list>
+    </property>
+  </bean>
+  <bean id="methodCachePointCutAdvice" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice">
+      <ref local="methodCacheAfterAdvice" />
+    </property>
+    <property name="patterns">
+      <list>
+        <value>.*create.*</value>
+        <value>.*save.*</value>
+        <value>.*add.*</value>
+        <value>.*update.*</value>
+        <value>.*del.*</value>
+        <value>.*delete.*</value>
+        <value>.*mod.*</value>
+        <value>.*free.*</value>
+        <value>.*bind.*</value>
+      </list>
+    </property>
+  </bean>
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="proxyTargetClass">
+      <value>false</value>
+    </property>
+    <property name="beanNames">
+      <list>
+        <value>*BO</value>
+      </list>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>fixCachePointCut</value>
+        <value>fixCachePointCutAdivsor</value>
+        <value>methodCachePointCut</value>
+        <value>methodCachePointCutAdvice</value>
+      </list>
+    </property>
+  </bean>
+  <!-- 配置接口缓存 End -->
+
+  <!-- 刷新固定缓存定时器 Start-->
+  <!--
+  <bean id="FixJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+    <property name="jobClass">
+      <value>com.ot.opf.timer.FixCacheJob</value>
+    </property>
+  </bean>
+  <bean id="FixCacheTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="FixJobDetail" />
+    <property name="cronExpression">
+      <value>0 0 2 * * ?</value>
+    </property>
+  </bean>
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="triggers">
+      <list>
+        <ref bean="FixCacheTrigger"/>
+      </list>
+    </property>
+  </bean>
+  -->
+  <!-- 刷新固定缓存定时器 End -->
+
+  <!-- method cache -->
+  <!--
+  <bean id="methodCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager">
+      <ref local="ehcacheManager" />
+    </property>
+    <property name="cacheName">
+      <value>org.ssh.app.cache.METHOD_CACHE</value>
+    </property>
+  </bean>
+  -->
+  
+  <bean id="methodCacheInterceptor" class="org.ssh.app.cache.MethodCacheInterceptor">
+    <property name="cache">
+      <ref local="instantCache" />
+    </property>
+  </bean>
+
+  <bean id="methodCachePointCut"
+    class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice">
+      <ref local="methodCacheInterceptor" />
+    </property>
+    <property name="patterns">
+      <list>
+        <value>.*OnMethodCache</value>
+      </list>
+    </property>
+  </bean>  
+
+  <bean id="myBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target">
+      <bean class="org.ssh.app.example.service.BookService" />
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>methodCachePointCut</value>
+      </list>
+    </property>
+  </bean>
+  <!-- method cache -->
+
+</beans>
