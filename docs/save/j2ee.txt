@@ -1,0 +1,2 @@
+界面采用RIA(富客户端的AJAX应用)框架中最热门的Extjs，提供给用户更好的使用体验。
+详细出处参考：http://www.jb51.net/article/16993.htm

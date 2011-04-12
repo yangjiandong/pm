@@ -22,7 +22,7 @@ public abstract class IdEntity {
 
     @Id
     @GeneratedValue(generator = "UIDGenerator")
-    @GenericGenerator(name = "UIDGenerator", strategy = "org.ssh.app.common.dao.UIDGenerator")
+    @GenericGenerator(name = "UIDGenerator", strategy = "org.ssh.pm.common.dao.UIDGenerator")
     public String getId() {
         return id;
     }

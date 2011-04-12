@@ -22,7 +22,7 @@
   </bean>
   <!-- 配置即时缓存 End-->
 
-  <bean id="methodCacheInterceptor" class="org.ssh.app.cache.MethodCacheInterceptor">
+  <bean id="methodCacheInterceptor" class="org.ssh.pm.cache.MethodCacheInterceptor">
     <property name="cache">
       <ref local="instantCache" />
     </property>

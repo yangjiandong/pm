@@ -1,6 +1,38 @@
 Personnel_Management System
 ============================
 
+2011.04.12
+----------
+
+   1. tag
+
+   git tag -a tag_20110412
+   git archive --format=tar --remote=[hostname]:[path to repo] [tag name] > tagged_version.tar
+
+   --推送到remote
+   git push origin spring3.02
+
+   --或全部tag
+   git push origin --tags
+
+   2. tomcat plugin + jrebel
+
+   -Drebel.log=true -noverify -javaagent:c:\jrebel.jar -Xmx512M -Xms512M -XX:MaxPermSize=1024m
+
+   3. 统一采用 tomcat 6.0.18
+    <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>jasper-el</artifactId>
+        <version>6.0.18</version>
+    </dependency>
+
+    use "jasper-el-6.0.18.jar,exclude  "el-api-6.0.18.jar"
+    <packagingExcludes>WEB-INF/lib/el-*</packagingExcludes>
+    <warSourceExcludes>WEB-INF/lib/el-*</warSourceExcludes>
+
+    方便jetty \ tomcat 切换
+    TODO 暂时能运行
+
 2011.04.11
 -----------
 

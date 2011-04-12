@@ -45,10 +45,10 @@
   </s:authentication-manager>
 
   <!-- 项目实现的用户查询服务  -->
-  <bean id="userDetailsService" class="org.ssh.app.security.UserDetailsServiceImpl" />
+  <bean id="userDetailsService" class="org.ssh.pm.security.UserDetailsServiceImpl" />
 
   <!-- 开发时自动登录的filter -->
-  <bean id="autoLoginFilter" class="org.ssh.app.security.AutoLoginFilter">
+  <bean id="autoLoginFilter" class="org.ssh.pm.security.AutoLoginFilter">
     <property name="enabled" value="${security.autologin.enabled}" />
     <property name="defaultUserName" value="admin" />
   </bean>

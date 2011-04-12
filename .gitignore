@@ -72,3 +72,6 @@ fop-userconfig.xml
 
 classes
 work
+
+# tar
+*.tar

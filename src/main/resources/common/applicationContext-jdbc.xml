@@ -5,7 +5,7 @@
 
   <description>Spring Jdbc Template配置</description>
 
-  <bean id="userJdbcDao" class="org.ssh.app.common.dao.UserJdbcDao">
+  <bean id="userJdbcDao" class="org.ssh.pm.common.dao.UserJdbcDao">
     <property name="searchUserSql">
       <value><![CDATA[
       SELECT id, name, login_name

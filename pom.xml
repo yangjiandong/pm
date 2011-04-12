@@ -264,14 +264,13 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
-	<!-- use tomcat 6 -->
-	<!--
+
+    <!-- use tomcat 6 -->
     <dependency>
-        <groupId>org.apache.tomcat</groupId>
-        <artifactId>jasper-el</artifactId>
-        <version>6.0.26</version>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>jasper-el</artifactId>
+      <version>6.0.18</version>
     </dependency>
-    -->
     <!-- web end -->
 
     <!-- Jackson JSON Mapper -->
@@ -398,7 +397,7 @@
         <artifactId>google-collections</artifactId>
       </dependency>
       -->
-	<dependency>
+    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
@@ -477,7 +476,7 @@
     </dependency>
 
     <dependency>
-      <groupId>com.google.code.kaptcha</groupId>
+      <groupId>com.google.code</groupId>
       <artifactId>kaptcha</artifactId>
     </dependency>
     <!-- utils end -->
@@ -635,6 +634,19 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <warName>${project.artifactId}-${version}</warName>
+          <archive>
+            <manifestEntries>
+              <app-version>${project.version}</app-version>
+              <build-date>${buildDate}</build-date>
+            </manifestEntries>
+          </archive>
+          <!-- use "jasper-el-6.0.18.jar,exclude  "el-api-6.0.18.jar" -->
+          <packagingExcludes>WEB-INF/lib/el-*</packagingExcludes>
+          <warSourceExcludes>WEB-INF/lib/el-*</warSourceExcludes>
+        </configuration>
       </plugin>
 
       <!-- compiler插件, 设定JDK版本 -->
@@ -663,17 +675,17 @@
         </configuration>
       </plugin>
       <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <wtpversion>2.0</wtpversion>
-          <additionalProjectnatures>
-            <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-          </additionalProjectnatures>
-        </configuration>
-      </plugin>
-      -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <configuration>
+            <wtpversion>2.0</wtpversion>
+            <additionalProjectnatures>
+              <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+            </additionalProjectnatures>
+          </configuration>
+        </plugin>
+        -->
       <!-- jetty插件 -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
