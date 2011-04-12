@@ -33,6 +33,8 @@ Personnel_Management System
     方便jetty \ tomcat 切换
     TODO 暂时能运行
 
+    mvn war:inplace 运行后 需手工删除 el-api-6.0.18.jar
+
 2011.04.11
 -----------
 

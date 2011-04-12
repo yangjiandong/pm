@@ -334,6 +334,7 @@
     <dependency>
       <groupId>com.thimbleware.jmemcached</groupId>
       <artifactId>jmemcached-core</artifactId>
+      <version>1.0.0</version>
       <!-- 为演示而改为runtime -->
       <scope>runtime</scope>
     </dependency>
