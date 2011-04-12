@@ -35,6 +35,29 @@ Personnel_Management System
 
     mvn war:inplace 运行后 需手工删除 el-api-6.0.18.jar
 
+    4. 关闭memcached,先采用ecache
+    <import resource="cache/applicationContext-memcached.xml" />
+
+    CacheUtil 中定义cacheName,HZK,COMMON
+    测试 HzService.getMemo
+    curl http://localhost:8080/sshapp/book/getHz
+
+    method Cached:
+    需配合
+
+  <bean id="myBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target">
+      <bean class="org.ssh.app.example.service.BookService" />
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>methodCachePointCut</value>
+      </list>
+    </property>
+  </bean>
+
+
+
 2011.04.11
 -----------
 

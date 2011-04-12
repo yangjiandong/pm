@@ -1,0 +1,38 @@
+缓存策略
+=========
+
+   1. 关闭hibernate 缓存策略
+
+   2. 暂时关闭memcache
+
+   <import resource="cache/applicationContext-memcached.xml" />
+
+   应用例子HzService
+
+   3. 采用Ehcache
+
+   <import resource="cache/applicationContext-ehcache.xml" />
+
+   CacheUtil 中定义cacheName,如: HZK,COMMON
+
+   应用例子HzService.getMemo
+    curl http://localhost:8080/sshapp/book/getHz
+
+    method Cached:
+    需配合
+
+  <bean id="myBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target">
+      <bean class="org.ssh.app.example.service.BookService" />
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>methodCachePointCut</value>
+      </list>
+    </property>
+  </bean>
+
+   4. 其他
+   
+   org.ssh.pm.cache.MapImpl,EhcacheImpl
+   --END

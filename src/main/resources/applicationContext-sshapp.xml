@@ -22,7 +22,9 @@
   -->
   <import resource="common/applicationContext-jdbc.xml" />
   <import resource="cache/applicationContext-ehcache.xml" />
+  <!--
   <import resource="cache/applicationContext-memcached.xml" />
+  -->
   <import resource="security/applicationContext-security.xml" />
   <import resource="email/applicationContext-email.xml" />
   <import resource="jms/applicationContext-jms-simple.xml" />

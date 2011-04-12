@@ -7,8 +7,10 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.hibernate.SQLQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springside.modules.memcached.SpyMemcachedClient;
 import org.springside.modules.utils.ServiceException;
 import org.springside.modules.utils.encode.JsonBinder;
+import org.ssh.pm.cache.CacheUtil;
 import org.ssh.pm.cache.MemcachedObjectType;
 import org.ssh.pm.common.dao.HzDao;
 import org.ssh.pm.common.entity.Hz;
@@ -56,7 +59,9 @@ public class HzService {
                 logger.debug("get hz use memecache!!!" + oneS);
                 hz = getHzFromMemcached(oneS);
             } else {
-                hz = hzDao.findOne(oneS);
+
+                //hz = hzDao.findOne(oneS);
+                hz = getHzFromEhcache(oneS);
 
             }
             if (hz != null) {
@@ -106,6 +111,40 @@ public class HzService {
             if (hz != null) {
                 jsonString = jsonBinder.toJson(hz);
                 spyMemcachedClient.set(key, MemcachedObjectType.HZK.getExpiredTime(), jsonString);
+            }
+        } else {
+            hz = jsonBinder.fromJson(jsonString, Hz.class);
+        }
+        return hz;
+    }
+
+
+    /**
+     * 访问ehcache, 使用JSON字符串存放对象以节约空间.
+     */
+    private Hz getHzFromEhcache(String one) {
+        //TODO
+        //不能直接用汉字作为spyMemcachedClient的key
+        String one_code = one;
+        try{
+            one_code=URLEncoder.encode(one,"UTF-8");
+        }catch (Exception e) {
+            // TODO: handle exception
+        }
+
+        String key = CacheUtil.HZK + one_code;
+
+        Hz hz = null;
+        String jsonString = (String)CacheUtil.getCache(CacheUtil.HZK, key);
+        logger.debug("get key:" + key + ",jsonString:" + jsonString);
+        if (jsonString == null) {
+            //hz = hzDao.findOne(one);
+            hz = hzDao.findOneBy("hz", one);
+            if (hz != null) {
+                jsonString = jsonBinder.toJson(hz);
+                //spyMemcachedClient.set(key, MemcachedObjectType.HZK.getExpiredTime(), jsonString);
+
+                CacheUtil.setCache(CacheUtil.HZK, key, jsonString);
             }
         } else {
             hz = jsonBinder.fromJson(jsonString, Hz.class);
@@ -166,5 +205,17 @@ public class HzService {
         } finally {
 
         }
+    }
+
+    //采用了方法缓存
+    @Transactional(readOnly = true)
+    public List<Hz> getHzsOnMethodCache(){
+        //return bookDao.getAll();
+        StringBuffer bf = new StringBuffer();
+        bf.append("select * ");
+        bf.append(" from  T_HZK where hz='饭'");
+
+        SQLQuery query = this.hzDao.getSession().createSQLQuery(bf.toString());
+        return query.list();
     }
 }

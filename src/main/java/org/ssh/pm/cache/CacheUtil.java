@@ -8,6 +8,11 @@ import org.springside.modules.utils.spring.SpringContextHolder;
 
 
 public class CacheUtil {
+
+    //cacheName
+    public static final String HZK = "hzk";
+    public static final String COMMON = "common";
+
     /**
      * 设置缓存
      */
