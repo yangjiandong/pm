@@ -22,6 +22,7 @@
   -->
   <import resource="common/applicationContext-jdbc.xml" />
   <import resource="cache/applicationContext-ehcache.xml" />
+  <import resource="log/applicationContext-log.xml" />
   <!--
   <import resource="cache/applicationContext-memcached.xml" />
   -->

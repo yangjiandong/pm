@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+  <description>日志高级演示配置</description>
+
+  <!-- 消息Queue管理器-->
+  <bean class="org.ssh.pm.queue.QueuesHolder">
+    <property name="queueSize" value="1000" />
+  </bean>
+
+  <!-- 读出Queue中日志消息写入数据库的任务 -->
+  <bean id="jdbcLogWriter" class="org.ssh.pm.log.appender.JdbcLogWriter">
+    <property name="queueName" value="dblog" />
+    <property name="batchSize" value="10" />
+    <property name="sql">
+      <value>
+        insert into T_LOGS(THREAD_NAME,LOGGER_NAME,LOG_TIME,LEVEL,MESSAGE)
+        values(:thread_name,:logger_name,:log_time,:level,:message)
+      </value>
+    </property>
+  </bean>
+
+  <!-- 动态配置log4j日志级别的JMX MBean -->
+  <bean id="log4jMBean" class="org.springside.modules.log.Log4jMBean" />
+
+  <!-- 使用annotation定义Aspect -->
+  <aop:aspectj-autoproxy proxy-target-class="true" />
+
+  <!-- 配置执行TraceUtils的Aspect -->
+  <bean class="org.ssh.pm.log.trace.TraceAspect" />
+
+
+  <!-- 配置实用perf4j的log4j.xml,仅在性能调试时打开 -->
+  <!--
+  <bean id="log4jConfigurer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+    <property name="targetMethod" value="initLogging" />
+    <property name="arguments">
+      <list>
+        <value>classpath:log4j-perf4j.xml</value>
+      </list>
+    </property>
+  </bean>
+   -->
+</beans>

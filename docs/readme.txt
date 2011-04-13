@@ -1,6 +1,15 @@
 Personnel_Management System
 ============================
 
+2011.04.13
+----------
+
+   1. IdEntity -> UIdEntity
+   原因看save/q.txt - 2.
+
+   2. 增加 db log 功能,把用户访问,特别设置的信息保存到db log
+   <import resource="log/applicationContext-log.xml" />
+
 2011.04.12
 ----------
 

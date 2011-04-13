@@ -1,0 +1,21 @@
+1. entry 无主键,Id的设置
+
+   如t_hzk,现采用全部字段加@Id
+
+2. A Foreign key refering org.ssh.pm.common.entity.User from org.ssh.pm.common.entity.Role has the wrong number of column. should be 2
+   ..
+   or
+   Repeated column in mapping for entity: org.ssh.pm.common.entity.User column: id (should be mapped with insert="false" update="false")
+   ..
+
+   --
+   drop table t_hzk
+   drop table t_users
+   drop table t_roles
+   drop table t_user_role
+
+   --
+   取消IdEntity中所有标注(原有实现改用UIdEntity)
+   @Id标注全部由子类定义
+
+   --END

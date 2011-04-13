@@ -159,7 +159,6 @@ public class HzService {
         logger.debug("开始装载汉字库数据");
 
         File resourcetxt = new File(this.getClass().getResource("/data/hzk.txt").getFile());
-
         try {
             FileInputStream fis = new FileInputStream(resourcetxt);
             String thisLine;
@@ -168,7 +167,6 @@ public class HzService {
             BufferedReader br = new BufferedReader(new InputStreamReader(myInput, "UTF-8"));
 
             Hz re = new Hz();
-            //this.hzDao.batchExecute("delete from " + Hz.class.getName());
             int line = 1;
             while ((thisLine = br.readLine()) != null) {
                 if (line == 1) {
@@ -176,29 +174,21 @@ public class HzService {
                     continue;
                 }
                 String star[] = thisLine.split(",");
-                //for(int j=0;j<star.length;j++){
-                //    System.out.println(star[j]);
-                //}
-
                 if (star[1].trim().equals(""))
                     continue;
 
                 re = new Hz();
-                re.setOid(new Long(star[0]));
                 re.setHz(star[1]);
                 re.setPy(star[2]);
                 re.setWb(star[3]);
-                this.hzDao.save(re);
+                try{
+                    //有可能重复汉字
+                    this.hzDao.save(re);
+                }catch(Exception se){
+                	logger.error("有汉字重复:" + star[1] + "," + star[2] + "," + star[3]);
+                    continue;
+                }
             }
-            //
-            //            CSVReader reader = new CSVReader(new InputStreamReader(resourcetxt,"UTF-8"),',');
-            //
-            //            String[] nextLine;
-            //            while ((nextLine = reader.readNext()) != null) {
-            //                System.out.println("Name: [" + nextLine[1] + "]\npy: [" + nextLine[2]
-            //                        + "]\nwb: [" + nextLine[3] + "]");
-            //            }
-
         } catch (Exception e) {
             logger.error("装载汉字数据出错:" + e);
             throw new ServiceException("导入汉字库时，服务器发生异常");

@@ -3,6 +3,7 @@ package org.ssh.pm.common.entity;
 import com.google.common.collect.Lists;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import org.hibernate.annotations.Fetch;
@@ -16,11 +17,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -42,6 +47,18 @@ public class User extends AuditableEntity {
 
     //有序的关联对象集合
     private List<Role> roleList = Lists.newArrayList();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Id_Generator")
+    @TableGenerator(name = "Id_Generator", table = "ID_GENERATOR", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "T_USERS", initialValue = 1, allocationSize = 1)
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     //Hibernate自动维护的Version字段
     @Version
@@ -125,10 +142,10 @@ public class User extends AuditableEntity {
     public List<Role> getRoleList() {
         return roleList;
     }
+
     //@Fetch(FetchMode.JOIN) 会使用left join查询  只产生一条sql语句
     //@Fetch(FetchMode.SELECT)   会产生N+1条sql语句
     //@Fetch(FetchMode.SUBSELECT)  产生两条sql语句 第二条语句使用id in (.....)查询出所有关联的数据
-
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
     }

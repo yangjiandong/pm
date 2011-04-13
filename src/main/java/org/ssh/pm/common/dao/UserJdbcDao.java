@@ -53,7 +53,7 @@ public class UserJdbcDao {
     private class UserMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
-            user.setId(rs.getString("id"));
+            user.setId(rs.getLong("id"));
             user.setName(rs.getString("name"));
             user.setLoginName(rs.getString("login_name"));
             return user;

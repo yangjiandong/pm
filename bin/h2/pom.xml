@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>springside3-parent</artifactId>
+    <groupId>org.springside</groupId>
+    <version>3.3.4</version>
+    <relativePath>../../modules/parent/pom.xml</relativePath>
+  </parent>
+  <groupId>org.springside</groupId>
+  <artifactId>h2-starts</artifactId>
+  <name>H2 start Script</name>
+  <packaging>pom</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>oracle</artifactId>
+      <version>${oracle.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>startdb</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>startdb</id>
+                <phase>initialize</phase>
+                <configuration>
+                  <tasks>
+                    <java classname="org.h2.tools.Console" classpathref="maven.plugin.classpath" fork="true" spawn="true">
+                    </java>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>oracle</artifactId>
+                <version>${oracle.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>org.h2.tools.Server</mainClass>
+          <arguments>
+            <argument>-tcp</argument>
+            <argument>-web</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

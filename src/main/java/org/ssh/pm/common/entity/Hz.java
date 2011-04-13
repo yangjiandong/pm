@@ -1,5 +1,7 @@
 package org.ssh.pm.common.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,13 +11,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "T_HZK")
-public class Hz {
-    private Long oid;
+public class Hz implements Serializable{
+    //private Long oid;
 
     private String hz;
     private String wb;
     private String py;
 
+    @Id
     @Column(length = 10)
     public String getHz() {
         return hz;
@@ -25,6 +28,7 @@ public class Hz {
         this.hz = hz;
     }
 
+    @Id
     @Column(length = 10)
     public String getWb() {
         return wb;
@@ -34,6 +38,7 @@ public class Hz {
         this.wb = wb;
     }
 
+    @Id
     @Column(length = 10)
     public String getPy() {
         return py;
@@ -48,12 +53,12 @@ public class Hz {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    @Id
-    public Long getOid() {
-        return oid;
-    }
-
-    public void setOid(Long oid) {
-        this.oid = oid;
-    }
+//    @Id
+//    public Long getOid() {
+//        return oid;
+//    }
+//
+//    public void setOid(Long oid) {
+//        this.oid = oid;
+//    }
 }

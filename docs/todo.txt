@@ -16,5 +16,6 @@
 
    同一用户能在同一ip多次登录
 
+6. log to db table
 
    --END

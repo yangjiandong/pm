@@ -42,7 +42,7 @@
 
   <bean id="myBean" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="target">
-      <bean class="org.ssh.pm.common.service.BookService" />
+      <bean class="org.ssh.pm.common.service.HzService" />
     </property>
     <property name="interceptorNames">
       <list>

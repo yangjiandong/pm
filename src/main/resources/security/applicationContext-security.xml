@@ -14,12 +14,11 @@
     <s:intercept-url pattern="/**" access="isAuthenticated()" />
 
     <s:intercept-url pattern="/book/*" filters="none" />
-    <s:intercept-url pattern="/index2.jsp" filters="none" />
-    <s:intercept-url pattern="/init/*" filters="none" />
+    <s:intercept-url pattern="/common/*" filters="none" />
     <s:intercept-url pattern="/remote/**" filters="none" />
-
+    <!--
     <s:intercept-url pattern="/common/user/*" access="isAuthenticated()" />
-
+    -->
     <s:form-login login-page="/" default-target-url="/user/loginsuccess" authentication-failure-url="/user/loginerror1" />
     <s:logout logout-success-url="/" />
     <s:session-management invalid-session-url="/">
