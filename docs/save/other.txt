@@ -1,0 +1,13 @@
+网上资料
+=========
+
+   1. spring security
+
+   http://blog.csdn.net/quzishen/archive/2010/09/17/5891647.aspx
+
+   2. 缓存
+
+   google : spring security memcache
+
+
+   --END
