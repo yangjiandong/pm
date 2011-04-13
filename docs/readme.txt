@@ -26,7 +26,7 @@ Personnel_Management System
         <version>6.0.18</version>
     </dependency>
 
-    use "jasper-el-6.0.18.jar,exclude  "el-api-6.0.18.jar"
+    use "jasper-el-6.0.18.jar",exclude  "el-api-6.0.18.jar"
     <packagingExcludes>WEB-INF/lib/el-*</packagingExcludes>
     <warSourceExcludes>WEB-INF/lib/el-*</warSourceExcludes>
 
@@ -55,8 +55,6 @@ Personnel_Management System
       </list>
     </property>
   </bean>
-
-
 
 2011.04.11
 -----------
