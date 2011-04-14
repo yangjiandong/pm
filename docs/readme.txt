@@ -9,6 +9,17 @@ Personnel_Management System
 
    2. 增加 db log 功能,把用户访问,特别设置的信息保存到db log
    <import resource="log/applicationContext-log.xml" />
+   log4j.properties
+   #Async Database Appender (Store business message)
+   log4j.appender.DB=org.ssh.pm.log.appender.QueueAppender
+   log4j.appender.DB.QueueName=dblog
+
+   /**
+   * 在log4j.properties中,本logger已被指定使用asyncAppender.
+   */
+  public static final String DB_LOGGER_NAME = "DBLogExample";
+
+  example: LogAction
 
 2011.04.12
 ----------

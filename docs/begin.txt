@@ -9,4 +9,15 @@
 
       ? 是否必要
 
+   4. 所需表
+
+   create table T_LOGS (
+      thread_name varchar(255),
+      logger_name varchar(255),
+      log_time timestamp,
+      level varchar(20),
+      message varchar(255)
+    );
+
+
    --END

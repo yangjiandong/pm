@@ -18,7 +18,7 @@ public class TraceAspect {
     /**
      * 定义WebService层方法
      */
-    @Pointcut("execution(public * org.springside.examples.showcase.ws.server.impl.*Impl.*(..)) ")
+    @Pointcut("execution(public * org.ssh.pm.ws.server.impl.*Impl.*(..)) ")
     public void webServiceMethod() {
     }
 
