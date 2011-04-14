@@ -20,6 +20,7 @@ Personnel_Management System
   public static final String DB_LOGGER_NAME = "DBLogExample";
 
   example: LogAction
+  注意,配置batchSize,需缓存量超过batchSize才提交到后台表
 
 2011.04.12
 ----------

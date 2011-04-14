@@ -45,5 +45,8 @@
 
    --解决方法,加主键Id
 
+4. db log 后台没保存
+
+   DEBUG: org.ssh.pm.log.appender.JdbcLogWriter - "队列dblog的持久化文件D:\apache-tomcat-6.0.18\temp\queue\dblog不存在" ()
 
    --END

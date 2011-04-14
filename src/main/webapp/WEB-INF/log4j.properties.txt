@@ -1,0 +1,49 @@
+# Output pattern : date [thread] priority category - message
+log4j.rootLogger=WARN, RollingFile, Console
+#, RollingFile
+
+#Console
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=%-5p: %c - "%m" (%x)%n
+
+#log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+#log4j.appender.Console.layout.ConversionPattern=%d [%t] %-5p %-40.40c %X{traceId}-%m%n
+
+#RollingFile
+log4j.appender.RollingFile=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.RollingFile.File=logs/showcase.log
+log4j.appender.RollingFile.layout=org.apache.log4j.PatternLayout
+log4j.appender.RollingFile.layout.ConversionPattern=%d [%t] %-5p %-40.40c %X{traceId}-%m%n
+
+#TraceFile Appender (Store debug message, rolling with 10M, 5 files, threshold is DEBUG)
+log4j.appender.TraceFile=org.apache.log4j.RollingFileAppender
+log4j.appender.TraceFile.File=logs/showcase_trace.log
+log4j.appender.TraceFile.Threshold=OFF
+log4j.appender.TraceFile.MaxBackupIndex=5
+log4j.appender.TraceFile.layout=org.apache.log4j.PatternLayout
+log4j.appender.TraceFile.layout.ConversionPattern=%d %X{traceId} [%-40.40c] -%m%n
+
+#Async Database Appender (Store business message)
+log4j.appender.DB=org.ssh.pm.log.appender.QueueAppender
+log4j.appender.DB.QueueName=dblog
+
+#Project defalult level
+log4j.logger.org.ssh.pm=DEBUG,TraceFile
+
+#Demo level with Async Database appender
+log4j.logger.DBLogExample=INFO,Console,DB
+log4j.additivity.DBLogExample=false
+
+#3rd party library level
+log4j.logger.org.springside=DEBUG
+
+#Hibernate jmx demo
+log4j.logger.org.hibernate.stat=INFO
+
+#groovy script
+log4j.logger.org.ssh.pm.example.script=INFO
+
+#Async database appender demo
+#log4j.logger.DBLogExample=INFO,Console,DBLog
+#log4j.additivity.DBLogExample=false

@@ -12,5 +12,8 @@
 
    google : spring security memcache
 
+   3. db log
+
+   http://www.blogjava.net/wphmoon/archive/2011/02/13/344206.html
 
    --END
