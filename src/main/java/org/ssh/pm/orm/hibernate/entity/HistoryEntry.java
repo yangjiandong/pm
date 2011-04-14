@@ -45,7 +45,7 @@ public class HistoryEntry extends AbstractEntity implements Serializable {
 
     /* 被操作实体的主键id */
     @Column(name = "entity_id")
-    private Integer entityId;
+    private Long entityId;
 
     /* 操作描述 */
     private String description;
@@ -78,11 +78,11 @@ public class HistoryEntry extends AbstractEntity implements Serializable {
         this.entity = entity;
     }
 
-    public Integer getEntityId() {
+    public Long getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(Integer entityId) {
+    public void setEntityId(Long entityId) {
         this.entityId = entityId;
     }
 
@@ -152,7 +152,7 @@ public class HistoryEntry extends AbstractEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 47 * hash + id;
+        hash = 47 * hash + id.intValue();
         return hash;
     }
 }

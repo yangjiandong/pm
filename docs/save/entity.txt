@@ -1,0 +1,41 @@
+表定义规则
+==========
+
+   1. id 统一采用 Long
+
+   主键是必须有的，要么是单字段的id，要么是组合的composite-id
+
+   2. id 主键策略采用
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Id_Generator")
+    @TableGenerator(name = "Id_Generator", table = "ID_GENERATOR", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "T_USERS", initialValue = 1, allocationSize = 1)
+
+    其他策略
+    UIdEntity,               -- uid
+    AbstractEntity           -- auto
+
+   3. 需采用审计信息的, AuditableEntity, AuditListener
+
+     AuditableEntity <- IdEntity(不加任何标注,抽象类,只定义了id)
+
+     自动加入维护人,时间信息
+
+     example: User
+
+   4. 需保存修改历史,
+
+     需保存修改历史的表继承 Historizable,
+     HistoryListener, HistoryEntry -- 存放修改历史
+
+     example: Category
+
+     entity 关系:
+     顶层 AuditableEntity <- IdEntity ,  AbstractEntity  ,  UIdEntity , Historizable,
+
+   5. 少用外键,一般采用sql
+
+     manyTomany 参考 user role
+
+
+   --END

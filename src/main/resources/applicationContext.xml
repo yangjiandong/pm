@@ -65,8 +65,7 @@
         <prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
         <prop key="hibernate.connection.release_mode">auto</prop>
         <prop key="hibernate.autoReconnect">true</prop>
-        <prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
-
+        <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
         <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
         <prop key="hibernate.cache.use_query_cache">false</prop>
         <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>

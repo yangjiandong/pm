@@ -29,7 +29,6 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-
 /**
  * 用户.
  *

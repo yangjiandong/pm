@@ -1,4 +1,4 @@
-oid,hz,py,wb
+id,hz,py,wb
 1,阿,A,BS
 2,啊,A,KB
 3,吖,A,KUH

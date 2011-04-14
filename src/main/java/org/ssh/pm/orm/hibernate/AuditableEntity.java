@@ -24,7 +24,7 @@ public class AuditableEntity extends IdEntity {
      * 创建时间.
      */
     //本属性只在save时有效,update时无效.
-    @Column(updatable = false)
+    @Column(updatable = false, length = 50)
     public String getCreateTime() {
         return createTime;
     }
@@ -36,7 +36,7 @@ public class AuditableEntity extends IdEntity {
     /**
      * 创建的操作员的登录名.
      */
-    @Column(updatable = false)
+    @Column(updatable = false, length = 50)
     public String getCreateBy() {
         return createBy;
     }
@@ -49,7 +49,7 @@ public class AuditableEntity extends IdEntity {
      * 最后修改时间.
      */
     //本属性只在update时有效,save时无效.
-    @Column(insertable = false)
+    @Column(insertable = false, length = 50)
     public String getLastModifyTime() {
         return lastModifyTime;
     }
@@ -61,7 +61,7 @@ public class AuditableEntity extends IdEntity {
     /**
      * 最后修改的操作员的登录名.
      */
-    @Column(insertable = false)
+    @Column(insertable = false, length = 50)
     public String getLastModifyBy() {
         return lastModifyBy;
     }

@@ -1,6 +1,7 @@
 1. entry 无主键,Id的设置
 
-   如t_hzk,现采用全部字段加@Id
+   主键是必须有的，要么是单字段的id，要么是组合的composite-id
+   如t_hzk,还是增加字段Id
 
 2. A Foreign key refering org.ssh.pm.common.entity.User from org.ssh.pm.common.entity.Role has the wrong number of column. should be 2
    ..
@@ -17,5 +18,32 @@
    --
    取消IdEntity中所有标注(原有实现改用UIdEntity)
    @Id标注全部由子类定义
+
+3. 2011.04.14
+
+   HzService.initData ,没采用主键值判断,循环插入时
+
+                try{
+                    //有可能重复汉字
+                    this.hzDao.save(re);
+                }catch(Exception se){
+                    logger.error("有汉字重复:" + star[1] + "," + star[2] + "," + star[3]);
+                    //this.hzDao.getSession().evict(re);
+                    continue;
+                }
+
+   采用h2,可以通过,
+   采用mssql,虽然触发了异常,但最后还是报
+   Caused by: java.sql.BatchUpdateException: 违反了 PRIMARY KEY 约束 'PK__t_hzk__1920BF5C'。不能在对象 'dbo.t_hzk' 中插入重复键。
+  at net.sourceforge.jtds.jdbc.JtdsStatement.executeBatch(JtdsStatement.java:944)
+  at org.apache.commons.dbcp.DelegatingStatement.executeBatch(DelegatingStatement.java:297)
+  at org.apache.commons.dbcp.DelegatingStatement.executeBatch(DelegatingStatement.java:297)
+  at org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(BatchingBatcher.java:70)
+  at org.hibernate.jdbc.BatchingBatcher.addToBatch(BatchingBatcher.java:56)
+  at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:2418)
+  ... 59 more
+
+   --解决方法,加主键Id
+
 
    --END

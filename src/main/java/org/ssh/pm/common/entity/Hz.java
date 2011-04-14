@@ -12,13 +12,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 @Table(name = "T_HZK")
 public class Hz implements Serializable{
-    //private Long oid;
 
+    private static final long serialVersionUID = 2136790018031187846L;
+
+    private Long id;
     private String hz;
     private String wb;
     private String py;
 
     @Id
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Column(length = 10)
     public String getHz() {
         return hz;
@@ -28,7 +38,6 @@ public class Hz implements Serializable{
         this.hz = hz;
     }
 
-    @Id
     @Column(length = 10)
     public String getWb() {
         return wb;
@@ -38,7 +47,6 @@ public class Hz implements Serializable{
         this.wb = wb;
     }
 
-    @Id
     @Column(length = 10)
     public String getPy() {
         return py;

@@ -27,7 +27,7 @@
   <context:annotation-config />
 
   <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-  <context:component-scan base-package="org.ssh.app" />
+  <context:component-scan base-package="org.ssh.pm" />
 
   <!-- 以静态变量保存ApplicationContext -->
   <bean class="org.springside.modules.utils.spring.SpringContextHolder" lazy-init="false" />
@@ -47,13 +47,13 @@
     <property name="jdbcUrl" value="${jdbc.url}" />
     <property name="user" value="${jdbc.username}" />
     <property name="password" value="${jdbc.password}" />
-    <property name="minPoolSize" value="200" />
+    <property name="maxStatements" value="0" />
+    <property name="initialPoolSize" value="60" />
+    <property name="minPoolSize" value="80" />
     <property name="maxPoolSize" value="200" />
     <property name="maxIdleTime" value="1800" />
-    <property name="acquireIncrement" value="5" />
-    <property name="maxStatements" value="0" />
-    <property name="initialPoolSize" value="5" />
     <property name="idleConnectionTestPeriod" value="1800" />
+    <property name="acquireIncrement" value="5" />
     <property name="acquireRetryAttempts" value="30" />
     <property name="breakAfterAcquireFailure" value="true" />
     <property name="testConnectionOnCheckout" value="false" />
@@ -82,34 +82,35 @@
         <prop key="hibernate.generate_statistics">false</prop>
         <prop key="hibernate.connection.release_mode">auto</prop>
         <prop key="hibernate.autoReconnect">true</prop>
-        <prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
-
+        <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
         <prop key="hibernate.hbm2ddl.auto">none</prop>
         <prop key="hibernate.cache.use_query_cache">false</prop>
         <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
       </props>
     </property>
+    <!-- 放宽包名,只要是entity -->
+    <property name="packagesToScan" value="org.ssh.pm.**.entity" />
     <property name="eventListeners">
       <map>
         <entry key="save-update">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.AuditListener" />
+            <bean class="org.ssh.pm.orm.hibernate.AuditListener" />
             <bean class="org.hibernate.event.def.DefaultSaveOrUpdateEventListener" />
           </list>
         </entry>
         <entry key="post-insert">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.HistoryListener" />
+            <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
           </list>
         </entry>
         <entry key="post-update">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.HistoryListener" />
+            <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
           </list>
         </entry>
         <entry key="post-delete">
           <list>
-            <bean class="org.ssh.app.orm.hibernate.HistoryListener" />
+            <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
           </list>
         </entry>
 

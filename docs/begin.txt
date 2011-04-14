@@ -1,0 +1,12 @@
+开发环境下后台数据生成步骤
+==========================
+
+   1. hibernate.hbm2ddl.auto=update
+
+   2. curl http://localhost:8080/sshapp/common/init
+
+   3. 手工维护t_users,t_roles,t_user_role 外键关系
+
+      ? 是否必要
+
+   --END

@@ -5,5 +5,5 @@ package org.ssh.pm.orm.hibernate;
  * @author jeffrey
  */
 public interface Historizable {
-    public Integer getId();
+    public Long getId();
 }

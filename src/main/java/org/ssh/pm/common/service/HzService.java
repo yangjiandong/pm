@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.CacheMode;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,6 +171,7 @@ public class HzService {
             Hz re = new Hz();
             int line = 1;
             while ((thisLine = br.readLine()) != null) {
+                //第一行是标题
                 if (line == 1) {
                     line++;
                     continue;
@@ -177,23 +180,20 @@ public class HzService {
                 if (star[1].trim().equals(""))
                     continue;
 
+                if (hzDao.findUniqueBy("hz", star[1]) != null) continue;
+
                 re = new Hz();
+                re.setId(Long.valueOf(star[0]));
                 re.setHz(star[1]);
                 re.setPy(star[2]);
                 re.setWb(star[3]);
-                try{
-                    //有可能重复汉字
-                    this.hzDao.save(re);
-                }catch(Exception se){
-                	logger.error("有汉字重复:" + star[1] + "," + star[2] + "," + star[3]);
-                    continue;
-                }
+                this.hzDao.save(re);
             }
         } catch (Exception e) {
             logger.error("装载汉字数据出错:" + e);
             throw new ServiceException("导入汉字库时，服务器发生异常");
         } finally {
-
+            //br.close();
         }
     }
 
@@ -207,5 +207,68 @@ public class HzService {
 
         SQLQuery query = this.hzDao.getSession().createSQLQuery(bf.toString());
         return query.list();
+    }
+
+    // 要采用批量插入
+    public void initDataByBatch() throws ServiceException {
+        if (this.hzDao.getHzCount() != 0)
+            return;
+
+        File resourcetxt = new File(this.getClass().getResource("/data/hzk.txt").getFile());
+
+        Session session = null;
+        try {
+            FileInputStream fis = new FileInputStream(resourcetxt);
+            DataInputStream myInput = new DataInputStream(fis);
+            BufferedReader br = new BufferedReader(new InputStreamReader(myInput, "UTF-8"));
+
+            String thisLine;
+
+            session = this.hzDao.getSession();
+            session.setCacheMode(CacheMode.IGNORE);
+
+            String s0;
+            Hz re ;
+            //this.hzDao.batchExecute("delete from " + Hz.class.getName());
+            Long i = 1L;
+            int line = 1;
+            while ((thisLine = br.readLine()) != null) {
+                //第一行是标题
+                if (line == 1) {
+                    line++;
+                    continue;
+                }
+                String star[] = thisLine.split(",");
+                if (star[1].trim().equals(""))
+                    continue;
+
+                s0 = star[1].trim();
+
+                if (s0.equals(""))
+                    continue;
+
+                re = new Hz();
+                re.setId(Long.valueOf(star[0]));
+                re.setHz(s0);
+                re.setWb(star[2]);
+                re.setPy(star[3]);
+
+                this.hzDao.save(re);
+
+                if (i % 100 == 0) {
+                    session.flush();
+                    session.clear();
+                }
+                i++;
+            }
+            session.flush();
+            session.clear();
+            // this.hzDao.batchCreate(all);
+        } catch (Exception e) {
+            logger.error("装载汉字数据出错:" + e);
+            throw new ServiceException("导入汉字库时，服务器发生异常");
+        } finally {
+            //br.close();
+        }
     }
 }

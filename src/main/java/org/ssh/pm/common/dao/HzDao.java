@@ -10,7 +10,7 @@ import org.ssh.pm.common.entity.Hz;
 
 @Repository("hzDao")
 public class HzDao extends HibernateDao<Hz, Long> {
-    private static final String COUNTS = "select count(u) from Hz u";
+    private static final String COUNTS = "select count(hz) from Hz u";
     final int batchSize = 20;//same as the JDBC batch size
 
     public Long getHzCount() {
