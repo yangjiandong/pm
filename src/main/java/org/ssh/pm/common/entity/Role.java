@@ -1,15 +1,24 @@
 package org.ssh.pm.common.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.ssh.pm.orm.hibernate.AuditableEntity;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.google.common.collect.Lists;
 
 /**
  * 角色.
@@ -21,6 +30,9 @@ public class Role extends IdEntity {
 
     private String name;
     private String desc;
+
+    //有序的关联对象集合
+    //private List<Resource> resList = Lists.newArrayList();
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Id_Generator")
@@ -34,7 +46,7 @@ public class Role extends IdEntity {
         this.id = id;
     }
 
-    @Column(nullable = false, unique = true, length=20)
+    @Column(nullable = false, unique = true, length = 20)
     public String getName() {
         return name;
     }
@@ -43,7 +55,7 @@ public class Role extends IdEntity {
         this.name = name;
     }
 
-    @Column(name = "description", length=100)
+    @Column(name = "description", length = 100)
     public String getDesc() {
         return desc;
     }
@@ -51,6 +63,22 @@ public class Role extends IdEntity {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+//	//多对多定义
+//	@ManyToMany
+//	//中间表定义,表名采用默认命名规则
+//	@JoinTable(name = "T_ROLE_RES", joinColumns = { @JoinColumn(name = "ROLE_ID") }, inverseJoinColumns = { @JoinColumn(name = "RES_ID") })
+//	//Fecth策略定义
+//	@Fetch(FetchMode.SUBSELECT)
+//	//集合按id排序
+//	@OrderBy("id ASC")
+//	public List<Resource> getResList() {
+//		return resList;
+//	}
+//
+//	public void setResList(List<Resource> resList) {
+//		this.resList = resList;
+//	}
 
     @Override
     public String toString() {

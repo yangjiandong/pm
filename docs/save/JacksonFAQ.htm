@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="robots" content="index,nofollow">
+
+<title>JacksonFAQ - FasterXML Wiki</title>
+<script type="text/javascript" src="JacksonFAQ_files/common.js"></script>
+
+<script type="text/javascript">
+<!--
+var search_hint = "搜索";
+//-->
+</script>
+
+
+<link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="JacksonFAQ_files/common.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="JacksonFAQ_files/screen.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="print" href="JacksonFAQ_files/print.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="projection" href="JacksonFAQ_files/projection.css">
+
+<!-- css only for MSIE browsers -->
+<!--[if IE]>
+   <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="/moin_static183/modern/css/msie.css">
+<![endif]-->
+
+
+
+
+
+<link rel="Start" href="http://wiki.fasterxml.com/Home">
+<link rel="Alternate" title="维基标记" href="http://wiki.fasterxml.com/JacksonFAQ?action=raw">
+<link rel="Alternate" media="print" title="打印视图" href="http://wiki.fasterxml.com/JacksonFAQ?action=print">
+<link rel="Search" href="http://wiki.fasterxml.com/FindPage">
+<link rel="Index" href="http://wiki.fasterxml.com/TitleIndex">
+<link rel="Glossary" href="http://wiki.fasterxml.com/WordIndex">
+<link rel="Help" href="http://wiki.fasterxml.com/HelpOnFormatting">
+</head><body dir="ltr" lang="zh">
+
+<div id="header">
+<div id="logo"><a href="http://wiki.fasterxml.com/Home"><img src="JacksonFAQ_files/fxml_logo_72_75.png" alt="FasterXML Logo"></a></div>
+
+<form id="searchform" method="get" action="/JacksonFAQ">
+<div>
+<input name="action" value="fullsearch" type="hidden">
+<input name="context" value="180" type="hidden">
+<label style="display: none;" for="searchinput">搜索：</label>
+<input class="disabled" id="searchinput" name="value" value="搜索" size="20" onfocus="searchFocus(this)" onblur="searchBlur(this)" onkeyup="searchChange(this)" onchange="searchChange(this)" alt="Search" type="text">
+<input disabled="disabled" id="titlesearch" name="titlesearch" value="标题" alt="Search Titles" type="submit">
+<input disabled="disabled" id="fullsearch" name="fullsearch" value="正文" alt="Search Full Text" type="submit">
+</div>
+</form>
+<script type="text/javascript">
+<!--// Initialize search form
+var f = document.getElementById('searchform');
+f.getElementsByTagName('label')[0].style.display = 'none';
+var e = document.getElementById('searchinput');
+searchChange(e);
+searchBlur(e);
+//-->
+</script>
+
+<ul id="username"><li><a href="http://wiki.fasterxml.com/JacksonFAQ?action=login" id="login" rel="nofollow">登录</a></li></ul>
+<div id="locationline">
+
+
+<ul id="pagelocation">
+<li><a class="backlink" href="http://wiki.fasterxml.com/JacksonFAQ?action=fullsearch&amp;context=180&amp;value=linkto%3A%22JacksonFAQ%22" rel="nofollow" title="点击对这个标题进行全文检索">JacksonFAQ</a></li>
+</ul>
+
+</div>
+
+
+<ul id="navibar">
+<li class="wikilink"><a href="http://wiki.fasterxml.com/RecentChanges">RecentChanges</a></li><li class="wikilink"><a href="http://wiki.fasterxml.com/FindPage">FindPage</a></li><li class="wikilink"><a href="http://wiki.fasterxml.com/HelpContents">HelpContents</a></li><li class="current"><a href="http://wiki.fasterxml.com/JacksonFAQ">JacksonFAQ</a></li>
+</ul>
+
+<div id="pageline"><hr style="display: none;"></div>
+
+<ul class="editbar"><li><span class="disabled">只读网页</span></li><li class="toggleCommentsButton" style="display: none;"><a href="#" class="nbcomment" onclick="toggleComments();return false;">备注</a></li><li><a class="nbinfo" href="http://wiki.fasterxml.com/JacksonFAQ?action=info" rel="nofollow">信息</a></li><li><a class="nbattachments" href="http://wiki.fasterxml.com/JacksonFAQ?action=AttachFile" rel="nofollow">附件</a></li><li>
+<form class="actionsmenu" method="GET" action="/JacksonFAQ">
+<div>
+    
+    <select name="action" onchange="if ((this.selectedIndex != 0) &amp;&amp;
+                      (this.options[this.selectedIndex].disabled == false)) {
+                this.form.submit();
+            }
+            this.selectedIndex = 0;">
+        <option selected="selected" value="show">更多操作：</option><option value="raw">源码</option>
+<option value="print">打印视图</option>
+<option value="RenderAsDocbook">输出Docbook格式</option>
+<option value="refresh">删除缓存</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="SpellCheck">拼写检查</option>
+<option value="LikePages">相似网页</option>
+<option value="LocalSiteMap">本站地图</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="RenamePage" disabled="disabled" class="disabled">改名</option>
+<option value="DeletePage" disabled="disabled" class="disabled">删除</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="show" disabled="disabled" class="disabled">订阅</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="show" disabled="disabled" class="disabled">删除垃圾广告</option>
+<option value="show" disabled="disabled" class="disabled">恢复成此版本</option>
+<option value="show" disabled="disabled" class="disabled">网页打包</option>
+<option value="SyncPages">同步网页</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="Load">加载</option>
+<option value="Save">保存</option>
+    </select>
+    
+    
+</div>
+<script type="text/javascript">
+<!--// Init menu
+actionsMenuInit('更多操作：');
+//-->
+</script>
+</form>
+</li></ul>
+
+</div>
+
+<div id="page" dir="ltr" lang="en">
+<div dir="ltr" id="content" lang="en"><span class="anchor" id="top"></span>
+<span class="anchor" id="line-1"></span><p class="line867"></p><div class="table-of-contents"><p class="table-of-contents-heading">目录</p><ol><li>
+<a href="#General">General</a><ol><li>
+<a href="#Processing_Models">Processing Models</a></li><li>
+<a href="#Which_mappings_.28Badgerfish.2C_natural.2C_....29_does_Jackson_implement.3F">Which mappings (Badgerfish, natural, ...) does Jackson implement?</a></li><li>
+<a href="#Data_Formats">Data Formats</a></li></ol></li><li>
+<a href="#Dependencies">Dependencies</a><ol><li>
+<a href="#Platform">Platform</a></li><li>
+<a href="#External">External</a></li></ol></li><li>
+<a href="#Data_Binding.2C_general">Data Binding, general</a></li><li>
+<a href="#Data_Binding.2C_writing_.28serialization.29">Data Binding, writing (serialization)</a><ol><li>
+<a href="#Serializing_values_as_simple_types">Serializing values as simple types</a></li><li>
+<a href="#Serializing_Dates">Serializing Dates</a></li><li>
+<a href="#Custom_Serializers">Custom Serializers</a></li><li>
+<a href="#Filtering_with_Serialization">Filtering with Serialization</a></li><li>
+<a href="#Serializing.2C_other">Serializing, other</a></li></ol></li><li>
+<a href="#Data_Binding.2C_reading_.28de-serialization.29">Data Binding, reading (de-serialization)</a><ol><li>
+<a href="#Deserializing_simple_types">Deserializing simple types</a></li><li>
+<a href="#Deserializing_Dates">Deserializing Dates</a></li><li>
+<a href="#Custom_Deserializers">Custom Deserializers</a></li><li>
+<a href="#Deserializing_Generic_types">Deserializing Generic types</a></li><li>
+<a href="#Deserializing:_unknown_properties">Deserializing: unknown properties</a></li><li>
+<a href="#Deserializing.2C_other">Deserializing, other</a></li></ol></li><li>
+<a href="#Streaming_.28incremental.29_Processing">Streaming (incremental) Processing</a><ol><li>
+<a href="#Problems_with_String_intern.28.29ing">Problems with String intern()ing</a></li></ol></li><li>
+<a href="#Tree_Model">Tree Model</a><ol><li>
+<a href="#Node_equality.3F">Node equality?</a></li></ol></li><li>
+<a href="#Compatibility_with_Other_Things">Compatibility with Other Things</a><ol><li>
+<a href="#Non-Java_JVM_languages">Non-Java JVM languages</a></li><li>
+<a href="#Alternative_data_formats">Alternative data formats</a></li><li>
+<a href="#Frameworks">Frameworks</a><ol><li>
+<a href="#JAX-RS">JAX-RS</a></li><li>
+<a href="#JAXB">JAXB</a></li><li>
+<a href="#Object.2BAC8-Relational_Mappers_.28ORM.29">Object/Relational Mappers (ORM)</a></li><li>
+<a href="#Spring">Spring</a></li><li>
+<a href="#Mule_ESB">Mule ESB</a></li><li>
+<a href="#Apache_Camel">Apache Camel</a></li><li>
+<a href="#Javascript_frameworks">Javascript frameworks</a></li><li>
+<a href="#Ext_JS">Ext JS</a></li></ol></li></ol></li><li>
+<a href="#Performance">Performance</a></li></ol></div> <span class="anchor" id="line-2"></span><span class="anchor" id="line-3"></span><p class="line867">
+</p><h2 id="General">General</h2>
+<span class="anchor" id="line-4"></span><span class="anchor" id="line-5"></span><p class="line867">
+</p><h3 id="Processing_Models">Processing Models</h3>
+<span class="anchor" id="line-6"></span><span class="anchor" id="line-7"></span><p class="line874">Which processing models (streaming, tree, objects) does Jackson implement? <span class="anchor" id="line-8"></span><span class="anchor" id="line-9"></span></p><p class="line874">Three main methods (one with 2 alternatives) are implemented: <span class="anchor" id="line-10"></span><span class="anchor" id="line-11"></span></p><ul><li><p class="line891"><a href="http://wiki.fasterxml.com/JacksonStreamingApi">Streaming/incremental</a> parsing (reading) and generation (writing) of JSON content <span class="anchor" id="line-12"></span></p></li><li><p class="line891"><a href="http://wiki.fasterxml.com/JacksonTreeModel">Tree model</a> (based on <tt>JsonNode</tt>s) <span class="anchor" id="line-13"></span></p></li><li><p class="line891"><a href="http://wiki.fasterxml.com/JacksonDataBinding">Data binding</a> to/from Java objects (POJOs, Beans, primitives, lists/arrays/maps) <span class="anchor" id="line-14"></span></p><ul><li><p class="line862">alternative "untyped" binding to only use Lists/Maps/String/Boolean/Number/null (bind to <tt>Object.class</tt>) <span class="anchor" id="line-15"></span><span class="anchor" id="line-16"></span></p></li></ul></li></ul><p class="line862">Most other Java JSON packages only implement one or two of modes: for example, <a class="http" href="http://json.org/java">Json.org Reference Implementation</a> just offers access via its custom tree model. <span class="anchor" id="line-17"></span><span class="anchor" id="line-18"></span></p><p class="line867">
+</p><h3 id="Which_mappings_.28Badgerfish.2C_natural.2C_....29_does_Jackson_implement.3F">Which mappings (Badgerfish, natural, ...) does Jackson implement?</h3>
+<span class="anchor" id="line-19"></span><span class="anchor" id="line-20"></span><p class="line862">None.
+ Jackson is "100% JSON" and does not try to imitate or emulate XML. 
+There is some support compatibility features (such as ability to 
+optionally use <a href="http://wiki.fasterxml.com/JacksonJAXBAnnotations">JAXB annotations</a>, but fundamentally Jackson is a JSON processor. <span class="anchor" id="line-21"></span><span class="anchor" id="line-22"></span></p><p class="line867">
+</p><h3 id="Data_Formats">Data Formats</h3>
+<span class="anchor" id="line-23"></span><span class="anchor" id="line-24"></span><p class="line874">In
+ addition to textual (standard) JSON, there are also Jackson 
+readers/writers that allow processing JSON-like content that uses other 
+data formats: <span class="anchor" id="line-25"></span><span class="anchor" id="line-26"></span></p><ul><li><p class="line862">Starting with <a href="http://wiki.fasterxml.com/JacksonRelease16">Jackson 1.6</a>, Jackson supports JSON-compatible binary data format called <a href="http://wiki.fasterxml.com/JacksonBinaryFormat">Smile</a>, using <tt>SmileFactory</tt>, and <tt>JsonParser</tt> / <tt>JsonGenerator</tt> implementations that can read/write Smile format. <span class="anchor" id="line-27"></span><span class="anchor" id="line-28"></span></p></li></ul><p class="line867">
+</p><h2 id="Dependencies">Dependencies</h2>
+<span class="anchor" id="line-29"></span><span class="anchor" id="line-30"></span><p class="line867">
+</p><h3 id="Platform">Platform</h3>
+<span class="anchor" id="line-31"></span><span class="anchor" id="line-32"></span><p class="line867"><strong>Which JDK does Jackson require?</strong> <span class="anchor" id="line-33"></span><span class="anchor" id="line-34"></span></p><p class="line874">JDK 1.5 or above -- this because it makes heavy use of enum types, generics and annotations. <span class="anchor" id="line-35"></span><span class="anchor" id="line-36"></span></p><p class="line874">Jackson
+ should also work on "almost JDK 1.5" level platforms such as Google 
+Android and GAE (to the degree missed pieces of functionality can be 
+worked around). <span class="anchor" id="line-37"></span><span class="anchor" id="line-38"></span></p><p class="line867">
+</p><h3 id="External">External</h3>
+<span class="anchor" id="line-39"></span><span class="anchor" id="line-40"></span><p class="line867"><strong>Does Jackson depend on other libraries outside of JDK?</strong> <span class="anchor" id="line-41"></span><span class="anchor" id="line-42"></span></p><p class="line874">No: neither Jackson core nor data mapper have runtime dependencies on external libraries. <span class="anchor" id="line-43"></span><span class="anchor" id="line-44"></span></p><p class="line874">Other Jackson jars depend on APIs that may or may not be included in JDK (depending on version), such that: <span class="anchor" id="line-45"></span><span class="anchor" id="line-46"></span></p><ul><li><p class="line862">Jackson-xc depends on <em>JAXB</em> API (<tt>javax.xml.bind</tt>) which is bundled with JDK 1.6 and above (for 1.5, you need JAXB api jar) <span class="anchor" id="line-47"></span></p></li><li><p class="line862">Jackson-jaxrs depends on <em>JAX-RS</em> API (<tt>javax.ws.rs</tt>)
+ which is not (yet) bundled with JDK: a separate API jar is needed; this
+ is usually provided with JAX-RS implementation package is used  <span class="anchor" id="line-48"></span></p></li></ul><p class="line874">with. <span class="anchor" id="line-49"></span><span class="anchor" id="line-50"></span></p><p class="line862">Starting with <a href="http://wiki.fasterxml.com/JacksonRelease16">1.6</a>, Jackson also <strong>embeds</strong> <a class="http" href="http://asm.ow2.org/">ASM</a> bytecode manipulation library as part of "Mr Bean" extension. Code is repackage using <strong>jarjar</strong> to avoid conflicts with possible other instances of ASM that may exist in Java classpath. <span class="anchor" id="line-51"></span><span class="anchor" id="line-52"></span></p><p class="line867"><strong>But I saw some warnings about failing to load <tt>Joda&nbsp;DateTime</tt> classes?</strong> <span class="anchor" id="line-53"></span><span class="anchor" id="line-54"></span></p><p class="line862">Later versions (<a href="http://wiki.fasterxml.com/JacksonRelease14">1.4</a>
+ and above) do offer basic support for some well-known libraries and 
+frameworks, so that there are more compile-time dependencies. During 
+runtime, however, loading is done in a way that missing those libraries 
+should fail gracefully; that is, functionality related to these 
+libraries is not available, but everything else works as expected. <span class="anchor" id="line-55"></span><span class="anchor" id="line-56"></span></p><p class="line874">However:
+ some runtimes (reportedly at least Android's JVM, Dalvik), complain 
+about failures to locate classes dynamically. These warnings can be 
+annoying but they are not fatal. Additionally these are platform problem
+ -- Java VM design specifically supports the idea of dynamic discovery, 
+so Jackson's use of dynamic class discovery and loading is solid -- 
+which would be good to bring attention to developers of said platforms. 
+Jackson development team will also gladly accept suggestions for 
+improved handling by Jackson. <span class="anchor" id="line-57"></span><span class="anchor" id="line-58"></span></p><p class="line867">
+</p><h2 id="Data_Binding.2C_general">Data Binding, general</h2>
+<span class="anchor" id="line-59"></span><span class="anchor" id="line-60"></span><p class="line867"><strong>What mechanism does Jackson use for binding?</strong> <span class="anchor" id="line-61"></span><span class="anchor" id="line-62"></span></p><p class="line874">Jackson
+ 1.0 supports Bean method - based binding, where serialization requires 
+"getter" methods, and deserialization "setters" (with optional "creator"
+ methods). <span class="anchor" id="line-63"></span>Version <a href="http://wiki.fasterxml.com/JacksonRelease11">1.1</a> also supports direct access of member fields (public instance fields, annotated instance fields). <span class="anchor" id="line-64"></span><span class="anchor" id="line-65"></span></p><p class="line862">Also: as of version <a href="http://wiki.fasterxml.com/JacksonRelease12">1.2</a>, Jackson allows use of <a href="http://wiki.fasterxml.com/JacksonFeatureCreators">"Creator"</a>
+ methods (constructors and static factory methods), which means that it 
+is possible to omit setter methods if data is to be passed via 
+constructor. <span class="anchor" id="line-66"></span><span class="anchor" id="line-67"></span></p><p class="line867"><strong>How does Jackson map JSON properties to Java methods/fields?</strong> <span class="anchor" id="line-68"></span><span class="anchor" id="line-69"></span></p><p class="line862">The
+ default mechanism is to use implied name as per Bean convention – for 
+getters and setters leave out "get" or "set", lower case first char – 
+but this can be overridden by annotations (@<tt>JsonSetter</tt>/<tt>@JsonGetter</tt> for Jackson 1.0, alternatively <tt>@JsonProperty</tt> for <a href="http://wiki.fasterxml.com/JacksonRelease11">Jackson 1.1</a>). <span class="anchor" id="line-70"></span><span class="anchor" id="line-71"></span></p><p class="line862">With version <a href="http://wiki.fasterxml.com/JacksonRelease11">Jackson 1.1</a>, it is also possible to use subset of <a href="http://wiki.fasterxml.com/JacksonJAXBAnnotations">JAXB annotations</a> to denote getter and setter methods and fields. <span class="anchor" id="line-72"></span><span class="anchor" id="line-73"></span></p><p class="line867"><strong>How can I configure data binding aspects?</strong> <span class="anchor" id="line-74"></span><span class="anchor" id="line-75"></span></p><p class="line874">There are multiple ways to do this: <span class="anchor" id="line-76"></span><span class="anchor" id="line-77"></span></p><ul><li><p class="line862">Configure <tt>ObjectMapper</tt> used for binding, enabling/disabling features defined by <tt>SerializationConfig.Feature</tt> and <tt>DeserializationConfig.Feature</tt>  <span class="anchor" id="line-78"></span></p></li><li><p class="line862">Configure <tt>JsonFactory</tt> instance <tt>ObjectMapper</tt> uses <span class="anchor" id="line-79"></span></p></li><li>Use annotations: <span class="anchor" id="line-80"></span><ul><li><p class="line891"><a href="http://wiki.fasterxml.com/JacksonAnnotations">Core Jackson annotations</a> <span class="anchor" id="line-81"></span></p></li><li><p class="line862">Optional, starting with 1.1, you can also use <a href="http://wiki.fasterxml.com/JacksonJAXBAnnotations">JAXB annotations</a> in addition to or instead of core Jackson annotations. <span class="anchor" id="line-82"></span><span class="anchor" id="line-83"></span></p></li></ul></li></ul><p class="line867"><strong>But I can not modify existing classes to add annotations!</strong> <span class="anchor" id="line-84"></span><span class="anchor" id="line-85"></span></p><p class="line862">No problem: this is exactly why we added <a href="http://wiki.fasterxml.com/JacksonMixInAnnotations">Mix-In Annotation</a>
+ support, so that you can associate annotations as if they were included
+ in class definition, but without having to do that (hence "mix-in" in 
+name). This gives you full power of type-safe annotation-based 
+configuration, but with less tight coupling. <span class="anchor" id="line-86"></span><span class="anchor" id="line-87"></span></p><p class="line867"><strong>Is <tt>ObjectMapper</tt> thread-safe</strong>? <span class="anchor" id="line-88"></span><span class="anchor" id="line-89"></span></p><p class="line862">Short answer: <strong>yes</strong> <span class="anchor" id="line-90"></span><span class="anchor" id="line-91"></span></p><p class="line874">Long
+ answer: yes, as long as you always configure instance before use, and 
+do not call configure methods during operation (or synchronize such 
+calls appropriately). Usually it is better to construct separate mapper 
+instance if configurations differ in any case. <span class="anchor" id="line-92"></span><span class="anchor" id="line-93"></span></p><p class="line862">Further:
+ it is beneficial to use just one instance (or small number of 
+instances) for data binding; many optimizations for reuse (of symbol 
+tables, some buffers) depend on <tt>ObjectMapper</tt> instances being reused. <span class="anchor" id="line-94"></span><span class="anchor" id="line-95"></span></p><p class="line862">For more information, check out <a href="http://wiki.fasterxml.com/JacksonFAQThreadSafety">JacksonFAQThreadSafety</a> <span class="anchor" id="line-96"></span><span class="anchor" id="line-97"></span></p><p class="line867">
+</p><h2 id="Data_Binding.2C_writing_.28serialization.29">Data Binding, writing (serialization)</h2>
+<span class="anchor" id="line-98"></span><span class="anchor" id="line-99"></span><p class="line867">
+</p><h3 id="Serializing_values_as_simple_types">Serializing values as simple types</h3>
+<span class="anchor" id="line-100"></span><span class="anchor" id="line-101"></span><p class="line874">Instead
+ of serializing Java Objects as JSON Objects (via Bean introspection), 
+can't I just serialize them as plain JSON Strings? <span class="anchor" id="line-102"></span><span class="anchor" id="line-103"></span></p><p class="line862">Yes. Just annotate property (Java field or getter method that implies property) with <tt>@JsonValue</tt>; for example: <span class="anchor" id="line-104"></span><span class="anchor" id="line-105"></span><span class="anchor" id="line-106"></span></p><pre>  @JsonValue public String toString() { return _value.tosString(); }</pre><span class="anchor" id="line-107"></span><p class="line862">would make method <tt>object.toString()</tt>
+ be called to get serialized value. This actually works with any 
+serializable Java types; proper serializer is located based on return 
+type, so there is nothing special about String as type here. <span class="anchor" id="line-108"></span>See <a href="http://wiki.fasterxml.com/JacksonAnnotations">JacksonAnnotations</a> for details on usage. <span class="anchor" id="line-109"></span><span class="anchor" id="line-110"></span></p><p class="line867">
+</p><h3 id="Serializing_Dates">Serializing Dates</h3>
+<span class="anchor" id="line-111"></span><span class="anchor" id="line-112"></span><p class="line862">See <a href="http://wiki.fasterxml.com/JacksonFAQDateHandling">JacksonFAQDateHandling</a>. <span class="anchor" id="line-113"></span><span class="anchor" id="line-114"></span></p><p class="line867">
+</p><h3 id="Custom_Serializers">Custom Serializers</h3>
+<span class="anchor" id="line-115"></span><span class="anchor" id="line-116"></span><p class="line867"><strong>Can I write custom deserializers?</strong> <span class="anchor" id="line-117"></span><span class="anchor" id="line-118"></span></p><p class="line862">You betcha: check out <a href="http://wiki.fasterxml.com/JacksonHowToCustomSerializers">JacksonHowToCustomSerializers</a> for details. <span class="anchor" id="line-119"></span><span class="anchor" id="line-120"></span></p><p class="line862">(and probably also <a href="http://wiki.fasterxml.com/JacksonHowToCustomDeserializers">JacksonHowToCustomDeserializers</a> if you need to read data back) <span class="anchor" id="line-121"></span><span class="anchor" id="line-122"></span></p><p class="line867">
+</p><h3 id="Filtering_with_Serialization">Filtering with Serialization</h3>
+<span class="anchor" id="line-123"></span><span class="anchor" id="line-124"></span><p class="line867"><strong>How can I omit property X from being included in serialization?</strong> <span class="anchor" id="line-125"></span><span class="anchor" id="line-126"></span></p><p class="line874">There are actually multiple ways, such as: <span class="anchor" id="line-127"></span><span class="anchor" id="line-128"></span></p><ul><li><p class="line862">Explicitly mark a property to be ignored using <tt>@JsonIgnore</tt> (possibly using <a href="http://wiki.fasterxml.com/JacksonMixInAnnotations">JacksonMixInAnnotations</a> if you can not modify classes directly) <span class="anchor" id="line-129"></span></p></li><li><p class="line862">Listing names of properties of a class to ignore using <tt>@JsonIgnoreProperties</tt> (likewise can use with mix-ins) <span class="anchor" id="line-130"></span></p></li><li><p class="line862">Using <a href="http://wiki.fasterxml.com/JacksonJsonViews">JSON Views</a> for defining profiles (Json Views) that specify set of properties to include. <span class="anchor" id="line-131"></span><span class="anchor" id="line-132"></span></p></li></ul><p class="line867">
+</p><h3 id="Serializing.2C_other">Serializing, other</h3>
+<span class="anchor" id="line-133"></span><span class="anchor" id="line-134"></span><p class="line867"><strong>What is the simplest way to serialize JSON as a String?</strong> <span class="anchor" id="line-135"></span><span class="anchor" id="line-136"></span></p><p class="line862">Prior to <a href="http://wiki.fasterxml.com/JacksonRelease13">Jackson 1.3</a>, simplest way is to use <tt>java.io.StringWriter</tt>: <span class="anchor" id="line-137"></span><span class="anchor" id="line-138"></span></p><p class="line867"><span class="anchor" id="line-139"></span><span class="anchor" id="line-140"></span><span class="anchor" id="line-141"></span><span class="anchor" id="line-142"></span></p><pre>  StringWriter sw = new StringWriter();
+  mapper.writeValue(sw, value);
+  String result = sw.toString();</pre><span class="anchor" id="line-143"></span><p class="line867"><a href="http://wiki.fasterxml.com/JacksonRelease13">1.3</a> introduces a new convenience method, so that you can: <span class="anchor" id="line-144"></span><span class="anchor" id="line-145"></span></p><p class="line867"><span class="anchor" id="line-146"></span><span class="anchor" id="line-147"></span></p><pre>  String result = mapper.writeValueAsString(value);</pre><span class="anchor" id="line-148"></span><span class="anchor" id="line-149"></span><p class="line867"><strong>What is the simplest way to serialize JSON as byte[]?</strong> <span class="anchor" id="line-150"></span><span class="anchor" id="line-151"></span></p><p class="line862">With <a href="http://wiki.fasterxml.com/JacksonRelease15">1.5</a>: <tt>byte[]&nbsp;data&nbsp;=&nbsp;objectMapper.writeValueAsBytes(bean);</tt> <span class="anchor" id="line-152"></span><span class="anchor" id="line-153"></span></p><p class="line867"><strong>Can I omit writing of Bean properties with null value?</strong> ("how to prevent writing of null properties") <span class="anchor" id="line-154"></span><span class="anchor" id="line-155"></span></p><p class="line862">Yes. As per <a href="http://wiki.fasterxml.com/JacksonAnnotationSerializeNulls">JacksonAnnotationSerializeNulls</a>, you can use: <span class="anchor" id="line-156"></span><span class="anchor" id="line-157"></span></p><ul><li style="list-style-type: none;"><p class="line891"><tt>objectMapper.configure(SerializationConfig.WRITE_NULL_PROPERTIES,&nbsp;false);</tt> <span class="anchor" id="line-158"></span><span class="anchor" id="line-159"></span></p></li></ul><p class="line874">and
+ voila, no more null values. Note that you MUST configure mapper before 
+beans are serialized, since this setting may be cached along with 
+serializers. So setting it too late might prevent change from taking 
+effect. <span class="anchor" id="line-160"></span><span class="anchor" id="line-161"></span></p><p class="line874">Alternatively if you only want to change behavior for value of specific type, you can use annotation property: <span class="anchor" id="line-162"></span><span class="anchor" id="line-163"></span></p><p class="line867"><span class="anchor" id="line-164"></span><span class="anchor" id="line-165"></span><span class="anchor" id="line-166"></span><span class="anchor" id="line-167"></span><span class="anchor" id="line-168"></span><span class="anchor" id="line-169"></span></p><pre>   @JsonSerialize(include = Inclusion.NON_DEFAULT)
+   public class MyTypeWithoutNulls
+   {
+      public String mayHaveValue; // will not be included if value is null
+   }</pre><p class="line874"> to achieve the same for the annotated class or property)<span class="anchor" id="line-170"></span><span class="anchor" id="line-171"></span><span class="anchor" id="line-172"></span></p><p class="line874">Moreover,
+ you can even exclude any properties with default values (values that 
+are set when instance is created with default, no-arg constructor), by 
+calling: <span class="anchor" id="line-173"></span><span class="anchor" id="line-174"></span></p><p class="line867"><tt>objectMapper.setSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_DEFAULT);&nbsp;</tt> <span class="anchor" id="line-175"></span><span class="anchor" id="line-176"></span></p><p class="line874">or for specific classes: <span class="anchor" id="line-177"></span><span class="anchor" id="line-178"></span></p><p class="line867"><span class="anchor" id="line-179"></span><span class="anchor" id="line-180"></span><span class="anchor" id="line-181"></span><span class="anchor" id="line-182"></span><span class="anchor" id="line-183"></span><span class="anchor" id="line-184"></span></p><pre>   @JsonSerialize(include = Inclusion.NON_DEFAULT)
+   public class MyTypeWithoutDefaults
+   {
+      public int count; // will not be included if value is 0 (default for int)
+   }</pre><span class="anchor" id="line-185"></span><span class="anchor" id="line-186"></span><p class="line867">
+</p><h2 id="Data_Binding.2C_reading_.28de-serialization.29">Data Binding, reading (de-serialization)</h2>
+<span class="anchor" id="line-187"></span><span class="anchor" id="line-188"></span><p class="line867">
+</p><h3 id="Deserializing_simple_types">Deserializing simple types</h3>
+<span class="anchor" id="line-189"></span><span class="anchor" id="line-190"></span><p class="line867"><strong>If
+ I want to deserialize simple JSON values (Strings, integer / decimal 
+numbers) into types other than supported by default, do I need to write a
+ custom deserializer?</strong> <span class="anchor" id="line-191"></span><span class="anchor" id="line-192"></span></p><p class="line874">Not necessarily. If the class to deserialize into has one of: <span class="anchor" id="line-193"></span><span class="anchor" id="line-194"></span></p><ul><li>Single-argument constructor with matching type (String, int/double), or <span class="anchor" id="line-195"></span></li><li>Single-argument static method with name "valueOf()", and matching argument type <span class="anchor" id="line-196"></span><span class="anchor" id="line-197"></span></li></ul><p class="line874">Jackson will use such method, passing in matching JSON value as argument. <span class="anchor" id="line-198"></span><span class="anchor" id="line-199"></span></p><p class="line867">
+</p><h3 id="Deserializing_Dates">Deserializing Dates</h3>
+<span class="anchor" id="line-200"></span><span class="anchor" id="line-201"></span><p class="line862">See <a href="http://wiki.fasterxml.com/JacksonFAQDateHandling">JacksonFAQDateHandling</a>. <span class="anchor" id="line-202"></span><span class="anchor" id="line-203"></span></p><p class="line867">
+</p><h3 id="Custom_Deserializers">Custom Deserializers</h3>
+<span class="anchor" id="line-204"></span><span class="anchor" id="line-205"></span><p class="line867"><strong>Can I write custom deserializers?</strong> <span class="anchor" id="line-206"></span><span class="anchor" id="line-207"></span></p><p class="line862">Absolutely. Check out <a href="http://wiki.fasterxml.com/JacksonHowToCustomDeserializers">JacksonHowToCustomDeserializers</a>. <span class="anchor" id="line-208"></span><span class="anchor" id="line-209"></span></p><p class="line862">(and, related to this <a href="http://wiki.fasterxml.com/JacksonHowToCustomSerializers">JacksonHowToCustomSerializers</a> for serialization side) <span class="anchor" id="line-210"></span><span class="anchor" id="line-211"></span></p><p class="line867">
+</p><h3 id="Deserializing_Generic_types">Deserializing Generic types</h3>
+<span class="anchor" id="line-212"></span><span class="anchor" id="line-213"></span><p class="line862">Due
+ to Java Type Erasure (losing generics declarations when Classes are 
+compiled), it is NOT possible to specify generic types to bind to. In 
+order to pass full generics type information to, say, bind JSON into <tt>List&lt;MyBean&gt;</tt>, you have to use methods that take either <tt>TypeReference</tt> or <tt>JavaType</tt>. Most commonly former is used; and it is used like so: <span class="anchor" id="line-214"></span><span class="anchor" id="line-215"></span></p><p class="line867"><span class="anchor" id="line-216"></span><span class="anchor" id="line-217"></span></p><pre>List&lt;MyBean&gt; result = mapper.readValue(src, new TypeReference&lt;List&lt;MyBean&gt;&gt;() { });</pre><span class="anchor" id="line-218"></span><span class="anchor" id="line-219"></span><p class="line862">to use <tt>JavaType</tt>, you need to construct method by passing <em>java.lang.reflect.Type</em> into <a class="nonexistent" href="http://wiki.fasterxml.com/TypeFactory">TypeFactory</a> (check out <a href="http://wiki.fasterxml.com/JacksonJavaDocs">JavaDocs</a> for details), or: <span class="anchor" id="line-220"></span><span class="anchor" id="line-221"></span></p><p class="line867"><span class="anchor" id="line-222"></span><span class="anchor" id="line-223"></span></p><pre>List&lt;MyBean&gt; result = mapper.readValue(src, TypeFactory.collectionType(ArrayList.class, MyBean.class));</pre><span class="anchor" id="line-224"></span><p class="line862">if you don't like anonymous inner classes (you can similarly construct all kinds of generics types, with <tt>TypeFactory.parametericType(...)</tt>). <span class="anchor" id="line-225"></span><span class="anchor" id="line-226"></span></p><p class="line867">
+</p><h3 id="Deserializing:_unknown_properties">Deserializing: unknown properties</h3>
+<span class="anchor" id="line-227"></span><span class="anchor" id="line-228"></span><p class="line874">By
+ default Jackson throws an exception, if it encounters a JSON property 
+that it can not bind to object property. But if you need to allow such 
+properties in input, you can make Jackson ignore them by: <span class="anchor" id="line-229"></span><span class="anchor" id="line-230"></span></p><ul><li><p class="line862">(<a href="http://wiki.fasterxml.com/JacksonRelease14">1.2+</a>): Configure <tt>ObjectMapper</tt> to globally ignore any unknown properties: <span class="anchor" id="line-231"></span></p><ul><li><p class="line891"><tt>objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,&nbsp;false);</tt> <span class="anchor" id="line-232"></span></p></li></ul></li><li><p class="line862">(<a href="http://wiki.fasterxml.com/JacksonRelease14">1.4+</a>: Configure classes with <tt>@JsonIgnoreProperties</tt> to denote which properties are to be ignored (or specify that any unknown are to be ignored without exception) <span class="anchor" id="line-233"></span></p></li><li><p class="line862">Register a <tt>DeserializationProblemHandler</tt>, which can also suppress error notification (by returning 'true' from method <tt>handleUnknownProperty</tt>) <span class="anchor" id="line-234"></span></p><ul><li><p class="line891"><tt>objectMapper.addHandler(/*DeserializationProblemHandler*/&nbsp;myHandler);</tt> <span class="anchor" id="line-235"></span><span class="anchor" id="line-236"></span></p></li></ul></li></ul><p class="line862">(for more details, see <a href="http://wiki.fasterxml.com/JacksonHowToIgnoreUnknown">JacksonHowToIgnoreUnknown</a>) <span class="anchor" id="line-237"></span><span class="anchor" id="line-238"></span></p><p class="line867">
+</p><h3 id="Deserializing.2C_other">Deserializing, other</h3>
+<span class="anchor" id="line-239"></span><span class="anchor" id="line-240"></span><p class="line867"><strong>Can I deserialize multiple distinct objects?</strong> <span class="anchor" id="line-241"></span><span class="anchor" id="line-242"></span></p><p class="line867"><strong>Q</strong>: (from mailing list) <span class="anchor" id="line-243"></span><span class="anchor" id="line-244"></span></p><p class="line874">My JSON payload has multiple objects like so - <span class="anchor" id="line-245"></span><span class="anchor" id="line-246"></span><span class="anchor" id="line-247"></span><span class="anchor" id="line-248"></span><span class="anchor" id="line-249"></span><span class="anchor" id="line-250"></span><span class="anchor" id="line-251"></span><span class="anchor" id="line-252"></span><span class="anchor" id="line-253"></span><span class="anchor" id="line-254"></span></p><pre>{
+  "university": {
+    "name":"MIT", ...
+  },   
+  "lecturer": {
+    "firstName":"Joe","lastName":"Public", ...
+  }
+}</pre><span class="anchor" id="line-255"></span><p class="line862">I want to de-serialize the JSON object mapped to the key "university" to <tt>University.class</tt> and I would like to de-serialize the JSON object mapped to key "lecturer" to <tt>Lecturer.class</tt>. What is the best way to do this? <span class="anchor" id="line-256"></span><span class="anchor" id="line-257"></span></p><p class="line867"><strong>A</strong>: <span class="anchor" id="line-258"></span><span class="anchor" id="line-259"></span></p><p class="line874">Two ways to do this: <span class="anchor" id="line-260"></span><span class="anchor" id="line-261"></span></p><p class="line874">(a) Create 'dummy' class like <span class="anchor" id="line-262"></span><span class="anchor" id="line-263"></span></p><p class="line867"><span class="anchor" id="line-264"></span><span class="anchor" id="line-265"></span><span class="anchor" id="line-266"></span><span class="anchor" id="line-267"></span><span class="anchor" id="line-268"></span></p><pre> public class Container {
+    public University univ;
+    public Lecture lect;
+ }</pre><span class="anchor" id="line-269"></span><ul><li style="list-style-type: none;">and bind using it, or <span class="anchor" id="line-270"></span><span class="anchor" id="line-271"></span></li></ul><p class="line862">(b) Use <tt>JsonParser</tt>; skip through <tt>JsonToken.START_OBJECT</tt>, match <tt>JsonToken.FIELD_NAME}},&nbsp;then&nbsp;call&nbsp;{{{readValueAs()</tt> with appropriate type. NOTE: if you use this approach, make sure to use <tt>MappingJsonFactory</tt> for constructing parser, NOT plain <tt>JsonFactory</tt>! <span class="anchor" id="line-272"></span><span class="anchor" id="line-273"></span></p><p class="line867"><strong>Can I use JAXB-style Map/Collection access</strong> <span class="anchor" id="line-274"></span><span class="anchor" id="line-275"></span></p><p class="line874">(that is: modify Map or Collection properties by calling get, modifying instance directly, without calling matching set method) <span class="anchor" id="line-276"></span><span class="anchor" id="line-277"></span></p><p class="line862">Yes:
+ if there is only a getter method for Map/Collection - valued property, 
+and no setter method, Jackson will try to use this mechanism. This 
+behavior can be disabled by disabling <tt>DeserializationConfig.USE_GETTERS_AS_SETTERS</tt>; although without a setter there will be an exception if such a property was to be deserialized. <span class="anchor" id="line-278"></span><span class="anchor" id="line-279"></span></p><p class="line862">Alternatively,
+ if you really want to use this style even if there is a setter method, 
+you will need to suppress use of setter itself. This can be done using <tt>@JsonIgnore</tt> annotation on setter. <span class="anchor" id="line-280"></span><span class="anchor" id="line-281"></span></p><p class="line867">
+</p><h2 id="Streaming_.28incremental.29_Processing">Streaming (incremental) Processing</h2>
+<span class="anchor" id="line-282"></span><span class="anchor" id="line-283"></span><p class="line867">
+</p><h3 id="Problems_with_String_intern.28.29ing">Problems with String intern()ing</h3>
+<span class="anchor" id="line-284"></span><span class="anchor" id="line-285"></span><p class="line867"><strong>How to avoid "java.lang.<a class="nonexistent" href="http://wiki.fasterxml.com/OutOfMemoryError">OutOfMemoryError</a>: <a class="nonexistent" href="http://wiki.fasterxml.com/PermGen">PermGen</a> space" problem</strong>? <span class="anchor" id="line-286"></span><span class="anchor" id="line-287"></span></p><p class="line874">(modified from a question on Jackson user list) <span class="anchor" id="line-288"></span><span class="anchor" id="line-289"></span></p><p class="line867"><strong>Q</strong>:  (from user list) <span class="anchor" id="line-290"></span><span class="anchor" id="line-291"></span></p><p class="line862">My application is getting a "java.lang.<a class="nonexistent" href="http://wiki.fasterxml.com/OutOfMemoryError">OutOfMemoryError</a>: <a class="nonexistent" href="http://wiki.fasterxml.com/PermGen">PermGen</a>
+ space" error. I tracked this down due to "interned" strings from 
+Jackson while parsing. I believe this is due to some of my input being a
+ map that can have arbitrary key values. What can I do to avoid this? <span class="anchor" id="line-292"></span><span class="anchor" id="line-293"></span></p><p class="line867"><strong>A</strong>: <span class="anchor" id="line-294"></span><span class="anchor" id="line-295"></span></p><p class="line862">By
+ default Jackson canonicalizes key names (i.e. tries to ensure all 
+instances of a field name use same String instance); and does this by 
+using <tt>String.intern()</tt>. Canonicalization is done using a per-<a href="http://wiki.fasterxml.com/JsonFactory">JsonFactory</a>
+ shared symbol table; and can help both reduce memory usage and speed up
+ parsing (since can avoid String allocation as well as character 
+decoding in most cases). <span class="anchor" id="line-296"></span><span class="anchor" id="line-297"></span></p><p class="line874">However, it is possible to both: <span class="anchor" id="line-298"></span><span class="anchor" id="line-299"></span></p><ul><li><p class="line862">Disable use of <tt>String.intern()</tt> for materialization (symbol table is still maintained; but its size is bounded): <a href="http://wiki.fasterxml.com/JacksonFeaturesParser">JsonParser.Feature.INTERN_FIELD_NAMES</a> (since <a href="http://wiki.fasterxml.com/JacksonRelease13">Jackson 1.3</a>) <span class="anchor" id="line-300"></span></p></li><li><p class="line862">Disable any canonicalization (regardless of methods): in this case a new String is allocated for each field name: <a href="http://wiki.fasterxml.com/JacksonFeaturesParser">JsonParser.Feature.CANONICALIZE_FIELD_NAME</a> (since <a href="http://wiki.fasterxml.com/JacksonRelease15">Jackson 1.5</a> <span class="anchor" id="line-301"></span><span class="anchor" id="line-302"></span></p></li></ul><p class="line862">Disabling String intern()ing should be enough to resolve running out of <a class="nonexistent" href="http://wiki.fasterxml.com/PermGen">PermGen</a>
+ space; and in general should be enough to avoid excessive memory usage 
+(that is, we have not yet seen any case where it would not). But if you 
+truly think it is not enough, you should try just disabling whole 
+canonicalization. <span class="anchor" id="line-303"></span>Note that 
+both these options have negative effects on performance in cases where 
+same field names are parsed multiple times (including cases where these 
+are in different documents, but parsers were created by the same factory
+ and thus share the symbol table); effect can be particularly 
+significant if all canonicalization is disabled. Disabling intern()ing 
+should have less effect. <span class="anchor" id="line-304"></span><span class="anchor" id="line-305"></span></p><p class="line862">Check out <a href="http://wiki.fasterxml.com/JacksonStreamingApi">Streaming/incremental API</a> page for even more information. <span class="anchor" id="line-306"></span><span class="anchor" id="line-307"></span></p><p class="line867">
+</p><h2 id="Tree_Model">Tree Model</h2>
+<span class="anchor" id="line-308"></span><span class="anchor" id="line-309"></span><p class="line867">
+</p><h3 id="Node_equality.3F">Node equality?</h3>
+<span class="anchor" id="line-310"></span><span class="anchor" id="line-311"></span><p class="line867"><strong>Can I compare <a href="http://wiki.fasterxml.com/JsonNode">JsonNode</a> instances for equality?</strong> (and by extension: "Can I compare full JSON trees by just comparing root nodes") <span class="anchor" id="line-312"></span><span class="anchor" id="line-313"></span></p><p class="line862">Yes! <tt>JsonNode</tt>
+ instances implemented expected deep value comparison, using expected 
+conceptual rules (like: order of JSON Object properties is insignificant
+ for equality, but matters for JSON Arrays). <span class="anchor" id="line-314"></span><span class="anchor" id="line-315"></span></p><p class="line874">So you can compare equality of JSON trees by just comparing root nodes like so: <span class="anchor" id="line-316"></span><span class="anchor" id="line-317"></span></p><p class="line867"><span class="anchor" id="line-318"></span><span class="anchor" id="line-319"></span></p><pre>  boolean areEqual = tree1RootNode.equals(tree2RootNode);</pre><span class="anchor" id="line-320"></span><span class="anchor" id="line-321"></span><p class="line874">(TO BE COMPLETED) <span class="anchor" id="line-322"></span><span class="anchor" id="line-323"></span></p><p class="line862">Check out <a href="http://wiki.fasterxml.com/JacksonTreeModel">Tree model</a> page for even more information. <span class="anchor" id="line-324"></span><span class="anchor" id="line-325"></span></p><p class="line867">
+</p><h2 id="Compatibility_with_Other_Things">Compatibility with Other Things</h2>
+<span class="anchor" id="line-326"></span><span class="anchor" id="line-327"></span><p class="line867">
+</p><h3 id="Non-Java_JVM_languages">Non-Java JVM languages</h3>
+<span class="anchor" id="line-328"></span><span class="anchor" id="line-329"></span><p class="line867"><strong>Can Jackson be used from non-Java languages that run on JVM?</strong> <span class="anchor" id="line-330"></span><span class="anchor" id="line-331"></span></p><p class="line874">Yes. In addition to being used from Java, Jackson has been reported to work from various other JVM-based languages, such as: <span class="anchor" id="line-332"></span><span class="anchor" id="line-333"></span></p><ul><li>Scala (note: there is now a new sub/side-project to add full support; see below) <span class="anchor" id="line-334"></span></li><li><p class="line891"><a class="http" href="http://jruby.org/">JRuby</a> <span class="anchor" id="line-335"></span></p></li><li><p class="line891"><a class="http" href="http://clojure.org/">Clojure</a> <span class="anchor" id="line-336"></span></p></li><li>Groovy <span class="anchor" id="line-337"></span><span class="anchor" id="line-338"></span></li></ul><p class="line874">(note: would be nice to have links to articles or mailing list messages for these reports) <span class="anchor" id="line-339"></span><span class="anchor" id="line-340"></span></p><p class="line862">More specifically, there are now (as of <a href="http://wiki.fasterxml.com/JacksonRelease17">Jackson 1.7</a>) multiple projects that aim to add full support; see <a href="http://wiki.fasterxml.com/JacksonModuleProjects">Jackson Module Projects</a> page for up to date information. <span class="anchor" id="line-341"></span><span class="anchor" id="line-342"></span></p><p class="line867">
+</p><h3 id="Alternative_data_formats">Alternative data formats</h3>
+<span class="anchor" id="line-343"></span><span class="anchor" id="line-344"></span><p class="line862">Beyond supporting JSON (and <a href="http://wiki.fasterxml.com/JacksonBinaryFormat">Smile binary format</a>, which is fully JSON compatible), there are related projects that aim to support other data formats. See <a href="http://wiki.fasterxml.com/JacksonOutsideofJSON">JacksonOutsideofJSON</a> page for details. <span class="anchor" id="line-345"></span><span class="anchor" id="line-346"></span></p><p class="line867">
+</p><h3 id="Frameworks">Frameworks</h3>
+<span class="anchor" id="line-347"></span><span class="anchor" id="line-348"></span><p class="line867">
+</p><h4 id="JAX-RS">JAX-RS</h4>
+<span class="anchor" id="line-349"></span><span class="anchor" id="line-350"></span><p class="line867"><strong>Can I use Jackson to do JSON serialization with JAX-RS?</strong> <span class="anchor" id="line-351"></span><span class="anchor" id="line-352"></span></p><p class="line862">Yes. Starting with Jackson 1.0, there is jar (jackson-jaxrs-VERSION.jar) that implements JAX-RS <tt>MessageBodyReader</tt> and <tt>MessageBodyWriter</tt>, needed for converting Java beans to/from JSON. <span class="anchor" id="line-353"></span><span class="anchor" id="line-354"></span></p><p class="line867"><strong>NEW</strong>: With version <a href="http://wiki.fasterxml.com/JacksonRelease13">1.3</a>, there is an improved JAX-RS provider available, <tt>org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider</tt>; which by default uses both <a class="nonexistent" href="http://wiki.fasterxml.com/JacksonJaxbAnnotations">JAXB</a> and <a href="http://wiki.fasterxml.com/JacksonAnnotations">Jackson</a> annotations. This can be used in place of earlier <tt>JacksonJsonProvider</tt> (which is its super-class), and provides extended set of configuration methods. It does depend on features from <tt>jax-xc</tt> package, so make sure it is also included if using this new provider. <span class="anchor" id="line-355"></span><span class="anchor" id="line-356"></span></p><p class="line862">In addition to adding <tt>jackson-jaxrs</tt> jar (and jackson core and mapper jars it depends on, if not bundled by the <tt>JAX-RS</tt> implementation), you will also need to register provider. There are 2 ways to do this: <span class="anchor" id="line-357"></span><span class="anchor" id="line-358"></span></p><ul><li><p class="line862">Add root provider with <tt>JAX-RS</tt> registration mechanism; for example, by returning provider class/instance from Rest Application class. <span class="anchor" id="line-359"></span></p></li><li><p class="line862">Add '<tt>META-INF/services/javax.ws.rs.ext.MessageBodyReader</tt>' file with one entry, provider class name (<tt>org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvide</tt>) (and similarly for <tt>MessageBodyWriter</tt>) to a jar that gets loaded by <tt>JAX-RS</tt> implementation (this can be done by post-processing jackson-jaxrs jar, for example). <span class="anchor" id="line-360"></span><span class="anchor" id="line-361"></span></p></li></ul><p class="line874">Here's one implementation of the first approach: <span class="anchor" id="line-362"></span><span class="anchor" id="line-363"></span><span class="anchor" id="line-364"></span><span class="anchor" id="line-365"></span><span class="anchor" id="line-366"></span><span class="anchor" id="line-367"></span><span class="anchor" id="line-368"></span><span class="anchor" id="line-369"></span><span class="anchor" id="line-370"></span><span class="anchor" id="line-371"></span><span class="anchor" id="line-372"></span><span class="anchor" id="line-373"></span></p><pre>import java.util.*;
+
+public final class RestApplication extends javax.ws.rs.core.Application
+{
+    public Set&lt;Object&gt; getSingletons() {
+        HashSet&lt;Object&gt; singletons = new HashSet&lt;Object&gt;();
+        singletons.add(new org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider());
+        return singletons;
+    }
+}</pre><span class="anchor" id="line-374"></span><span class="anchor" id="line-375"></span><p class="line867"><strong>Which JAX-RS implementations are Jackson known to work well with?</strong> <span class="anchor" id="line-376"></span><span class="anchor" id="line-377"></span></p><ul><li><p class="line891"><a class="http" href="http://jersey.dev.java.net/">Jersey</a> (tested by dev team) <span class="anchor" id="line-378"></span></p></li><li><p class="line891"><a class="http" href="http://www.jboss.org/resteasy/">RESTeasy</a> (tested by dev team) <span class="anchor" id="line-379"></span></p></li><li><p class="line891"><a class="http" href="http://cxf.apache.org/">Apache CXF</a> (reported by <tt>CXF</tt> dev team) <span class="anchor" id="line-380"></span><span class="anchor" id="line-381"></span></p></li></ul><p class="line862">And there is <a href="http://wiki.fasterxml.com/JacksonFAQJaxRs">more on JAX-RS interoperability</a> to learn... <span class="anchor" id="line-382"></span><span class="anchor" id="line-383"></span></p><p class="line867">
+</p><h4 id="JAXB">JAXB</h4>
+<span class="anchor" id="line-384"></span><span class="anchor" id="line-385"></span><p class="line862">Jackson supports some level of interoperability with <a class="http" href="http://jaxb.dev.java.net/">JAXB API</a> (<tt>javax.xml.bin</tt>): <span class="anchor" id="line-386"></span><span class="anchor" id="line-387"></span></p><ul><li><p class="line862">With <a href="http://wiki.fasterxml.com/JacksonRelease11">Jackson 1.1</a>, it is possible to use <a href="http://wiki.fasterxml.com/JacksonJAXBAnnotations">JAXB annotations</a> in addition to (or instead of) core <a href="http://wiki.fasterxml.com/JacksonAnnotations">Jackson annotations</a> <span class="anchor" id="line-388"></span></p></li><li>In
+ addition to setting Map and Collection properties, it is also possible 
+to do 'JAXB style' "modify-via-get" access (call getter-method to get 
+Map/Collection instance, modify directly, not call setter method at 
+all): this is enabled by default, used iff no setter is located for a 
+Map/Collection property (but getter is found). <span class="anchor" id="line-389"></span><ul><li><p class="line862">Can be disabled using <tt>DeserializationConfig.USE_GETTERS_AS_SETTERS</tt> (enabled by default) <span class="anchor" id="line-390"></span><span class="anchor" id="line-391"></span></p></li></ul></li></ul><p class="line867">
+</p><h4 id="Object.2BAC8-Relational_Mappers_.28ORM.29">Object/Relational Mappers (ORM)</h4>
+<span class="anchor" id="line-392"></span><span class="anchor" id="line-393"></span><p class="line874">Jackson has been used with some success with: <span class="anchor" id="line-394"></span><span class="anchor" id="line-395"></span></p><ul><li><p class="line891"><a class="http" href="http://ibatis.apache.org/">iBatis</a> <span class="anchor" id="line-396"></span><span class="anchor" id="line-397"></span></p></li></ul><p class="line874">(might also work with Hibernate, but this has not been verified yet) <span class="anchor" id="line-398"></span><span class="anchor" id="line-399"></span></p><p class="line862">As of <a href="http://wiki.fasterxml.com/JacksonRelease17">Jackson 1.7</a>, there is a also a new project, <a class="https" href="https://github.com/FasterXML/jackson-xml-databind">Jackson XML data binding</a> (see <a href="http://wiki.fasterxml.com/JacksonOutsideofJSON">JacksonOutsideofJSON</a> for other extension projects) that adds significant subset of JAXB functionality (wrt reading/writing XML) to Jackson. <span class="anchor" id="line-400"></span><span class="anchor" id="line-401"></span></p><p class="line867">
+</p><h4 id="Spring">Spring</h4>
+<span class="anchor" id="line-402"></span><span class="anchor" id="line-403"></span><p class="line874">Spring-WS / MVC 3.0 has specific support using Jackson for JSON data binding access. <span class="anchor" id="line-404"></span><span class="anchor" id="line-405"></span></p><p class="line874">Articles that describe usage: <span class="anchor" id="line-406"></span><span class="anchor" id="line-407"></span></p><ul><li><p class="line891"><a class="http" href="http://hillert.blogspot.com/2011/01/marshal-json-data-using-jackson-in.html">http://hillert.blogspot.com/2011/01/marshal-json-data-using-jackson-in.html</a> <span class="anchor" id="line-408"></span><span class="anchor" id="line-409"></span></p></li></ul><p class="line867">
+</p><h4 id="Mule_ESB">Mule ESB</h4>
+<span class="anchor" id="line-410"></span><span class="anchor" id="line-411"></span><p class="line867"><a class="http" href="http://www.mulesoft.org/display/MULE/Home">Mule ESB</a> version 3.0 will have support for JSON via Jackson, see: <span class="anchor" id="line-412"></span><span class="anchor" id="line-413"></span></p><ul><li><p class="line891"><a class="http" href="http://blogs.mulesoft.org/using-json-bindings-with-ibeans/">"Using JSON bindings with iBeans"</a> (iBeans/Mule) <span class="anchor" id="line-414"></span><span class="anchor" id="line-415"></span></p></li></ul><p class="line867">
+</p><h4 id="Apache_Camel">Apache Camel</h4>
+<span class="anchor" id="line-416"></span><span class="anchor" id="line-417"></span><p class="line862">This article explains how to use Jackson with <a class="http" href="http://camel.apache.org/">Apache Camel</a>: <span class="anchor" id="line-418"></span><span class="anchor" id="line-419"></span></p><ul><li><p class="line891"><a class="http" href="http://spring-java-ee.blogspot.com/2011/01/using-camel-with-jackson-json.html">http://spring-java-ee.blogspot.com/2011/01/using-camel-with-jackson-json.html</a> <span class="anchor" id="line-420"></span><span class="anchor" id="line-421"></span></p></li></ul><p class="line867">
+</p><h4 id="Javascript_frameworks">Javascript frameworks</h4>
+<span class="anchor" id="line-422"></span><span class="anchor" id="line-423"></span><p class="line874">Since
+ Javascript frameworks work on client side, and Jackson on server side, 
+interoperability is usually less problematic. Here some notes on 
+observer interoperability issues. <span class="anchor" id="line-424"></span><span class="anchor" id="line-425"></span></p><p class="line867">
+</p><h4 id="Ext_JS">Ext JS</h4>
+<span class="anchor" id="line-426"></span><span class="anchor" id="line-427"></span><p class="line874">Default
+ date/time serialization format of Ext JS seems to use ISO-8601 dates 
+without timezone specification. This is problematic since this can be 
+interpreted to mean "local time zone" of the end point, whatever that 
+might be. However, it is possible to re-define this default; for example
+ by: (cut'n pasted from an example sent to Jackson user list by Scott A)
+ <span class="anchor" id="line-428"></span><span class="anchor" id="line-429"></span></p><p class="line867"><span class="anchor" id="line-430"></span><span class="anchor" id="line-431"></span><span class="anchor" id="line-432"></span><span class="anchor" id="line-433"></span><span class="anchor" id="line-434"></span><span class="anchor" id="line-435"></span></p><pre>// It's very straightforward to override their treatment of dates:
+Ext.util.JSON.encodeDate = function(o)
+{
+   return '"' + yourEncodingHere + '"';
+}</pre><span class="anchor" id="line-436"></span><span class="anchor" id="line-437"></span><p class="line867">
+</p><h2 id="Performance">Performance</h2>
+<span class="anchor" id="line-438"></span><span class="anchor" id="line-439"></span><p class="line867"><strong>How does Jackson perform?</strong> <span class="anchor" id="line-440"></span><span class="anchor" id="line-441"></span></p><p class="line862">Rather nicely. It seems to be the fastest JSON processing package on Java platform, for all processing models. <a href="http://wiki.fasterxml.com/JacksonStreamingApi">Streaming parser</a>, for example, appears to be 3 - 5x faster than most alternatives (although there are some other fast ones, such as <a class="http" href="http://svn.apache.org/repos/asf/labs/noggit/">Noggit</a>, but none quite compete). And <a href="http://wiki.fasterxml.com/JacksonDataBinding">data binding</a> up to 10x faster as alternatives. <span class="anchor" id="line-442"></span><span class="anchor" id="line-443"></span></p><p class="line874">But more useful than our claims are published measurements and performance evaluations. For example: <span class="anchor" id="line-444"></span><span class="anchor" id="line-445"></span></p><ul><li><p class="line891"><a class="http" href="http://code.google.com/p/thrift-protobuf-compare/wiki/Benchmarking">JSON vs Protobuf, Thrift, XML</a>: comparison of various formats, libraries -- see Json+Jackson entries <span class="anchor" id="line-446"></span><span class="anchor" id="line-447"></span></p></li></ul><p class="line874">Members of the Jackson development team have also published some performance measurements: <span class="anchor" id="line-448"></span><span class="anchor" id="line-449"></span></p><ul><li><p class="line891"><a class="http" href="http://www.cowtowncoder.com/blog/archives/2009/02/entry_204.html">Update on State of Json-parsing Performance</a> measures performance of streaming parsing, as well as compares it to other models. <span class="anchor" id="line-450"></span></p></li><li><p class="line891"><a class="http" href="http://www.cowtowncoder.com/blog/archives/2009/09/entry_326.html">JSON data binding performance: Jackson vs Google-gson vs BerliOS JSON Tools</a> measures data binding performance <span class="anchor" id="line-451"></span><span class="anchor" id="line-452"></span></p></li></ul><p class="line867"><strong>How can I ensure Jackson runs as fast as possible</strong>? <span class="anchor" id="line-453"></span><span class="anchor" id="line-454"></span></p><p class="line862">See <a href="http://wiki.fasterxml.com/JacksonBestPracticesPerformance">JacksonBestPracticesPerformance</a> for some suggestions. <span class="anchor" id="line-455"></span><span class="anchor" id="line-456"></span><span class="anchor" id="line-457"></span></p><p class="line867"></p><hr><p class="line874"> <span class="anchor" id="line-458"></span><a href="http://wiki.fasterxml.com/CategoryJackson">CategoryJackson</a> <span class="anchor" id="line-459"></span><span class="anchor" id="bottom"></span></p></div><p id="pageinfo" class="info" dir="ltr" lang="zh">JacksonFAQ  (2011-03-31 16:45:21由<span title="TatuSaloranta @ c-24-16-71-87.hsd1.wa.comcast.net[24.16.71.87]"><a href="http://wiki.fasterxml.com/TatuSaloranta" title="TatuSaloranta @ c-24-16-71-87.hsd1.wa.comcast.net[24.16.71.87]">TatuSaloranta</a></span>编辑)</p>
+
+<div id="pagebottom"></div>
+</div>
+
+<div><p style="color: rgb(128, 128, 128); padding-right: 15px; font-size: smaller; text-align: right;">Copyright ©2009 <a href="http://fasterxml.com/">FasterXML, LLC</a></p></div>
+
+<div id="footer">
+<ul class="editbar"><li><span class="disabled">只读网页</span></li><li class="toggleCommentsButton" style="display: none;"><a href="#" class="nbcomment" onclick="toggleComments();return false;">备注</a></li><li><a class="nbinfo" href="http://wiki.fasterxml.com/JacksonFAQ?action=info" rel="nofollow">信息</a></li><li><a class="nbattachments" href="http://wiki.fasterxml.com/JacksonFAQ?action=AttachFile" rel="nofollow">附件</a></li><li>
+<form class="actionsmenu" method="GET" action="/JacksonFAQ">
+<div>
+    
+    <select name="action" onchange="if ((this.selectedIndex != 0) &amp;&amp;
+                      (this.options[this.selectedIndex].disabled == false)) {
+                this.form.submit();
+            }
+            this.selectedIndex = 0;">
+        <option selected="selected" value="show">更多操作：</option><option value="raw">源码</option>
+<option value="print">打印视图</option>
+<option value="RenderAsDocbook">输出Docbook格式</option>
+<option value="refresh">删除缓存</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="SpellCheck">拼写检查</option>
+<option value="LikePages">相似网页</option>
+<option value="LocalSiteMap">本站地图</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="RenamePage" disabled="disabled" class="disabled">改名</option>
+<option value="DeletePage" disabled="disabled" class="disabled">删除</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="show" disabled="disabled" class="disabled">订阅</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="show" disabled="disabled" class="disabled">删除垃圾广告</option>
+<option value="show" disabled="disabled" class="disabled">恢复成此版本</option>
+<option value="show" disabled="disabled" class="disabled">网页打包</option>
+<option value="SyncPages">同步网页</option>
+<option value="show" disabled="disabled" class="disabled">------------------------</option>
+<option value="Load">加载</option>
+<option value="Save">保存</option>
+    </select>
+    
+    
+</div>
+<script type="text/javascript">
+<!--// Init menu
+actionsMenuInit('更多操作：');
+//-->
+</script>
+</form>
+</li></ul>
+
+<ul id="credits">
+<li><a href="http://moinmo.in/" title="This site uses the MoinMoin Wiki software.">MoinMoin Powered</a></li><li><a href="http://moinmo.in/Python" title="MoinMoin is written in Python.">Python Powered</a></li><li><a href="http://moinmo.in/GPL" title="MoinMoin is GPL licensed.">GPL licensed</a></li><li><a href="http://validator.w3.org/check?uri=referer" title="Click here to validate this page.">Valid HTML 4.01</a></li>
+</ul>
+
+
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="JacksonFAQ_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-140287-9");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body></html>

@@ -18,5 +18,11 @@
 
    4. 关注 http://code.google.com/p/simpleframework/
 
+   组件式开发,放弃
+
+   5. @JsonIgnore
+
+   http://wiki.fasterxml.com/JacksonFAQ
+   JacksonFAQ
 
    --END

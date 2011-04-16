@@ -1,11 +1,8 @@
 package org.ssh.pm.common.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -15,16 +12,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 菜单资源
  */
 @Entity
-@Table(name = "t_resources")
+@Table(name = "T_RESOURCES")
 public class Resource {
     private Long id;
-    private String resourceName;
-    private String url;
+    private String texts;
+    private String urls;
     private Long parentId;
     private Long orderNo; // 资源排序字段
     private String note;
     private Boolean leaf;
-    private ResourceType resourceType;
+    //1,module
+    //2,menu
+    //3,submenu
+    private String resourceType;
 
     @Id
     public Long getId() {
@@ -61,12 +61,12 @@ public class Resource {
     }
 
     @Column(length = 200)
-    public String getUrl() {
-        return url;
+    public String getUrls() {
+        return urls;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrls(String urls) {
+        this.urls = urls;
     }
 
     public boolean isLeaf() {
@@ -77,13 +77,12 @@ public class Resource {
         this.leaf = leaf;
     }
 
-    @OneToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "RESOURCE_TYPE_ID")
-    public ResourceType getResourceType() {
+    @Column(nullable = false, length = 1)
+    public String getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(ResourceType resourceType) {
+    public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
     }
 
@@ -92,18 +91,18 @@ public class Resource {
         return this.id == null;
     }
 
-    @Column(length = 200)
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
-    }
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Column(nullable = false, length = 50)
+    public String getTexts() {
+        return texts;
+    }
+
+    public void setTexts(String texts) {
+        this.texts = texts;
     }
 
 }
