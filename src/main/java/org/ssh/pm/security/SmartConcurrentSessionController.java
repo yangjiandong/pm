@@ -1,4 +1,4 @@
-package org.ssh.pm.security;
+package org.ssh.app.security;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.MessageSource;

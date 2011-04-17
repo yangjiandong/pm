@@ -15,7 +15,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Table(name = "T_RESOURCES")
 public class Resource {
     private Long id;
-    private String texts;
+    private String name;
+
     private String urls;
     private Long parentId;
     private Long orderNo; // 资源排序字段
@@ -97,12 +98,13 @@ public class Resource {
     }
 
     @Column(nullable = false, length = 50)
-    public String getTexts() {
-        return texts;
+    public String getName() {
+        return name;
     }
 
-    public void setTexts(String texts) {
-        this.texts = texts;
+    public void setName(String name) {
+        this.name = name;
     }
+
 
 }

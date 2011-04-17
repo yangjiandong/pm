@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:s="http://www.springframework.org/schema/security"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
   default-lazy-init="true">
 
   <description>SpringSecurity安全配置</description>
@@ -17,12 +17,13 @@
     <s:intercept-url pattern="/common/*" filters="none" />
     <s:intercept-url pattern="/remote/**" filters="none" />
     <!--
-    <s:intercept-url pattern="/common/user/*" access="isAuthenticated()" />
-    -->
+      <s:intercept-url pattern="/common/user/*" access="isAuthenticated()" />
+      -->
     <s:form-login login-page="/" default-target-url="/user/loginsuccess" authentication-failure-url="/user/loginerror1" />
     <s:logout logout-success-url="/" />
     <s:session-management invalid-session-url="/">
-      <!--采用当前用户登录踢除上次登录-->
+      <!--采用当前用户登录踢除上次登录 false-->
+      <!--想防止第二次登录 true-->
       <s:concurrency-control max-sessions="1" error-if-maximum-exceeded="false" />
     </s:session-management>
 
@@ -34,9 +35,9 @@
 
   <!-- 认证配置 -->
   <!--
-  通过userDetailsService和j_username查出用户的密码，再和j_password比较。
-  如果密码是加密的，先用passwordEncoder对 j_password加密，再与查出的密码比较
-  -->
+    通过userDetailsService和j_username查出用户的密码，再和j_password比较。
+    如果密码是加密的，先用passwordEncoder对 j_password加密，再与查出的密码比较
+    -->
   <s:authentication-manager alias="authenticationManager">
     <s:authentication-provider user-service-ref="userDetailsService">
       <s:password-encoder hash="sha" />
@@ -58,8 +59,8 @@
       <bean class="org.springside.modules.security.jcaptcha.GMailEngine" />
     </property>
     <!--
-    默认生成的图片180秒过期 , 可另行设置
-    <property name="minGuarantedStorageDelayInSeconds" value="180" />
-    -->
+      默认生成的图片180秒过期 , 可另行设置
+      <property name="minGuarantedStorageDelayInSeconds" value="180" />
+      -->
   </bean>
 </beans>
