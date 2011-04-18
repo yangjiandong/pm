@@ -66,7 +66,7 @@ public class CommonController {
             data.add(new Bean(true, "资源初始数据成功!", this.resourcesService.toString()));
         } catch (Exception se) {
             logger.error("cuco ...");
-            data.add(new Bean(false, "资源初始数据失败!" + se.toString(), ""));
+            data.add(new Bean(false, "资源初始数据失败!" + se.toString(), this.resourcesService.toString()));
         }
         try {
             this.categoryService.initData();

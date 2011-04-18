@@ -221,7 +221,7 @@ public class ResourcesService extends EntityService<Resource, Long> {
                     continue;
                 }
                 String star[] = thisLine.split(",");
-                if (star[1].trim().equals(""))
+                if (star[0].trim().equals(""))
                     continue;
 
                 re = new Resource();
