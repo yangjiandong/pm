@@ -1,0 +1,32 @@
+package org.ssh.pm.utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import org.apache.tika.Tika;
+
+/**
+ * 这是一个开源的软件，请在LGPLv3下合法使用、修改或重新发布。
+ * 
+ * @author 陈侃(cknet@126.com, 13910090885)
+ *         http://code.google.com/p/simpleframework/
+ *         http://www.simpleframework.net
+ */
+public abstract class TikaUtils {
+	public static String getContentType(final URL url) throws IOException {
+		final InputStream inputStream;
+		if (url != null && (inputStream = url.openStream()) != null) {
+			return new Tika().detect(inputStream).toLowerCase();
+		}
+		return IConstants.BLANK;
+	}
+
+	public static boolean isImage(final URL url) throws IOException {
+		return getContentType(url).startsWith("image/");
+	}
+
+	public static boolean isFlash(final URL url) throws IOException {
+		return getContentType(url).contains("x-shockwave-flash");
+	}
+}
