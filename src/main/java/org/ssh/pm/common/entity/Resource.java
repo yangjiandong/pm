@@ -26,6 +26,8 @@ public class Resource {
     //2,menu
     //3,submenu
     private String resourceType;
+    //
+    private String iconCls;
 
     @Id
     public Long getId() {
@@ -105,6 +107,14 @@ public class Resource {
     public void setName(String name) {
         this.name = name;
     }
+
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
+	}
 
 
 }

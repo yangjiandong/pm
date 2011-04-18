@@ -1,0 +1,43 @@
+javascript
+===========
+
+2011.04.18
+----------
+
+1. JavaScript 实现的 AES 加、解密算法
+   http://www.movable-type.co.uk/scripts/aes.html
+   js/lib/AES.js
+
+   example:
+   var password = 'L0ck it up saf3';
+   var plaintext = 'pssst ... don't tell anyone';
+   var ciphertext = Aes.Ctr.encrypt(plaintext, password, 256);
+   var origtext = Aes.Ctr.decrypt(ciphertext, password, 256);
+
+2. Javascript中各种trim的实现
+http://justjavac.iteye.com/blog/933093
+//据说是最快的实现
+function trim(str){
+    str = str.replace(/^(\s|\u00A0)+/,'');
+    for(var i=str.length-1; i>=0; i--){
+        if(/\S/.test(str.charAt(i))){
+            str = str.substring(0, i+1);
+            break;
+        }
+    }
+    return str;
+}
+
+//String.prototype.trim = function() {
+//     //return this.replace(/[(^\s+)(\s+$)]/g,"");//會把字符串中間的空白符也去掉
+//     //return this.replace(/^\s+|\s+$/g,""); //
+//     return this.replace(/^\s+/g,"").replace(/\s+$/g,"");
+//}
+////motools
+//function trim(str){
+//    return str.replace(/^(\s|\xA0)+|(\s|\xA0)+$/g, '');
+//}
+////jquery
+//function trim(str){
+//    return str.replace(/^(\s|\u00A0)+/,'').replace(/(\s|\u00A0)+$/,'');
+//}

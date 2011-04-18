@@ -1,0 +1,18 @@
+﻿body
+{
+  font-size: 12px;
+}
+#footer
+{
+  text-align:center;
+  padding-top:10px;
+}
+
+.help
+{
+  text-align:left;
+  padding:10px 10px 10px 25px;
+  border: #696969 1px solid;
+  background-color: #ffff99;
+  background: url(../images/icon/lightbulb.gif) #ffff99 no-repeat 5px 7px;
+}

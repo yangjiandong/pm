@@ -25,4 +25,22 @@
    http://wiki.fasterxml.com/JacksonFAQ
    JacksonFAQ
 
+   6. Apache Tika - a content analysis toolkit
+
+  <dependency>
+    <groupId>org.apache.tika</groupId>
+    <artifactId>tika-core</artifactId>
+    <version>0.9</version>
+  </dependency>
+  <dependency>
+    <groupId>org.apache.tika</groupId>
+    <artifactId>tika-parsers</artifactId>
+    <version>0.9</version>
+  </dependency>
+
+# Check if an Internet resource contains a specific keyword
+curl http://.../document.doc \
+  | java -jar tika-app-0.9.jar --text \
+  | grep -q keyword
+
    --END
