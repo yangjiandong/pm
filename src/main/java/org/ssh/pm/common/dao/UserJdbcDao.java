@@ -12,8 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -44,6 +50,8 @@ public class UserJdbcDao {
 
     private SimpleJdbcTemplate jdbcTemplate;
 
+    private JdbcTemplate jdbcTemplate2;
+
     private TransactionTemplate transactionTemplate;
 
     private String searchUserSql;
@@ -64,6 +72,7 @@ public class UserJdbcDao {
      @Autowired
     public void setDataSource(@Qualifier("dataSource") DataSource dataSource) {
         jdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        jdbcTemplate2 = new JdbcTemplate(dataSource);
     }
 
     //@Resource
@@ -190,5 +199,30 @@ public class UserJdbcDao {
                 }
             }
         });
+    }
+
+    public SimpleJdbcCall createSimpleJdbcCall() {
+            return new SimpleJdbcCall(this.jdbcTemplate2);
+    }
+
+    //
+    public List<User> queryBySp(String p) {
+        SimpleJdbcCall jdbcCall = createSimpleJdbcCall();
+        jdbcCall.getJdbcTemplate().setResultsMapCaseInsensitive(true);
+        jdbcCall.withProcedureName("sp_get_all_user").returningResultSet("P_CURSOR", BeanPropertyRowMapper.newInstance(User.class));
+         SqlParameterSource in = new MapSqlParameterSource().addValue("cdate", p);
+         Map out = jdbcCall.execute(in);
+
+         // oracle 下只能用这个名称需与后台定义的cursor名一致
+         return (List) out.get("P_CURSOR");
+// Actor actor = new Actor();
+// actor.setId(id);
+// actor.setFirstName((String) out.get("out_first_name"));
+// actor.setLastName((String) out.get("out_last_name"));
+// actor.setBirthDate((Date) out.get("out_birth_date"));
+// return actor;
+
+
+        //return jdbcTemplate.query(QUERY_USER_BY_IDS, userMapper);
     }
 }

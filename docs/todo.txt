@@ -18,4 +18,6 @@
 
 6. log to db table
 
+7. 不采用model对应直接转换json格式
+
    --END

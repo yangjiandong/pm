@@ -1,0 +1,443 @@
+<html><head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=x-gbk">
+<title>11.5.&nbsp;通过使用SimpleJdbc类简化JDBC操作</title>
+<link rel="stylesheet" href="ch11s05_files/html.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
+<link rel="start" href="http://www.html.org.cn/books/springReference/index.html" title="Spring Framework 开发参考手册">
+<link rel="up" href="http://www.html.org.cn/books/springReference/ch11.html" title="第&nbsp;11&nbsp;章&nbsp;使用JDBC进行数据访问">
+<link rel="prev" href="http://www.html.org.cn/books/springReference/ch11s04.html" title="11.4.&nbsp;JDBC批量操作">
+<link rel="next" href="http://www.html.org.cn/books/springReference/ch11s06.html" title="11.6.&nbsp;用Java对象来表达JDBC操作">
+</head><body alink="#0000ff" bgcolor="white" link="#0000ff" text="black" vlink="#840084"><div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both;">
+<a name="jdbc-simple-jdbc"></a>11.5.&nbsp;通过使用SimpleJdbc类简化JDBC操作</h2></div></div></div>
+<p>
+		<code class="classname">SimpleJdbcInsert</code>类和<code class="classname">SimpleJdbcCall</code>类主要利用了JDBC驱动所提供的数据库元数据的一些特性来简化数据库操作配置。
+		 这意味着你可以尽可能的简化你的数据库操作配置。当然，你可以可以将元数据处理的特性关闭，从而在你的代码中详细指定这些特性。
+	</p>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-insert-1"></a>11.5.1.&nbsp;使用SimpleJdbcInsert插入数据</h3></div></div></div>
+<p>
+		让我们从<code class="classname">SimpleJdbcInsert</code>类开始。我们将尽可能使用最少量的配置。<code class="classname">SimpleJdbcInsert</code>类必须在数据访问层的初始化方法中被初始化。
+			在这个例子中，初始化方法为<code class="classname">setDataSource</code>方法。你无需继承自<code class="classname">SimpleJdbcInsert</code>
+类，只需要创建一个新的实例，并通过<code class="classname">withTableName</code>方法设置table名称。
+			这个类使用了“fluid”模式返回<code class="classname">SimpleJdbcInsert</code>，从而你可以访问到所有的可以进行配置的方法。在这个例子中，我们只使用了一个方法，稍后我们会看到更多的配置方法。
+			</p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.insertActor = 
+                new SimpleJdbcInsert(dataSource).withTableName("t_actor");
+    }
+
+    public void add(Actor actor) {
+        Map&lt;String, Object&gt; parameters = new HashMap&lt;String, Object&gt;(3);
+        parameters.put("id", actor.getId());
+        parameters.put("first_name", actor.getFirstName());
+        parameters.put("last_name", actor.getLastName());
+        insertActor.execute(parameters);
+    }
+
+    //  ... additional methods
+}</pre>
+<p>这个方法通过接收 <code class="classname">java.utils.Map</code> 作为它唯一的参数。
+     	在这里需要重点注意的是，在Map中的所有的key，必须和数据库中定义的列名完全匹配。这是因为我们是通过读取元数据来构造实际的Insert语句的。
+     	</p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-insert-2"></a>11.5.2.&nbsp;使用SimpleJdbcInsert来获取自动生成的主键</h3></div></div></div>
+<p>接下来，我们对于同样的插入语句，我们并不传入id，而是通过数据库自动获取主键的方式来创建新的Actor对象并插入数据库。
+		当我们创建<code class="classname">SimpleJdbcInsert</code>实例时, 我们不仅需要指定表名，同时我们通过<code class="classname">usingGeneratedKeyColumns</code>方法指定需要数据库自动生成主键的列名。
+		</p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.insertActor =
+                new SimpleJdbcInsert(dataSource)
+                        .withTableName("t_actor")
+                        .usingGeneratedKeyColumns("id");
+    }
+
+    public void add(Actor actor) {
+        Map&lt;String, Object&gt; parameters = new HashMap&lt;String, Object&gt;(2);
+        parameters.put("first_name", actor.getFirstName());
+        parameters.put("last_name", actor.getLastName());
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        actor.setId(newId.longValue());
+    }
+
+    //  ... additional methods
+}</pre>
+<p>
+		这样我们可以看到与之前执行的insert操作的不同之处在于，我们无需添加id到参数的Map中去，只需要调用<code class="literal">executeReturningKey</code>方法。
+		这个方法将返回一个<code class="literal">java.lang.Number</code>对象，我们可以使用这个对象来创建一个字符类型的实例作为我们的域模型的属性。
+		有一点很重要的地方需要注意，我们无法依赖所有的数据库来返回我们指定的Java类型，因为我们只知道这些对象的基类是<code class="literal">java.lang.Number</code>。
+		如果你有联合主键或者那些非数字类型的主键需要生成，那么你可以使用<code class="literal">executeReturningKeyHolder</code>方法返回的<code class="literal">KeyHolder</code>对象。		
+		</p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-insert-3"></a>11.5.3.&nbsp;指定SimpleJdbcInsert所使用的字段</h3></div></div></div>
+<p>
+      通过指定所使用的字段名称，可以使SimpleJdbcInsert仅使用这些字段作为insert语句所使用的字段。这可以通过<code class="classname">usingColumns</code>方法进行配置。
+      </p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.insertActor =
+                new SimpleJdbcInsert(dataSource)
+                        .withTableName("t_actor")
+                        .usingColumns("first_name", "last_name")
+                        .usingGeneratedKeyColumns("id");
+    }
+
+    public void add(Actor actor) {
+        Map&lt;String, Object&gt; parameters = new HashMap&lt;String, Object&gt;(2);
+        parameters.put("first_name", actor.getFirstName());
+        parameters.put("last_name", actor.getLastName());
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        actor.setId(newId.longValue());
+    }
+
+    //  ... additional methods
+}</pre>
+<p>
+     执行这样的insert语句所使用的字段，与之前我们所依赖的数据库元数据是一致的。 
+	</p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-parameters"></a>11.5.4.&nbsp;使用SqlParameterSource提供参数值</h3></div></div></div>
+<p>使用Map来指定参数值有时候工作得非常好，但是这并不是最简单的使用方式。Spring提供了一些其他的<code class="classname">SqlParameterSource</code>实现类来指定参数值。
+			我们首先可以看看<code class="classname">BeanPropertySqlParameterSource</code>类，这是一个非常简便的指定参数的实现类，只要你有一个符合JavaBean规范的类就行了。它将使用其中的getter方法来获取参数值。
+			下面是一个例子：
+		</p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.insertActor =
+                new SimpleJdbcInsert(dataSource)
+                        .withTableName("t_actor")
+                        .usingGeneratedKeyColumns("id");
+    }
+
+    public void add(Actor actor) {
+        SqlParameterSource parameters = new BeanPropertySqlParameterSource(actor);
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        actor.setId(newId.longValue());
+    }
+
+    //  ... additional methods
+}</pre>
+<p>
+        另外一个实现类：<code class="classname">MapSqlParameterSource</code>也使用Map来指定参数，但是他另外提供了一个非常简便的<code class="classname">addValue</code>方法，可以被连续调用，来增加参数。
+        </p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcInsert insertActor;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.insertActor =
+                new SimpleJdbcInsert(dataSource)
+                        .withTableName("t_actor")
+                        .usingGeneratedKeyColumns("id");
+    }
+
+    public void add(Actor actor) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("first_name", actor.getFirstName())
+                .addValue("last_name", actor.getLastName());
+        Number newId = insertActor.executeAndReturnKey(parameters);
+        actor.setId(newId.longValue());
+    }
+
+    //  ... additional methods
+}</pre>
+<p>
+		正如你看到的，配置是一样的，区别只是切换了不同的提供参数的实现方式来执行调用。
+		</p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-call-1"></a>11.5.5.&nbsp;使用SimpleJdbcCall调用存储过程</h3></div></div></div>
+<p>
+		接下来我们把我们的关注点放在使用 <code class="classname">SimpleJdbcCall</code> 来进行存储过程的调用上。
+			设计这个类的目的在于使得调用存储过程尽可能简单。它同样利用的数据库元数据的特性来查找传入的参数和返回值。
+			这意味着你无需明确声明那些参数。当然，如果你喜欢，可以依然声明这些参数，尤其对于某些参数，你无法直接将他们映射到Java类上，例如ARRAY类型和STRUCT类型的参数。
+			在我们的第一个示例中，我们可以看到一个简单的存储过程调用，它仅仅返回VARCHAR和DATE类型。
+			这里，我特地为Actor类增加了一个birthDate的属性，从而可以使得返回值拥有不同的数据类型。
+			这个存储过程读取actor的主键，并返回first_name，last_name，和birth_date字段作为返回值。
+			下面是这个存储过程的源码，它可以工作在MySQL数据库上：
+		</p>
+<p>
+      </p>
+<pre class="programlisting">CREATE PROCEDURE read_actor ( 
+  IN in_id INTEGER, 
+  OUT out_first_name VARCHAR(100), 
+  OUT out_last_name VARCHAR(100), 
+  OUT out_birth_date DATE) 
+BEGIN 
+  SELECT first_name, last_name, birth_date 
+  INTO out_first_name, out_last_name, out_birth_date 
+  FROM t_actor where id = in_id;
+END;</pre>
+<p>
+		正如你看到的，这里有四个参数，其中一个是传入的参数“in_id”，表示了Actor的主键，剩下的参数是作为读取数据库表中的数据所返回的返回值。	
+	</p>
+<p>
+		<code class="classname">SimpleJdbcCall</code>的声明与<code class="classname">SimpleJdbcInsert</code>类似，你无需继承这个类，而只需要在初始化方法中进行初始化。
+			在这里例子中，我们只需要指定存储过程的名称。
+		</p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcCall procReadActor;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.procReadActor =
+                new SimpleJdbcCall(dataSource)
+                        .withProcedureName("read_actor");
+    }
+
+    public Actor readActor(Long id) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("in_id", id); 
+        Map out = procReadActor.execute(in);
+        Actor actor = new Actor();
+        actor.setId(id);
+        actor.setFirstName((String) out.get("out_first_name"));
+        actor.setLastName((String) out.get("out_last_name"));
+        actor.setBirthDate((Date) out.get("out_birth_date"));
+        return actor;
+    }
+
+    //  ... additional methods
+}</pre>
+<p>
+      通过SimpleJdbcCall执行存储过程需要创建一个<code class="classname">SqlParameterSource</code>的实现类来指定传入的参数。
+      需要注意的是，传入参数的名称与存储过程中定义的名称必须保持一致。这里，我们无需保持一致，因为我们使用数据库的元数据信息来决定我们需要什么样的数据库对象。
+      当然，你在源代码中所指定的名称可能和数据库中完全不同，有的数据库会把这些名称全部转化成大写，而有些数据库会把这些名称转化为小写。    
+      </p>
+<p><code class="classname">execute</code>方法接收传入的参数，并返回一个Map作为返回值，这个Map包含所有在存储过程中指定的参数名称作为key。
+			在这个例子中，他们分别是<code class="classname">out_first_name，out_last_name</code>和
+      <code class="classname">out_birth_date</code>。
+      </p>
+<p>
+		<code class="classname">execute</code>方法的最后部分是使用存储过程所返回的值创建一个新的Actor实例。
+			同样的，这里我们将名称与存储过程中定义的名称保持一致非常重要。在这个例子中，在返回的Map中所定义的key值和数据库的存储过程中定义的值一致。
+			你可能需要在这里指定Spring使用Jakarta Commons提供的<code class="classname">CaseInsensitiveMap</code>。这样做，你需要在创建你自己的<code class="classname">JdbcTemplate</code>类时，设置<code class="classname">setResultsMapCaseInsensitive</code>属性为True。
+			然后，你将这个自定义的<code class="classname">JdbcTemplate</code>传入<code class="classname">SimpleJdbcCall</code>的构造函数。当然，你需要把<code class="classname">commons-collections.jar</code>加入到classpath中去。
+			下面是配置示例：
+		</p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcCall procReadActor;
+
+    public void setDataSource(DataSource dataSource) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.setResultsMapCaseInsensitive(true);
+        this.procReadActor =
+                new SimpleJdbcCall(jdbcTemplate)
+                        .withProcedureName("read_actor");
+    }
+
+
+    //  ... additional methods
+}</pre>
+<p>
+         通过这样的配置，你就可以无需担心返回参数值的大小写问题。      
+      </p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-call-2"></a>11.5.6.&nbsp;声明SimpleJdbcCall使用的参数</h3></div></div></div>
+<p>你已经看到如何通过元数据来简化参数配置，但是你也可以明确地指定这些参数。可以在创建<code class="classname">SimpleJdbcCall</code>时，通过使用<code class="classname">declareParameters</code>方法来声明参数。
+			这个方法接收一组<code class="classname">SqlParameter</code>对象作为参数。我们可以参照下一个章节，如何创建<code class="classname">SqlParameter</code>。
+		</p>
+<p>
+		我们可以有选择性的显示声明一个、多个、甚至所有的参数。参数元数据在这里会被同时使用。
+			通过调用<code class="classname">withoutProcedureColumnMetaDataAccess</code>方法，我们可以指定数据库忽略所有的元数据处理并使用显示声明的参数。
+			另外一种情况是，其中的某些参数值具有默认的返回值，我们需要在返回值中指定这些返回值。为了实现这个特性，我们可以使用<code class="classname">useInParameterNames</code>来指定一组需要被包含的参数名称。
+		</p>
+<p>这是一个完整的声明存储过程调用的例子：</p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcCall procReadActor;
+
+    public void setDataSource(DataSource dataSource) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.setResultsMapCaseInsensitive(true);
+        this.procReadActor =
+                new SimpleJdbcCall(jdbcTemplate)
+                        .withProcedureName("read_actor")
+                        .withoutProcedureColumnMetaDataAccess()
+                        .useInParameterNames("in_id")
+                        .declareParameters(
+                                new SqlParameter("in_id", Types.NUMERIC),
+                                new SqlOutParameter("out_first_name", Types.VARCHAR),
+                                new SqlOutParameter("out_last_name", Types.VARCHAR),
+                                new SqlOutParameter("out_birth_date", Types.DATE)
+                        );
+    }
+
+
+    //  ... additional methods
+}</pre>
+<p>
+      执行和最终的返回处理是相同的，我们在这里只是明确声明了参数类型，而不是依赖数据库元数据特性。
+      这一点很重要，尤其对于那些数据库并不支持元数据的情况。当前，我们支持元数据的特性的数据包含：Apache Derby、DB2、MySQL、
+      Microsoft SQL Server、Oracle和Sybase。我们同时对某些数据库内置函数支持元数据特性：MySQL、Microsoft SQL Server和Oracle。
+      </p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-params"></a>11.5.7.&nbsp;如何定义SqlParameters</h3></div></div></div>
+<p>
+		为SimpleJdbc类或者后续章节提到的RDBMS操作指定参数，你需要使用<code class="classname">SqlParameter</code>或者他的子类。
+			你可以通过指定参数名称以及对应的SQL类型并传入构造函数作为参数来指定<code class="classname">SqlParameter</code>，其中，SQL类型是<code class="classname">java.sql.Types</code>中所定义的常量。
+			我们已经看到过类似的声明：
+		</p>
+<p>
+      </p>
+<pre class="programlisting">   new SqlParameter("in_id", Types.NUMERIC),
+   new SqlOutParameter("out_first_name", Types.VARCHAR),</pre>
+<p>
+   </p>
+<p>第一行的<code class="classname">SqlParameter</code>定义了一个传入参数。传入参数可以在所有的存储过程中使用，也可以在稍后章节中提到的<code class="classname">SqlQuery</code>类及其子类中使用。
+		</p>
+<p>第二行<code class="classname">SqlOutParameter</code>定义了一个返回值。它可以被存储过程调用所使用。当然，还有一个<code class="classname">SqlInOutParameter</code>类，可以用于输入输出参数。
+			也就是说，它既是一个传入参数，也是一个返回值。
+		</p>
+<p>
+      除了参数名称和SQL类型，你还可以声明一些其他额外的选项。对于传入参数，你可以为numeric数据类型指定精度，或者对于特定的数据库指定特殊类型。
+      对于返回值，你可以提供一个<code class="classname">RowMapper</code>接口来处理所有从REF cursor返回的列。另外一个选项是指定一个<code class="classname">SqlReturnType</code>类，从而可以定制返回值的处理方式。
+      </p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-call-3"></a>11.5.8.&nbsp;使用SimpleJdbcCall调用内置函数</h3></div></div></div>
+<p>内置函数的调用几乎和存储过程的调用是一样的。唯一的不同在于，你需要声明的是一个函数的名称而不是存储过程的名称。
+			这可以通过<code class="classname">withFunctionName</code>方法来完成。使用这个方法，表明你的调用是一个函数。你所指定的这个函数名称将被作为调用对象。
+			同时有一个叫做<code class="classname">executeFunction</code>的方法，将获得特定的Java类型的函数调用的返回值。
+			此时，你无需通过返回的Map来获取返回值。另外有一个类似的便捷方法<code class="classname">executeObject</code>用于存储过程，但是他只能处理单个返回值的情况。
+			下面的示例展示了一个叫做<code class="classname">get_actor_name</code>
+的函数调用，返回actor的完整的名称。
+			这个函数将工作在MySQL数据库上。
+		</p>
+<p>
+      </p>
+<pre class="programlisting">CREATE FUNCTION get_actor_name (in_id INTEGER)
+RETURNS VARCHAR(200) READS SQL DATA 
+BEGIN
+  DECLARE out_name VARCHAR(200);
+  SELECT concat(first_name, ' ', last_name)
+    INTO out_name
+    FROM t_actor where id = in_id;
+  RETURN out_name;
+END;</pre>
+<p>
+</p>
+<p>调用这个函数，我们依然在初始化方法中创建<code class="classname">SimpleJdbcCall</code></p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcCall funcGetActorName;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.setResultsMapCaseInsensitive(true);
+        this.funcGetActorName =
+                new SimpleJdbcCall(jdbcTemplate)
+                        .withFunctionName("get_actor_name");
+    }
+
+    public String getActorName(Long id) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("in_id", id); 
+        String name = funcGetActorName.executeFunction(String.class, in);
+        return name;
+    }
+
+    //  ... additional methods
+}</pre>
+<p>
+			被调用的函数返回一个<code class="classname">String</code>类型。
+			</p>
+</div>
+<div class="section" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="jdbc-simple-jdbc-call-4"></a>11.5.9.&nbsp;使用SimpleJdbcCall返回的ResultSet/REF Cursor</h3></div></div></div>
+<p>期望通过调用存储过程或者函数来返回ResultSet一直是一个问题。一些数据库在JDBC结果处理中返回结果集，而另外一些数据库则需要明确指定返回值的类型。
+			无论哪种方法，都需要在循环遍历结果集时，做出一些额外的工作，从而处理每一条记录。
+			通过<code class="classname">SimpleJdbcCall</code>，你可以使用<code class="classname">returningResultSet</code>方法，并定义一个<code class="classname">RowMapper</code>的实现类来处理特定的返回值。 
+			当结果集在返回结果处理过程中没有被定义名称时，返回的结果集必须与定义的<code class="classname">RowMapper</code>的实现类指定的顺序保持一致。
+			而指定的名字也会被用作返回结果集中的名称。
+		</p>
+<p>在这个例子中，我们将使用一个存储过程，它并不接收任何参数，返回t_actor表中的所有的行，下面是MySQL数据库中的存储过程源码：
+      </p>
+<pre class="programlisting">CREATE PROCEDURE read_all_actors()
+BEGIN
+ SELECT a.id, a.first_name, a.last_name, a.birth_date FROM t_actor a;
+END;</pre>
+<p>
+      要调用这个存储过程，我们需要定义一个<code class="classname">RowMapper</code>的实现类。我们所使用的类遵循JavaBean的规范，所以我们可以使用<code class="classname">ParameterizedBeanPropertyRowMapper</code>作为实现类。
+      通过将相应的class类作为参数传入到newInstance方法中，我们可以创建这个实现类。
+      </p>
+<p>
+      </p>
+<pre class="programlisting">public class JdbcActorDao implements ActorDao {
+    private SimpleJdbcTemplate simpleJdbcTemplate;
+    private SimpleJdbcCall procReadAllActors;
+
+    public void setDataSource(DataSource dataSource) {
+        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.setResultsMapCaseInsensitive(true);
+        this.procReadAllActors =
+                new SimpleJdbcCall(jdbcTemplate)
+                        .withProcedureName("read_all_actors")
+                        .returningResultSet("actors",
+                                ParameterizedBeanPropertyRowMapper.newInstance(Actor.class));
+    }
+
+    public List getActorsList() {
+        Map m = procReadAllActors.execute(new HashMap&lt;String, Object&gt;(0));
+        return (List) m.get("actors");
+    }
+
+    //  ... additional methods
+}</pre>
+<p>
+			这个函数调用传入一个空的Map进入，因为这里不需要任何的参数传入。而函数调用所返回的结果集将返回的是Actors列表。     
+</p>
+</div>
+</div></body></html>

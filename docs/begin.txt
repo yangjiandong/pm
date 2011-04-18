@@ -19,5 +19,23 @@
       message varchar(255)
     );
 
+   5. 示例存储过程
+
+   --oracle
+   create or replace procedure sp_get_all_user(cdate IN VARCHAR2,
+      P_CURSOR OUT SYS_REFCURSOR) is
+begin
+  OPEN P_CURSOR FOR
+  select * from t_users;
+end sp_get_all_user;
+
+   --mssql
+-- =============================================
+-- exec [sp_get_all_user] '2011.01.02'
+-- =============================================
+ALTER PROCEDURE [dbo].[sp_get_all_user]
+  @cdate char(10) AS
+
+select * from t_users
 
    --END

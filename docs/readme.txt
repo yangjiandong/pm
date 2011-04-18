@@ -1,6 +1,16 @@
 Personnel_Management System
 ============================
 
+2011.04.17
+----------
+
+   1. 存储过程
+
+   CommonController -> AccountManager -> UserJdbcDao
+   curl http://localhost:8080/sshapp/common/getAllUser
+
+   不采用model对应直接转换json格式
+
 2011.04.13
 ----------
 

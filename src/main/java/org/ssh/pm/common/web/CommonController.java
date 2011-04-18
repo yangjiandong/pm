@@ -1,28 +1,26 @@
 package org.ssh.pm.common.web;
 
-import net.sf.json.JSONArray;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.stereotype.Controller;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.ssh.pm.common.service.AccountManager;
-import org.ssh.pm.common.service.CategoryService;
-import org.ssh.pm.common.service.HzService;
-import org.ssh.pm.log.LogAction;
-
 import java.io.PrintWriter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springside.modules.utils.JsonViewUtil;
+import org.ssh.pm.common.entity.User;
+import org.ssh.pm.common.service.AccountManager;
+import org.ssh.pm.common.service.CategoryService;
+import org.ssh.pm.common.service.HzService;
+import org.ssh.pm.log.LogAction;
 
 
 //公开访问
@@ -110,5 +108,15 @@ public class CommonController {
         public String getName() {
             return name;
         }
+    }
+
+    @RequestMapping(value = "/getAllUser")
+    public ModelAndView showAllUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        long start = System.currentTimeMillis();
+
+        List<User> u = accountManager.getAllUserBySp();
+
+        logger.info(" method cache 执行共计:" + (System.currentTimeMillis() - start) + " ms");
+        return JsonViewUtil.getModelMap(u);
     }
 }

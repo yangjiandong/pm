@@ -37,5 +37,11 @@
 
      manyTomany 参考 user role
 
-
+   6. 存储过程支持
+   
+     ch11s05.html
+     
+     Spring_reference2.5_官方文档中文版
+     
+    
    --END

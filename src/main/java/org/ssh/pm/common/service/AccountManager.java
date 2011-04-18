@@ -242,4 +242,13 @@ public class AccountManager {
         this.roleDao = roleDao;
     }
 
+    /**
+     * by sp 取得所有用户.
+     */
+    @Transactional(readOnly = true)
+    public List<User> getAllUserBySp() {
+        List<User> list = userJdbcDao.queryBySp("2011.01.01");
+        //logger.info("get {} user sucessful.", list.size());
+        return list;
+    }
 }

@@ -49,4 +49,16 @@
 
    DEBUG: org.ssh.pm.log.appender.JdbcLogWriter - "队列dblog的持久化文件D:\apache-tomcat-6.0.18\temp\queue\dblog不存在" ()
 
+5. SimpleJdbcCall oracle 下返回记录集只能用"P_CURSOR"
+
+   理解错误,应该是: oracle下需与后台存储过程中定义的cursor名一致
+
+create or replace procedure sp_get_all_user(cdate IN VARCHAR2,
+      P_CURSOR OUT SYS_REFCURSOR) is
+begin
+  OPEN P_CURSOR FOR
+  select * from t_users;
+end sp_get_all_user;
+
+
    --END
