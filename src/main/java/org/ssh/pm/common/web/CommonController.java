@@ -20,6 +20,7 @@ import org.ssh.pm.common.entity.User;
 import org.ssh.pm.common.service.AccountManager;
 import org.ssh.pm.common.service.CategoryService;
 import org.ssh.pm.common.service.HzService;
+import org.ssh.pm.common.service.ResourcesService;
 import org.ssh.pm.log.LogAction;
 
 
@@ -34,6 +35,8 @@ public class CommonController {
     private AccountManager accountManager;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ResourcesService resourcesService;
 
     @RequestMapping("/init")
     public void initData(HttpServletRequest request,
@@ -59,6 +62,13 @@ public class CommonController {
         }
 
         try {
+            this.resourcesService.initData();
+            data.add(new Bean(true, "资源初始数据成功!", this.resourcesService.toString()));
+        } catch (Exception se) {
+            logger.error("cuco ...");
+            data.add(new Bean(false, "资源初始数据失败!" + se.toString(), ""));
+        }
+        try {
             this.categoryService.initData();
             data.add(new Bean(true, "lz初始数据成功!", ""));
         } catch (Exception se) {
@@ -69,19 +79,12 @@ public class CommonController {
         logger.info(" 执行共计:" + (System.currentTimeMillis() - start) + " ms");
         dblogger.info(" 执行共计:" + (System.currentTimeMillis() - start) + " ms");
 
-        //for (int i = 0; i < 200; i++) {
-        //    dblogger.info(" 执行共计:" + i + (System.currentTimeMillis() - start) + " ms");
-        //}
-        //JsonViewUtil.buildJSONDataResponse(response, " 初始数据成功", (long) 1);
         JSONArray jsonArray = JSONArray.fromObject(data);
-
         StringBuffer sb = new StringBuffer();
         sb.append("{\"totalCount\":" + data.size() + ",\"info\":");
         sb.append(jsonArray.toString());
         sb.append("}");
-
         response.setContentType("text/json; charset=UTF-8");
-
         PrintWriter out = response.getWriter();
         out.write(sb.toString());
     }
@@ -116,7 +119,7 @@ public class CommonController {
 
         List<User> u = accountManager.getAllUserBySp();
 
-        logger.info(" method cache 执行共计:" + (System.currentTimeMillis() - start) + " ms");
+        logger.info(" exec sp 执行共计:" + (System.currentTimeMillis() - start) + " ms");
         return JsonViewUtil.getModelMap(u);
     }
 }

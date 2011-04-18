@@ -1,6 +1,10 @@
 package org.ssh.pm.common.service;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springside.modules.orm.hibernate.HibernateDao;
 import org.springside.modules.utils.ServiceException;
 import org.ssh.pm.common.dao.ResourceDao;
 import org.ssh.pm.common.dao.UserDao;
@@ -36,7 +39,7 @@ public class ResourcesService extends EntityService<Resource, Long> {
     }
 
     /**
-     * 获取当前用户授权的指定模块子系统资源
+     * 获取当前用户授权的模块
      */
     @Transactional(readOnly = true)
     public List<Resource> loadGrantedSubSystems(Long userId) throws ServiceException {
@@ -51,19 +54,19 @@ public class ResourcesService extends EntityService<Resource, Long> {
             String hql = "";
             Map<String, Object> values = new HashMap<String, Object>();
 
-            if (user.getLoginName().equals("Admin")) {
-                hql = "from Resource where resourceType = :type and parentId is null order by orderNo";
-                values.put("type", 2);
+            if (user.getLoginName().equals("admin")) {
+                hql = "from Resource where resourceType = :type and parentId = 0 order by orderNo";
+                values.put("type", 1);
             } else {
-                hql = "select a from Resource a,RoleResource b,UserRoles c where a.parentId is null and c.userId = :userId and c.roleId = b.roleId and b.resourceId = a.oid and a.resourceType.typeName = :typeName order by a.orderNo";
-                values.put("type", 2);
+                hql = "select a from Resource a,RoleResource b,UserRoles c where a.parentId =0 and c.userId = :userId and c.roleId = b.roleId and b.resourceId = a.oid and a.resourceType.typeName = :typeName order by a.orderNo";
+                values.put("type", 1);
                 values.put("userId", userId);
             }
 
             result = resourceDao.find(hql, values);
         } catch (Exception e) {
 
-            logger.error("获取用户授权的子系统失败：" + e.getMessage());
+            logger.error("获取用户授权的模块：" + e.getMessage());
             throw new ServiceException(e.getMessage());
         }
 
@@ -89,7 +92,7 @@ public class ResourcesService extends EntityService<Resource, Long> {
 
             Map<String, Object> values = new HashMap<String, Object>();
 
-            if (user.getLoginName().equals("Admin")) {
+            if (user.getLoginName().equals("admin")) {
                 hql = "from Resource where parentId = :parentId order by orderNo";
                 values.put("parentId", parentId);
 
@@ -196,76 +199,49 @@ public class ResourcesService extends EntityService<Resource, Long> {
     }
 
     public void initData() throws ServiceException {
+        if ((Long)this.resourceDao.findUnique("select count(h) from " + Resource.class.getName() + " h") != 0)
+            return;
+
         logger.debug("开始装载资源初始数据");
 
-//        File resourcetxt = new File(this.getClass().getResource("data/resource.txt").getFile());
-//
-//        DataFile read = DataFile.createReader("UTF-8");
-//        read.setDataFormat(new SimpleDelimiterFormat(",", null));
-//        // first line is column header
-//        read.containsHeader(true);
-//
-//        try {
-//            read.open(resourcetxt);
-//
-//            String s0;
-//            Resources u;
-//            String id, parentId;
-//
-//            for (DataRow row = read.next(); row != null; row = read.next()) {
-//                s0 = row.getString("text").trim();
-//                parentId = row.getString(4).trim();// "parentId"
-//
-//                if (s0.equals(""))
-//                    continue;
-//
-//                if (parentId.equals("")) {
-//                    // TODO parentId设为0
-//                    u = this.resourcesDao.findUnique("from " + Resources.class.getName()
-//                            + " where text=? and (parentId='' or parentId is null) ", s0);
-//
-//                } else {
-//                    u = this.resourcesDao.findUnique("from " + Resources.class.getName()
-//                            + " where text=? and parentId =? ", s0, Long.valueOf(parentId));
-//                }
-//
-//                if (u == null) {
-//                    u = new Resources();
-//                    u.setText(s0);
-//                    id = row.getString(0).trim();// "resourceId"
-//                    parentId = row.getString(4).trim();// "parentId"
-//
-//                    if (!id.equals("")) {
-//                        u.setOid(new Long(id));
-//                    }
-//                    u.setUrl(row.getString("url"));
-//                    u.setOrderNo(new Long(row.getString("orderNo")));
-//                    u.setLeaf(!row.getString("leaf").equals("0"));
-//
-//                    ResourceType type = resourceTypeDao.get(new Long(row
-//                            .getString("resourceTypeId")));
-//                    u.setResourceType(type);
-//
-//                    if (!parentId.equals("")) {
-//                        u.setParentId(new Long(parentId));
-//                    }
-//
-//                    // u.setNote(row.getString("note"));
-//                    resourcesDao.save(u);
-//                } else {
-//                    u.setUrl(row.getString("url"));
-//                    u.setOrderNo(new Long(row.getString("orderNo")));
-//                    resourcesDao.save(u);
-//                }
-//            }
-//        } catch (Exception e) {
-//            logger.error("初始资源数据出错:" + e.getMessage());
-//            throw new ServiceException(e.getMessage());
-//        } finally {
-//            read.close();
-//        }
-    }
+        File resourcetxt = new File(this.getClass().getResource("/data/resource.txt").getFile());
+        try {
+            FileInputStream fis = new FileInputStream(resourcetxt);
+            String thisLine;
 
+            DataInputStream myInput = new DataInputStream(fis);
+            BufferedReader br = new BufferedReader(new InputStreamReader(myInput, "UTF-8"));
+
+            Resource re ;
+            int line = 1;
+            while ((thisLine = br.readLine()) != null) {
+                //第一行是标题
+                if (line == 1) {
+                    line++;
+                    continue;
+                }
+                String star[] = thisLine.split(",");
+                if (star[1].trim().equals(""))
+                    continue;
+
+                re = new Resource();
+                re.setId(Long.valueOf(star[0]));
+                re.setName(star[1]);
+                re.setUrls(star[2]);
+                re.setLeaf(star[3].equals("1")?true:false);
+                re.setParentId(Long.valueOf(star[4]));
+                re.setResourceType(star[5]);
+                re.setOrderNo(Long.valueOf(star[6]));
+
+                this.resourceDao.save(re);
+            }
+        } catch (Exception e) {
+            logger.error("装载资源数据出错:" + e);
+            throw new ServiceException("导入资源时，服务器发生异常");
+        } finally {
+            //br.close();
+        }
+    }
 
 
 }
