@@ -18,9 +18,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="Cache-Control" content="no-store"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<link rel="shortcut icon" href="${apath}/resources/img/icon/extjs.ico" />
+<!--
+<link rel="shortcut icon" href="${apath}resources/img/icon/extjs.ico" />
+ -->
+<link rel="shortcut icon" href="<c:url value="/resources/img/icon/favicon.ico"/>" />
+<link rel="icon" href="<c:url value="/resources/img/icon/favicon.ico"/>" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/ext/resources/css/ext-all.css"/>" />
-
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/app.css"/>" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/ext_icon.css"/>" />
 <% //if client_browser_name == 'Mozilla'%>
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/ext-patch.css"/>" />
 <% //end %>
@@ -57,20 +62,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       document.write('<title>' + '${Application_Name}'+'-'+ CFG_PRODUCT_VERSION + '</title>');
 </script>
 </head>
-<body>
-<div id="app-loading-mask" style=""></div>
+<body scroll="no" id="docs">
+<div id="app-loading-mask"></div>
 <div id="app-loading">
-<div class="app-loading-indicator">
-<span id="app-loading-logo">
-<script>
-      s='${Application_Name}'+'-'+ CFG_PRODUCT_VERSION;
-
-      document.write(s);
-</script>
-</span><br>
-<span id="app-loading-logo-text"></span> <br>
-<img src="resources/img/extanim32.gif" /> <br>
-<span id="app-loading-msg">装载中...</span></div>
+    <div class="app-loading-indicator">
+        <img src="resources/img/extanim32.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle" />
+        资源装载中&hellip;
+    </div>
 </div>
 
 <div id="west"></div>
@@ -81,21 +79,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   style="border: 0; width: 100%; height: 100%; overflow-y: hidden; margin: 0; padding: 0;"
   FRAMEBORDER="no"></iframe></div>
 
-<script type="text/javascript">document.getElementById('app-loading-msg').innerHTML = '装载资源...';</script>
 <script type="text/javascript" src="<c:url value='/resources/js/lib/app.base.component.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/ux/Ext.ux.Image.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/lib/lib.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/app/DcLogin.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/app/DcMenuTree.js'/>"></script>
-<script type="text/javascript">document.getElementById('app-loading-msg').innerHTML = '初始化...';</script>
-
 <script type="text/javascript" src="<c:url value='/resources/js/main.js' />"></script>
 
-<div id="header"><img alt="logo" src="resources/img/log-line.gif" /></div>
-<div id="footer"><p>版权信息</p></div>
-<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/app.css"/>" />
-<!--
-<script type="text/javascript" src="<c:url value='/resources/js/opoa.main.js' />"></script>
- -->
 </body>
 </html>

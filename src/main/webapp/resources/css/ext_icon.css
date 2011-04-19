@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+.icon-submit{
+  background-image: url(ux/accept.png) !important;
+}
+
 .icon-cls {
   background-image: url(../img/icon/class.gif) !important;
 }

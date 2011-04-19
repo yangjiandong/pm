@@ -49,6 +49,7 @@ Ext.onReady(function() {
 
   if (!Ext.isEmpty(Ext.get('app-loading'))) {
     Ext.get('app-loading').remove();
+    Ext.get('app-loading-mask').fadeOut({remove:true});
   }
 
   if (!loggedIn) {
