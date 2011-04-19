@@ -43,4 +43,15 @@ curl http://.../document.doc \
   | java -jar tika-app-0.9.jar --text \
   | grep -q keyword
 
+
+   7. docbook mvn plugin
+
+   参考 netty 项目
+   mvn org.jboss.maven.plugins:maven-jdocbook-plugin:2.2.0:resources org.jboss.maven.plugins:maven-jdocbook-plugin:2.2.0:generate
+   or
+   mvn jdocbook:resources jdocbook:generate
+
+   中文问题,关注
+   http://blog.chinaunix.net/space.php?uid=191839&do=blog&id=85833
+
    --END

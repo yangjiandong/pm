@@ -1,6 +1,19 @@
 Personnel_Management System
 ============================
 
+2011.04.18
+----------
+
+   1. docbook mvn plugin
+
+   参考 netty 项目
+   mvn org.jboss.maven.plugins:maven-jdocbook-plugin:2.2.0:resources org.jboss.maven.plugins:maven-jdocbook-plugin:2.2.0:generate
+   or
+   mvn jdocbook:resources jdocbook:generate
+
+   中文问题:
+   maven-jdocbook-plugin
+
 2011.04.17
 ----------
 

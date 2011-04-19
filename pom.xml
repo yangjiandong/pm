@@ -267,12 +267,12 @@
 
     <!-- use tomcat 6 -->
     <!--
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>jasper-el</artifactId>
-      <version>6.0.18</version>
-    </dependency>
-    -->
+      <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>jasper-el</artifactId>
+        <version>6.0.18</version>
+      </dependency>
+      -->
     <!-- web end -->
 
     <!-- Jackson JSON Mapper -->
@@ -715,6 +715,118 @@
               <exclude>**/entity/**/*.class</exclude>
             </excludes>
           </instrumentation>
+        </configuration>
+      </plugin>
+
+      <!-- docbook -->
+      <plugin>
+        <groupId>org.jboss.maven.plugins</groupId>
+        <artifactId>maven-jdocbook-plugin</artifactId>
+        <version>2.2.1</version>
+        <executions>
+          <execution>
+            <id>generate-docbook</id>
+            <phase>package</phase>
+            <goals>
+              <goal>resources</goal>
+              <goal>generate</goal>
+              <!--
+              <goal>translate</goal>
+              -->
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jbossorg-docbook-xslt</artifactId>
+            <version>1.1.0</version>
+            <exclusions>
+              <exclusion>
+                <groupId>org.eclipse.wst.css</groupId>
+                <artifactId>core</artifactId>
+              </exclusion>
+              <exclusion>
+                <groupId>org.eclipse.wst.sse</groupId>
+                <artifactId>core</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jbossorg-jdocbook-style</artifactId>
+            <version>1.1.0</version>
+            <type>jdocbook-style</type>
+            <exclusions>
+              <exclusion>
+                <groupId>org.eclipse.wst.css</groupId>
+                <artifactId>core</artifactId>
+              </exclusion>
+              <exclusion>
+                <groupId>org.eclipse.wst.sse</groupId>
+                <artifactId>core</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jbossorg-fonts</artifactId>
+            <version>1.0.0</version>
+            <type>jdocbook-style</type>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <masterTranslation>zh-CN</masterTranslation>
+          <translations>
+            <translation>zh-CN</translation>
+          </translations>
+          <sourceDocumentName>master.xml</sourceDocumentName>
+          <!-- default en-US-->
+          <!--
+            <sourceDirectory>${basedir}/src/docbook</sourceDirectory>
+            -->
+          <sourceDirectory>${basedir}/src/docbook</sourceDirectory>
+          <cssResource>
+            <directory>${basedir}/src/docbook</directory>
+            <includes>
+              <include>css/**/*</include>
+            </includes>
+          </cssResource>
+          <imageResource>
+            <directory>${basedir}/src/docbook</directory>
+            <includes>
+              <include>images/**/*</include>
+            </includes>
+          </imageResource>
+          <formats>
+            <format>
+              <formatName>html</formatName>
+              <stylesheetResource>file:///${basedir}/src/docbook/xslt/xhtml.xsl</stylesheetResource>
+              <finalName>index.html</finalName>
+            </format>
+            <format>
+              <formatName>html_single</formatName>
+              <stylesheetResource>file:///${basedir}/src/docbook/xslt/xhtml-single.xsl</stylesheetResource>
+              <finalName>index.html</finalName>
+            </format>
+            <format>
+              <formatName>eclipse</formatName>
+              <stylesheetResource>file:///${basedir}/src/docbook/xslt/eclipse.xsl</stylesheetResource>
+              <finalName>index.html</finalName>
+            </format>
+            <format>
+              <formatName>pdf</formatName>
+              <stylesheetResource>file:///${basedir}/src/docbook/xslt/pdf.xsl</stylesheetResource>
+              <finalName>netty.pdf</finalName>
+            </format>
+          </formats>
+          <options>
+            <xincludeSupported>true</xincludeSupported>
+            <xmlTransformerType>saxon</xmlTransformerType>
+            <docbookVersion>1.72.0</docbookVersion>
+            <localeSeparator>-</localeSeparator>
+            <autoDetectFonts>true</autoDetectFonts>
+          </options>
         </configuration>
       </plugin>
     </plugins>

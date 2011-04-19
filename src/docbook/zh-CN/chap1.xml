@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding="utf-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="zh-CN"
+  xmlns:xlink="http://www.w3.org/1999/xlink" id="ch1" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <title>光子的第一篇Docbook 5.0文档</title>
+
+  <section>
+    <title>第一章标题</title>
+    <para>
+      这是光子的第一篇Docbook 5.0文档，我的BLOG<link xlink:href='http://www.blogjava.net/kuuyee/'>光子CI之旅</link>。
+    </para>
+  </section>
+</chapter>
