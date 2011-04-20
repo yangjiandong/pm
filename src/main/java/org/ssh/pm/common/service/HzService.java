@@ -25,6 +25,7 @@ import org.ssh.pm.cache.CacheUtil;
 import org.ssh.pm.cache.MemcachedObjectType;
 import org.ssh.pm.common.dao.HzDao;
 import org.ssh.pm.common.entity.Hz;
+import org.ssh.pm.orm.hibernate.CustomerContextHolder;
 
 @Service("hzService")
 @Transactional
@@ -211,6 +212,8 @@ public class HzService {
 
     // 要采用批量插入
     public void initDataByBatch() throws ServiceException {
+        //CustomerContextHolder.clearCustomerType();
+
         if (this.hzDao.getHzCount() != 0)
             return;
 

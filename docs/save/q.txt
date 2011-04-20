@@ -1,9 +1,9 @@
-1. entry 无主键,Id的设置
+ok 1. entry 无主键,Id的设置
 
    主键是必须有的，要么是单字段的id，要么是组合的composite-id
    如t_hzk,还是增加字段Id
 
-2. A Foreign key refering org.ssh.pm.common.entity.User from org.ssh.pm.common.entity.Role has the wrong number of column. should be 2
+ok 2. A Foreign key refering org.ssh.pm.common.entity.User from org.ssh.pm.common.entity.Role has the wrong number of column. should be 2
    ..
    or
    Repeated column in mapping for entity: org.ssh.pm.common.entity.User column: id (should be mapped with insert="false" update="false")
@@ -19,7 +19,7 @@
    取消IdEntity中所有标注(原有实现改用UIdEntity)
    @Id标注全部由子类定义
 
-3. 2011.04.14
+ok 3. 2011.04.14
 
    HzService.initData ,没采用主键值判断,循环插入时
 
@@ -49,7 +49,7 @@
 
    DEBUG: org.ssh.pm.log.appender.JdbcLogWriter - "队列dblog的持久化文件D:\apache-tomcat-6.0.18\temp\queue\dblog不存在" ()
 
-5. SimpleJdbcCall oracle 下返回记录集只能用"P_CURSOR"
+ok 5. SimpleJdbcCall oracle 下返回记录集只能用"P_CURSOR"
 
    理解错误,应该是: oracle下需与后台存储过程中定义的cursor名一致
 
@@ -60,5 +60,12 @@ begin
   select * from t_users;
 end sp_get_all_user;
 
+6. hibernate 动态数据源
+
+http://blog.csdn.net/mingxunzh/archive/2009/10/28/4739864.aspx
+
+   总是返回 defaultTargetDataSource 指定数据源
+
+http://topic.csdn.net/u/20110318/18/e353ea2e-8f4f-4914-9677-0b452369db7c.html
 
    --END

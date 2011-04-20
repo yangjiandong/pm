@@ -1,6 +1,12 @@
 Personnel_Management System
 ============================
 
+2011.04.20
+----------
+
+   1. 多数据源(相同表存放多个数据库   )
+   applicationContext-dynamic-datasource.xml
+
 2011.04.18
 ----------
 

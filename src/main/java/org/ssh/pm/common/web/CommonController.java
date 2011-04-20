@@ -22,6 +22,7 @@ import org.ssh.pm.common.service.CategoryService;
 import org.ssh.pm.common.service.HzService;
 import org.ssh.pm.common.service.ResourcesService;
 import org.ssh.pm.log.LogAction;
+import org.ssh.pm.orm.hibernate.CustomerContextHolder;
 
 
 //公开访问
@@ -53,6 +54,7 @@ public class CommonController {
         this.accountManager.initData();
         data.add(new Bean(true, "用户初始数据成功!", this.hzService.getClass().getName()));
 
+        CustomerContextHolder.setCustomerType("Yxh");
         try {
             this.hzService.initDataByBatch();
             data.add(new Bean(true, "hzk初始数据成功!", ""));
