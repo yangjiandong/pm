@@ -54,6 +54,7 @@ public class CommonController {
         this.accountManager.initData();
         data.add(new Bean(true, "用户初始数据成功!", this.hzService.getClass().getName()));
 
+        //指定数据源
         CustomerContextHolder.setCustomerType("Yxh");
         try {
             this.hzService.initDataByBatch();
@@ -63,6 +64,8 @@ public class CommonController {
             data.add(new Bean(false, "hzk初始数据失败!" + se.toString(), ""));
         }
 
+        //
+        CustomerContextHolder.setCustomerType("admin");
         try {
             this.resourcesService.initData();
             data.add(new Bean(true, "资源初始数据成功!", this.resourcesService.toString()));

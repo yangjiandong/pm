@@ -17,8 +17,8 @@
         <value>classpath*:/application.properties</value>
         <!-- 本地开发环境配置 -->
         <value>classpath*:/application.local.properties</value>
-        <!-- 服务器生产环境配置 -->
-        <value>file:/var/showcase/application.server.properties</value>
+        <!-- 服务器生产环境配置 file:/var/showcase/-->
+        <value>file:///${CONFIG_DIR}/showcase/application.server.properties</value>
       </list>
     </property>
   </bean>
@@ -60,6 +60,7 @@
   <bean id="dataSource" class="org.ssh.pm.orm.hibernate.DynamicDataSource">
     <property name="targetDataSources">
       <map key-type="java.lang.String">
+        <entry key="admin" value-ref="adminDataSource"/>
         <entry key="Yxh" value-ref="yxhDataSource"/>
       </map>
     </property>
