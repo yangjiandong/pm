@@ -1,8 +1,19 @@
+<%@page import="org.ssh.pm.common.web.PageUtils"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="../../common/taglibs.jsp"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ page session="false" %>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<%pageContext.setAttribute("Application_Name", "应用程序开发框架");%>
+<%pageContext.setAttribute("version", (String)PageUtils.getApplicationInfos().get("version"));%>
+<%pageContext.setAttribute("ext", "resources/ext");%>
+<%pageContext.setAttribute("run_mode", "DEV");%>
+<%pageContext.setAttribute("apath", basePath);%>
+<%pageContext.setAttribute("copyright", (String)PageUtils.getApplicationInfos().get("copyright"));%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -67,7 +78,7 @@
     </div>
     <hr/>
     <div id="footer" class="span-24">
-      <p style="color: rgb(118, 118, 118); font-size: 8pt;">&copy; 2008- 版权所有
+      <p style="color: rgb(118, 118, 118); font-size: 8pt;">&copy; 2008- 版权所有${copyright }
     </div>
   </div>
 </body>

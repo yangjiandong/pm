@@ -1,5 +1,13 @@
+<%@page import="org.springframework.web.util.WebUtils"%>
+<%@page import="org.ssh.pm.common.web.UserSession"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="../common/taglibs.jsp"%>
+
+<%
+  UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+%>
+
+
 <style>
 /* leftbar */
 #leftbar a {
@@ -50,32 +58,39 @@
       href="${ctx}/j_spring_security_logout">退出登录</a>
 
   </div>
+
+
   <div class="span-12 last">
-    <div class="error">
-      This is a &lt;div&gt; with the class <strong>.error</strong>. <a
-        href="#">Link</a>.
-    </div>
-    <div class="box">
-      <fieldset>
-        <legend>Select, checkboxes, lists</legend>
 
-        <p>
-          <label for="dummy0">用户名</label><br> <input type="text"
-            class="text" name="dummy0" id="dummy0"
-            value="Field with class .title">
-        </p>
-        <p>
-          <label for="dummy3">密码</label><br> <input
-            type="password" class="text" id="dummy3" name="dummy3"
-            value="Password field with class .text">
-        </p>
+    <c:if test="${empty userSession.account}">
+      <a href="<c:url value="/shop/signonForm.do"/>"><img border="0"
+        name="img_signin" src="../images/sign-in.gif" /> </a>
 
-        <p>
-          <input type="submit" value="Submit"> <input type="reset"
-            value="Reset">
-        </p>
-      </fieldset>
-    </div>
+      <div class="error">
+        This is a &lt;div&gt; with the class <strong>.error</strong>. <a
+          href="#">Link</a>.
+      </div>
+      <div class="box">
+        <fieldset>
+          <legend>Select, checkboxes, lists</legend>
 
+          <p>
+            <label for="dummy0">用户名</label><br> <input type="text"
+              class="text" name="dummy0" id="dummy0"
+              value="Field with class .title">
+          </p>
+          <p>
+            <label for="dummy3">密码</label><br> <input type="password"
+              class="text" id="dummy3" name="dummy3"
+              value="Password field with class .text">
+          </p>
+
+          <p>
+            <input type="submit" value="Submit"> <input type="reset"
+              value="Reset">
+          </p>
+        </fieldset>
+      </div>
+    </c:if>
   </div>
 </div>
