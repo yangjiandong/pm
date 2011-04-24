@@ -1,6 +1,24 @@
 Personnel_Management System
 ============================
 
+2011.04.23
+----------
+
+   1. test default.jsp
+  <!--
+  <definition name="index" template="/views/index.jsp"/>
+  -->
+
+  <!-- init data -->
+  <definition name="index" extends="page">
+    <put-attribute name="title" value="初始化数据..." type="string" />
+    <put-attribute name="content" value="/views/default.jsp" type="template" />
+  </definition>
+
+   2. 通过反射Hibernate实体字段名
+   http://shewolfep.iteye.com/blog/1013390
+   HibernateTool
+
 2011.04.20
 ----------
 

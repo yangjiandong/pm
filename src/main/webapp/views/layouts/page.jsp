@@ -12,6 +12,8 @@
     <tiles:insertAttribute name="title" />
   </title>
   <link rel="stylesheet" href="<c:url value="/resources/css/blueprint/screen.css" />" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="<c:url value="/resources/css/blueprint/plugins/link-icons/screen.css" />" type="text/css" media="screen, projection" />
+
   <link rel="stylesheet" href="<c:url value="/resources/css/blueprint/print.css" />" type="text/css" media="print" />
   <!--[if lt IE 8]>
     <link rel="stylesheet" href="<c:url value="/resources/css/blueprint/ie.css" />"
@@ -21,7 +23,7 @@
   <c:forEach var="style" items="${styles}">
     <link rel="stylesheet" href="<c:url value="/resources/css/${style}" />" type="text/css" media="all" />
   </c:forEach>
-  <script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery.min.js" />"></script>
+  <script type="text/javascript" src="<c:url value="/resources/jquery/jquery.1.4.2.js" />"></script>
   <tiles:useAttribute id="scripts" name="scripts" classname="java.util.List" ignore="true" />
   <c:forEach var="script" items="${scripts}">
     <script type="text/javascript" src="<c:url value="/resources/js/${script}" />"></script>
@@ -54,8 +56,8 @@
       <p></p>
       <div id="logo" class="span-24 last">
         <div class="span-6">
-          <h1>spring3</h1>
-          <h2 class="alt">开发框架</h2>
+          <h1>经济运营平台</h1>
+          <h2 class="alt">成本核算</h2>
         </div>
       </div>
       <hr/>
@@ -65,7 +67,7 @@
     </div>
     <hr/>
     <div id="footer" class="span-24">
-      Copyright (c) 2010 SpringSource
+      <p style="color: rgb(118, 118, 118); font-size: 8pt;">&copy; 2008- 版权所有
     </div>
   </div>
 </body>
