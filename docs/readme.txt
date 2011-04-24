@@ -1,6 +1,17 @@
 Personnel_Management System
 ============================
 
+2011.04.24
+----------
+
+   1. save/jdbcTemplate.txt
+
+   2. org.ssh.pm.common.web.UserSession
+      org.ssh.pm.common.web.PageUtils
+
+   3. jfreechartTemplate
+   org.ssh.pm.utils
+
 2011.04.23
 ----------
 

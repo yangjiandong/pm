@@ -1,0 +1,238 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sql.DataSource;
+import com.ccit.dao.inter.RowMapper;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+public class JDBCTemplate {
+
+  private static JDBCTemplate template;
+  private DataSource ds;
+  private Connection conn;
+  private Statement state;
+  private PreparedStatement ps;
+  
+  public JDBCTemplate() {
+    ds = new ComboPooledDataSource();
+  }
+  
+  public static JDBCTemplate getJDBCTemplate(){
+    if(null == template){
+      template = new JDBCTemplate();
+    }
+    return template;
+  }
+  
+  public Connection getConnection() throws SQLException{
+    return ds.getConnection();
+  }
+  
+  /**
+   * 更新数据表，update,delete,insert
+   * @param sql
+   * @return
+   */
+  public int ExecuteUpdate(String sql){
+    int flag = 0;
+    try {
+      conn = getConnection();
+      state = conn.createStatement();
+      flag = state.executeUpdate(sql);
+    } catch (SQLException e) {
+      System.out.println("ERROR001:更新数据失败");
+      e.printStackTrace();
+    }finally{
+      try {
+        if(null != ps) ps.close();
+        if(null != state) state.close();
+        if(null != conn) conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    
+    return flag;
+  }
+  
+  /**
+   * 用于更新数据表 update,delete,insert
+   * @param sql
+   * @param param
+   * @return
+   */
+  public int ExecuteUpdate(String sql,Object ...param ){
+    int flag = 0;
+    try {
+      conn = getConnection();
+      ps = conn.prepareStatement(sql);
+       for(int i=0;i<param.length;i++){
+         ps.setObject(i+1, param[i]);
+       }
+       flag = ps.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println("ERROR001:更新数据失败");
+      e.printStackTrace();
+    }finally{
+      try {
+        if(null != ps) ps.close();
+        if(null != state) state.close();
+        if(null != conn) conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return flag;
+  }
+
+  /**
+   * 用于相同sql语句的批量处理
+   * @param sql
+   * @param params
+   * @return
+   */
+  public int[] executeBatch(String sql,Object[]...params){
+    int flag[] = new int[0];
+    try {
+      conn = getConnection();
+      ps = conn.prepareStatement(sql);
+      for(int i=0;i<params.length;i++){
+        for(int j=0;j<params[i].length;j++){
+          ps.setObject(j+1, params[i][j]);
+        }
+        ps.addBatch();
+      }
+      flag = ps.executeBatch();
+    } catch (SQLException e) {
+      System.out.println("ERROR001:更新数据失败");
+      e.printStackTrace();
+    }finally{
+      try {
+        if(null != ps) ps.close();
+        if(null != state) state.close();
+        if(null != conn) conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return flag;
+  }
+  
+  /**
+   * 返回表里的所有数据
+   * @param sql
+   * @param rm
+   * @return
+   */
+  public List executeQuery(String sql,RowMapper rm){
+    List list=new ArrayList(0);
+    try {
+      conn = getConnection();
+      state = conn.createStatement();
+      ResultSet rs=state.executeQuery(sql);
+      while(rs.next()){
+        list.add(rm.RowMap(rs));
+      }
+    } catch (SQLException e) {
+      System.out.println("ERROR002:查询数据失败");
+      e.printStackTrace();
+    }finally{
+      try {
+        if(null != ps) ps.close();
+        if(null != state) state.close();
+        if(null != conn) conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return list;
+  }
+  
+  /**
+   * 返回表里的所有数据
+   * @param sql
+   * @param rm
+   * @param params
+   * @return
+   */
+  public List executeQuery(String sql,RowMapper rm,Object ...params){
+    List list = new ArrayList(0);
+    try {
+      conn = getConnection();
+      ps = conn.prepareStatement(sql);
+      for(int i=0;i<params.length;i++){
+        ps.setObject(i+1, params[i]);
+      }
+      ResultSet rs=ps.executeQuery();
+      while(rs.next()){
+        list.add(rm.RowMap(rs));
+      }
+    } catch (SQLException e) {
+      System.out.println("ERROR002:查询数据失败");
+      e.printStackTrace();
+    }finally{
+      try {
+        if(null != ps) ps.close();
+        if(null != state) state.close();
+        if(null != conn) conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return list;
+  }
+  /**
+   * 得到一个对象
+   * @param sql
+   * @param rm
+   * @return
+   */
+  public Object getUniquObject(String sql,RowMapper rm){
+    Object obj=null;
+    try {
+      conn = getConnection();
+      state = conn.createStatement();
+      ResultSet rs=state.executeQuery(sql);
+      if(rs.next())
+        obj=  rm.RowMap(rs);
+    } catch (SQLException e) {
+      System.out.println("ERROR002:查询数据失败");
+      e.printStackTrace();
+    }finally{
+      try {
+        if(null != ps) ps.close();
+        if(null != state) state.close();
+        if(null != conn) conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return obj;
+  }
+  public int getRowCount(String sql) {//统计总数
+    int count = 0;
+    try {
+      conn = getConnection();
+      state = conn.createStatement();
+      ResultSet rs=state.executeQuery(sql);
+      if(rs.next())
+        count=  rs.getInt(1);
+    } catch (SQLException e) {
+      System.out.println("ERROR002:查询数据失败");
+      e.printStackTrace();
+    }finally{
+      try {
+        if(null != ps) ps.close();
+        if(null != state) state.close();
+        if(null != conn) conn.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return count;
+  }
+}
