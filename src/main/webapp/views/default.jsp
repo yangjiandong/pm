@@ -58,13 +58,14 @@
     <div class="box">
       <fieldset>
         <legend>Select, checkboxes, lists</legend>
+
         <p>
-          <label for="dummy0">Text input (title)</label><br> <input
-            type="text" class="title" name="dummy0" id="dummy0"
+          <label for="dummy0">用户名</label><br> <input type="text"
+            class="text" name="dummy0" id="dummy0"
             value="Field with class .title">
         </p>
         <p>
-          <label for="dummy3">A password field</label><br> <input
+          <label for="dummy3">密码</label><br> <input
             type="password" class="text" id="dummy3" name="dummy3"
             value="Password field with class .text">
         </p>
