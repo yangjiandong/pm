@@ -20,6 +20,8 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.servlet.ServletUtilities;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /***
  * Jfreechart
@@ -31,7 +33,16 @@ public class JfreeChartTemplate {
 
     // 2D饼图方法
     public static String generatePieChart(DefaultPieDataset dataset, String title, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        // struts
+        //HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        // spring
+        //http://stackoverflow.com/questions/559155/how-do-i-get-a-httpservletrequest-in-my-spring-beans
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        //probably Spring 3.0 for singelton beans required!
+        //@Autowired(required=true)
+        //private HttpServletRequest request;
+
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -62,7 +73,7 @@ public class JfreeChartTemplate {
 
     // 3D饼图方法
     public static String generatePieChart3D(DefaultPieDataset dataset, String title, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -94,7 +105,7 @@ public class JfreeChartTemplate {
     // 3D水平柱状图
     public static String generateBarChart3D(CategoryDataset dataset, String title, String catalog, String valueaxis,
             int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -128,7 +139,7 @@ public class JfreeChartTemplate {
     // 2D水平柱状图
     public static String generateBarChart2D(CategoryDataset dataset, String title, String catalog, String valueaxis,
             int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -162,7 +173,7 @@ public class JfreeChartTemplate {
     // 3D纵向柱状图
     public static String generateBarChartHeng3D(CategoryDataset dataset, String title, String catalog,
             String valueaxis, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -196,7 +207,7 @@ public class JfreeChartTemplate {
     // 2D纵向柱状图
     public static String generateBarChartHeng2D(CategoryDataset dataset, String title, String catalog,
             String valueaxis, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -230,7 +241,7 @@ public class JfreeChartTemplate {
     //区域图
     public static String generateAddressChart(CategoryDataset createDataset, String title, String hengTitle,
             String zongtitle, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -271,7 +282,7 @@ public class JfreeChartTemplate {
     //3D纵向堆栈图
     public static String generateStockChartZong3D(CategoryDataset dataset, String title, String hengTitle,
             String zongtitle, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -311,7 +322,7 @@ public class JfreeChartTemplate {
     //3D横向堆栈图
     public static String generateStockChartHeng3D(CategoryDataset dataset, String title, String hengTitle,
             String zongtitle, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -351,7 +362,7 @@ public class JfreeChartTemplate {
     //2D纵向堆栈图
     public static String generateStockChartZong2D(CategoryDataset dataset, String title, String hengTitle,
             String zongtitle, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -391,7 +402,7 @@ public class JfreeChartTemplate {
     //2D横向堆栈图
     public static String generateStockChartHeng2D(CategoryDataset dataset, String title, String hengTitle,
             String zongtitle, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -431,7 +442,7 @@ public class JfreeChartTemplate {
     //2D线性图
     public static String generateLineChart2D(CategoryDataset dataset, String title, String hengTitle, String zongtitle,
             int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -472,7 +483,7 @@ public class JfreeChartTemplate {
     //2D线性图  纵轴不从0起
     public static String generateLineChart2Ds(CategoryDataset dataset, String title, String hengTitle,
             String zongtitle, int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
@@ -522,7 +533,7 @@ public class JfreeChartTemplate {
     //3D线性图
     public static String generateLineChart3D(CategoryDataset dataset, String title, String hengTitle, String zongtitle,
             int w, int h) {
-        HttpServletRequest request = ServletActionContext.getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
         StringWriter strWriter = new StringWriter();
         PrintWriter pw = new PrintWriter(strWriter);
