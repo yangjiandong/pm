@@ -181,6 +181,23 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-ehcache</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search</artifactId>
+    </dependency>
+    <!-- lucene start -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-analyzers</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-highlighter</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+
     <dependency>
       <groupId>javassist</groupId>
       <artifactId>javassist</artifactId>
@@ -731,8 +748,8 @@
               <goal>resources</goal>
               <goal>generate</goal>
               <!--
-              <goal>translate</goal>
-              -->
+                <goal>translate</goal>
+                -->
             </goals>
           </execution>
         </executions>

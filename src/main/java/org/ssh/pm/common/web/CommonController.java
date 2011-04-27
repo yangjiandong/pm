@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.jpa.Search;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springside.modules.utils.JsonViewUtil;
 import org.ssh.pm.common.entity.User;
 import org.ssh.pm.common.service.AccountManager;
 import org.ssh.pm.common.service.CategoryService;
+import org.ssh.pm.common.service.EmployeeService;
 import org.ssh.pm.common.service.HzService;
 import org.ssh.pm.common.service.ResourcesService;
 import org.ssh.pm.log.LogAction;
@@ -38,6 +41,9 @@ public class CommonController {
     private CategoryService categoryService;
     @Autowired
     private ResourcesService resourcesService;
+    @Autowired
+    private EmployeeService employeeService;
+
 
     @RequestMapping("/init")
     public void initData(HttpServletRequest request,
@@ -50,6 +56,9 @@ public class CommonController {
         dblogger.info("开始初始化系统基础数据...");
 
         long start = System.currentTimeMillis();
+
+        this.employeeService.initData();
+        data.add(new Bean(true, "hibernate-search-用户初始数据!", this.employeeService.getClass().getName()));
 
         this.accountManager.initData();
         data.add(new Bean(true, "用户初始数据成功!", this.hzService.getClass().getName()));
@@ -127,4 +136,5 @@ public class CommonController {
         logger.info(" exec sp 执行共计:" + (System.currentTimeMillis() - start) + " ms");
         return JsonViewUtil.getModelMap(u);
     }
+
 }

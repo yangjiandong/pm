@@ -1,6 +1,33 @@
 Personnel_Management System
 ============================
 
+2011.04.27
+----------
+
+   1. 自定义数据类型
+   usertype.ArrayType
+
+   2. add hibernate-search
+   http://nopainnogain.iteye.com/blog/859731
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search</artifactId>
+    </dependency>
+    <!-- lucene start -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-analyzers</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-highlighter</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+
+    org.ssh.pm.common.entity.Employee
+
 2011.04.24
 ----------
 

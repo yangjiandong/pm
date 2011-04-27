@@ -1,0 +1,127 @@
+对多数据源进行aop声明式事务管理
+文章分类:Java编程 关键字: spring aop 事务
+当在对数据库表进行横向切分(将一个表的数据拆分为到多个数据库中)之后, 在操作数据库的时候需要路由到合适的数据源, 这里我参照了Spring对多数据源的路由处理方式(http://blog.springsource.com/2007/01/23/dynamic-datasource-routing). 具体实现如下.
+首先是TransactionManager的配置:
+
+<?xml version="1.0" encoding="gb2312"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+  <bean id="db1Tx"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource">
+            <ref bean="db1" />
+    </property>
+  </bean>
+
+  <bean id="db2Tx"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource">
+      <ref bean="db2" />
+    </property>
+  </bean>
+
+  <bean id="dbcTx"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource">
+          <ref bean="dbc" />
+    </property>
+  </bean>
+
+  <bean id="routingTransactionManager" class="com.mysoft.manager.impl.RoutingTransactionManager">
+    <property name="targetTransactionManagers">
+      <map value-type="org.springframework.transaction.PlatformTransactionManager">
+        <entry key="db1" value-ref="db1Tx" />
+        <entry key="db2" value-ref="db2Tx" />
+        <entry key="dbc" value-ref="dbcTx" />
+      </map>
+    </property>
+  </bean>
+
+  <!--     配置事务回滚的场景   -->
+  <tx:advice id="txAdvice" transaction-manager="routingTransactionManager">
+    <tx:attributes>
+                <tx:method name="*" rollback-for="java.lang.Exception"/>
+    </tx:attributes>
+  </tx:advice>
+
+  <!--   指定那些类的哪些方法参与事务   -->
+  <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.mysoft.manager.Manager1.publish(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.mysoft.manager.Manager2.audit(..))"/>
+  </aop:config>
+</beans>
+
+
+这里用到了spring的tx和aop标签, 都是spring的参考手册中的典型配置. 当调用指定的packageName.method(..)方法的时候, 将采用事务拦截, 如果在对该方法的调用过程中出现了任何异常将导致事务回滚.
+
+接下来就是路由的问题, 其中RoutingContextHolder类内部使用一个ThreadLocal类用来指定db1, db2, db3等key值, RoutingTransactionManager类则根据当前线程中的key值取得对应的tx.
+
+/**
+* 用来存储路由到指定tx的Context
+ *
+ * @since 2009-10-28 下午01:54:46
+ */
+@SuppressWarnings("unchecked")
+public class RoutingContextHolder<T> {
+    private static final ThreadLocal contextHolder = new ThreadLocal();
+
+    public static <T> void setContext(T context) {
+        Validate.notNull(context, "必须指定路由的context");
+        contextHolder.set(context);
+    }
+
+    public static <T> T getContext() {
+        return (T) contextHolder.get();
+    }
+}
+
+/**
+* 根据给定的路由规则来路由到合适的tx类
+ *
+ * @since 2009-10-28 下午01:34:11
+ * @see RoutingContextHolder
+ */
+public class RoutingTransactionManager implements PlatformTransactionManager {
+    private Map<Object, PlatformTransactionManager> targetTransactionManagers =
+            new HashMap<Object, PlatformTransactionManager>();
+
+    /**
+     * 根据给定的规则获取指定的tx
+     *
+     * @return
+     */
+    protected PlatformTransactionManager getTargetTransactionManager() {
+        Object context = RoutingContextHolder.getContext();
+        Validate.notNull(context, "必须指定路由的context");
+        return targetTransactionManagers.get(context);
+    }
+
+    public void setTargetTransactionManagers(Map<Object, PlatformTransactionManager> targetTransactionManagers) {
+        this.targetTransactionManagers = targetTransactionManagers;
+    }
+
+    public void commit(TransactionStatus status) throws TransactionException {
+        getTargetTransactionManager().commit(status);
+    }
+
+    public TransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException {
+        return getTargetTransactionManager().getTransaction(definition);
+    }
+
+    public void rollback(TransactionStatus status) throws TransactionException {
+        getTargetTransactionManager().rollback(status);
+    }
+}
+
+
+其调用代码如下:
+Java代码  收藏代码
+
+   1. // 指定tx的路由context
+   2. RoutingContextHolder.setContext("db1");
+   3. return manager1.publish(item);

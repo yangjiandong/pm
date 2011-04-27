@@ -69,6 +69,10 @@
         <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
         <prop key="hibernate.cache.use_query_cache">false</prop>
         <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+        <prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</prop>
+        <prop key="hibernate.search.worker.batch_size">1000</prop>
+        <prop key="hibernate.search.default.indexBase">d:/index</prop>
+        <prop key="hibernate.search.analyzer">org.apache.lucene.analysis.cjk.CJKAnalyzer</prop>
       </props>
     </property>
     <!-- 放宽包名,只要是entity -->
@@ -84,21 +88,26 @@
         <entry key="post-insert">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
           </list>
         </entry>
         <entry key="post-update">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
           </list>
         </entry>
         <entry key="post-delete">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
           </list>
         </entry>
 
       </map>
     </property>
+
+
   </bean>
 
   <!-- 事务管理器配置, Hibernate单数据源事务 -->
