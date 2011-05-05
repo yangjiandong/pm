@@ -1,18 +1,5 @@
 package org.ssh.pm.common.entity;
 
-import com.google.common.collect.Lists;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import org.springside.modules.utils.ReflectionUtils;
-
-import org.ssh.pm.orm.hibernate.AuditableEntity;
-
 import java.util.List;
 
 import javax.persistence.Column;
@@ -28,6 +15,15 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springside.modules.utils.reflection.ConvertUtils;
+import org.ssh.pm.orm.hibernate.AuditableEntity;
+
+import com.google.common.collect.Lists;
 
 /**
  * 用户.
@@ -127,13 +123,7 @@ public class User extends AuditableEntity {
     //多对多定义
     @ManyToMany
     //中间表定义,表名采用默认命名规则
-    @JoinTable(name = "T_USER_ROLE", joinColumns =  {
-        @JoinColumn(name = "USER_ID")
-    }
-    , inverseJoinColumns =  {
-        @JoinColumn(name = "ROLE_ID")
-    }
-    )
+    @JoinTable(name = "T_USER_ROLE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
     //Fecth策略定义
     @Fetch(FetchMode.SUBSELECT)
     //集合按id排序
@@ -152,8 +142,7 @@ public class User extends AuditableEntity {
     @Transient
     @JsonIgnore
     public String getRoleNames() {
-        return ReflectionUtils.convertElementPropertyToString(roleList, "name",
-            ", ");
+        return ConvertUtils.convertElementPropertyToString(roleList, "name", ", ");
     }
 
     @Override

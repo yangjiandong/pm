@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
-import org.springside.modules.utils.SpringContextHolder;
 
 import org.apache.log4j.Logger;
+import org.springside.modules.utils.spring.SpringContextHolder;
 
 public class MethodEhCacheManager {
     private static Cache methodCache = (Cache) SpringContextHolder.getBean("methodCache");

@@ -1,13 +1,12 @@
 package org.ssh.pm.cache;
 
+import java.util.List;
+
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
 import org.apache.log4j.Logger;
-
-import org.springside.modules.utils.SpringContextHolder;
-
-import java.util.List;
+import org.springside.modules.utils.spring.SpringContextHolder;
 
 
 public class FixEhCacheManager {

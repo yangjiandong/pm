@@ -6,7 +6,7 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
 import org.apache.log4j.Logger;
-import org.springside.modules.utils.SpringContextHolder;
+import org.springside.modules.utils.spring.SpringContextHolder;
 
 public class InstantEhCacheManager {
     private static Cache instantCache = (Cache) SpringContextHolder.getBean("instantCache");
