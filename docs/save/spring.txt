@@ -1,0 +1,49 @@
+spring -- 知识库
+================
+
+   1. org.springframework.jdbc.core.JdbcTemplate 数据源连接泄露
+   ------------------------------------------------------------
+
+   http://handawei.iteye.com/blog/688912
+   other/spring.jdbc.txt
+
+   UserJdbcDao:
+
+   方法 getNowString 中,采用 DBUtils.isOracle(jdbcTemplate2.getDataSource().getConnection())
+   多次应用后,发生数据库连接泄露现象,表现为界面没反应,也不报错.
+
+   改为
+   DataSource dataSource = jdbcTemplate2.getDataSource();
+   Connection con = null;
+   DBUtils.isOracle(con)
+
+   正常
+
+   2. log4j 记录e.printStackTrace()
+   ------------------------------------------------------------
+
+   e.printStackTrace() 可详细显示错误
+
+   //e.printStackTrace();
+   this.logger.error("成本分类出错:",e);
+
+   log4j 高效用法
+   import org.slf4j.Logger;
+   import org.slf4j.LoggerFactory;
+
+   private static Logger logger = LoggerFactory.getLogger(AuditListener.class);
+
+   logger.info("{}对象(ID:{}) 被 {} 在 {} 修改", new Object[] { event.getEntityName(), entity.getId(),
+                        loginName, new Date() });
+
+   注明文件行数
+   layout.ConversionPattern=...(%F:%L)..
+
+   3. 数据源连接数监测
+
+   CommonController.getDatabaseInfo
+   common/datasource
+
+   --END
+
+

@@ -1,0 +1,97 @@
+hibernate -- 知识库
+===================
+
+   1. column
+   ------------------------------------------------------------
+
+   http://docs.jboss.org/hibernate/core/3.5/reference/en/html/mapping.html
+
+   <column
+        name="column_name"
+        length="N"
+        precision="N"
+        scale="N"
+        not-null="true|false"
+        unique="true|false"
+        unique-key="multicolumn_unique_key_name"
+        index="index_name"
+        sql-type="sql_type_name"
+        check="SQL expression"
+        default="SQL expression"
+        read="SQL expression"
+        write="SQL expression"/>
+
+   2. 命名策略问题
+   ------------------------------------------------------------
+
+   保留原有数据库表字段命名习惯,取消命名策略
+
+   http://javalover00000.iteye.com/blog/509159
+   <!-- Hibernate配置 -->
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+   <property name="dataSource" ref="dataSource" />
+   <!--
+      <property name="namingStrategy" ref="namingStrategy" />
+      <bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
+    </property>
+   -->
+   ...
+
+   AppNamingStrategy 为hibernate默认策略的复制.
+
+   3. hibernate3 mvn plugin
+   ------------------------------------------------------------
+
+   产生hbm2ddl
+   mvn hibernate3:hbm2ddl
+
+   TODO 还需指定实体类,不能做到指定包
+
+   4. null 值处理
+   ------------------------------------------------------------
+
+   直接处理null
+
+   if ((eTable.getNumRowsCurrSource() == null )||
+   (eTable.getNumRowsCurrSource() <= 10000 ) ) {
+
+   而不是
+   eTable.getNumRowsCurrSource().equals(null)
+
+   5. jmx
+   ------------------------------------------------------------
+
+   通过 StatisticsService 读取 hibernate 属性
+
+   jmx/applicationContext-jmx-server.xml,applicationContext-jmx-client.xml
+
+   test:
+   jmx/client/JmxClientController
+   curl http://localhost:8090/sshapp/common/jmx/jmx/getInfos
+
+   6. spring mvc , model处理
+   ------------------------------------------------------------
+
+   extjs 页面返回model时,没有PostUpdateEvent.getOldState 属性,在处理变更历史时发生null 异常
+   暂时对extjs 处理的model 不继承 Historizable
+
+   暂时解决:
+   IncomeCategoryService
+       try {
+            if (entity.getId() != null) {
+                IncomeCategory in = incomeCategoryDao.findUniqueBy("id", entity.getId());
+                BeanUtils.copyProperties(in, entity);
+                incomeCategoryDao.save(in);
+            } else {
+                incomeCategoryDao.save(entity);
+            }
+        } catch (Exception e) {
+            logger.error("save incomeCategory:", e);
+            throw new ServiceException(e);
+        }
+
+   注意,不能用dao.get(id),会报异常,原因不明.
+   并且以上方法必须写到server层,写在controller层没效果.
+
+
+   --END

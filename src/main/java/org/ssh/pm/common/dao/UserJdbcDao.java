@@ -1,13 +1,17 @@
 package org.ssh.pm.common.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +25,15 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springside.modules.utils.DBUtils;
+import org.springside.modules.utils.UtilDateTime;
 import org.springside.modules.utils.VelocityUtils;
 import org.ssh.pm.common.entity.User;
 
@@ -215,14 +222,55 @@ public class UserJdbcDao {
 
          // oracle 下只能用这个名称需与后台定义的cursor名一致
          return (List) out.get("P_CURSOR");
-// Actor actor = new Actor();
-// actor.setId(id);
-// actor.setFirstName((String) out.get("out_first_name"));
-// actor.setLastName((String) out.get("out_last_name"));
-// actor.setBirthDate((Date) out.get("out_birth_date"));
-// return actor;
+    }
 
+    /**
+     * 获取服务器端的指定格式的当前时间字符串,oracle数据库的时间格式为"yyyy.MM.dd HH24:mi:ss"
+     */
+    public String getNowString(String format) {
+        String sdate = UtilDateTime.nowDateString("yyyy-MM-dd HH:mm:ss");
+        DataSource dataSource = jdbcTemplate2.getDataSource();
+        Connection con = null;
+        try {
+            con = DataSourceUtils.getConnection(jdbcTemplate2.getDataSource());
+            String sql = "";
+            //2011.05.02
+            //连接泄露
+            //(DBUtils.isOracle(jdbcTemplate2.getDataSource().getConnection()))
+            //if (DBUtils.isOracle(con)) {
+            if (DBUtils.isOracle(con)) {
+                sql = "select to_char(sysdate,'yyyy-MM-dd HH24:mi:ss') as sys_date from dual";
+            } else if (DBUtils.isMSSqlServer(con)) {
+                sql = "Select CONVERT(varchar(100), GETDATE(), 120)";
+            } else {
+                sql = ""; // 其他数据库，则采用应用服务器系统时间
+            }
 
-        //return jdbcTemplate.query(QUERY_USER_BY_IDS, userMapper);
+            if (StringUtils.isNotEmpty(sql)) {
+                Object result = this.jdbcTemplate2.queryForObject(sql, null, String.class);
+                if (result != null) {
+                    sdate = result.toString();
+                }
+            }
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = formatter.parse(sdate);
+            sdate = new SimpleDateFormat(format).format(date);
+
+        } catch (Exception se) {
+            logger.error("getNowString:", se);
+        } finally{
+            //安全释放
+            DataSourceUtils.releaseConnection(con, dataSource);
+        }
+
+        return sdate;
+    }
+
+    /**
+     * 获取服务器端的当前时间字符串
+     */
+    public String getNowString() {
+        return getNowString("yyyy.MM.dd HH:mm:ss");
     }
 }

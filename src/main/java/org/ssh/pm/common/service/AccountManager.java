@@ -1,8 +1,11 @@
 package org.ssh.pm.common.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +67,8 @@ public class AccountManager {
             throw new ServiceException("不能修改超级管理员用户");
         }
 
-        String shaPassword = encoder.encodePassword(user.getPlainPassword(), null);
-        user.setShaPassword(shaPassword);
+        String shaPassword = encoder.encodePassword(user.getPassword(), null);
+        user.setPassword(shaPassword);
 
         userDao.save(user);
 
@@ -215,22 +218,22 @@ public class AccountManager {
         r.setDesc("系统管理员角色");
         this.roleDao.save(r);
 
-        List<Role>rs = new ArrayList<Role>();
+        List<Role> rs = new ArrayList<Role>();
         rs.add(r);
 
         User u = new User();
         //u.setId("1");
         u.setName("管理员");
         u.setLoginName("admin");
-        u.setPlainPassword("123");
+        u.setPassword("123");
         u.setEmail("admin@gmail.com");
         u.setCreateBy("初始化");
         u.setStatus("enabled");
         //add role
         u.setRoleList(rs);
 
-        String shaPassword = encoder.encodePassword(u.getPlainPassword(), null);
-        u.setShaPassword(shaPassword);
+        String shaPassword = encoder.encodePassword(u.getPassword(), null);
+        u.setPassword(shaPassword);
 
         userDao.save(u);
 
@@ -250,5 +253,45 @@ public class AccountManager {
         List<User> list = userJdbcDao.queryBySp("2011.01.01");
         //logger.info("get {} user sucessful.", list.size());
         return list;
+    }
+
+    public void createUserInTransaction2(User u) {
+        this.userJdbcDao.createUserInTransaction2(u);
+    }
+
+    /**
+     * 保存用户修改后的密码
+     */
+    @Transactional
+    public Map<String, Object> savePassword(String userName, String newPassword) throws ServiceException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String message = "";
+        boolean checked = false;
+        Session session = this.userDao.getSession();
+        try {
+            session.beginTransaction();
+            User user = userDao.findUniqueBy("name", userName);
+            if (user != null) {
+                String shaPassword = encoder.encodePassword(newPassword, null);
+                user.setPassword(shaPassword);
+            }
+            userDao.save(user);
+            session.getTransaction().commit();
+            checked = true;
+            message = "OK";
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            checked = false;
+            message = "修改密码失败";
+        }
+        map.put("success", checked);
+        map.put("message", message);
+        return map;
+    }
+
+    @Transactional(readOnly = true)
+    public String getNowString() {
+        return this.userJdbcDao.getNowString("yyyy.MM.dd HH:mm:ss");
     }
 }

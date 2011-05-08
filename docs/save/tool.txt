@@ -1,0 +1,30 @@
+tool
+====
+
+   1. 更改svn服务器地址
+
+   在C:\WINDOWS\system32\drivers\etc \hosts文件最后一行添加
+   192.168.1.254   svnserver
+   经过上面的设置后，svn的地址变为http://svnserver/svn/,这样以后如果svn的地址改变就只需要修改hosts文件
+
+   2. 删除.svn
+
+   for /r . %a in (.) do @if exist "%a\.svn" rd /s /q "%a\.svn"
+   这里用到了 for /r 来遍历 . 目录（当前目录），然后检查目录下是否存在名为 .svn 的目录，如果存在，则调用 rd /s /q 直接删除之。
+   你也可以把这个命令写成 bat 文件 -- delsvn.bat
+
+   3. tortoiseSVN 忽略文件设置
+
+   settings --> General --> Subversion --> Global ignore pattern:
+
+   增加 target *.class(注意用空格分割)
+
+   4. 解决tomcat 启动时僵死问题
+
+   删除tomcat/temp 下文件目录
+
+
+   --END
+
+
+
