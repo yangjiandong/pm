@@ -60,7 +60,7 @@
   </bean>
 
   <!-- Forwards requests to the "/" resource to the "welcome" view -->
-  <mvc:view-controller path="/" view-name="index"/>
+  <mvc:view-controller path="/" view-name="default"/>
 
   <bean name="viewResolver" class="org.springframework.web.servlet.view.XmlViewResolver" p:order="1"/>
 

@@ -1,320 +1,269 @@
-// +-------------------------------------------------------------------------+
-// | JavaScript                                                              |
-// +-------------------------------------------------------------------------+
-// | Copyright (c) 2010 -  yangjiandong CO., LTD.                            |
-// +-------------------------------------------------------------------------+
-// | LICENSE: This library is free software; you can redistribute it and/or  |
-// |          modify it under the terms of the GNU Lesser General Public     |
-// |          License as published by the Free Software Foundation; either   |
-// |          version 3 of the License, or (at your option) any later        |
-// |          version.                                                       |
-// |          See the GNU Lesser General Public License for more details.    |
-// |          Details have been described to the LICENSE file.               |
-// +-------------------------------------------------------------------------+
-// | Authors: yang jiandong <young.jiandong@gmail.com>                       |
-// +-------------------------------------------------------------------------+
-//
-// $Id: main.js 1441 2009-04-14 02:17:46Z yangjiandong $
-//上午09:43:29
-// @version       $Revision: 1.1 $  $Date: 2006/07/18 05:56:31 $
+/**
+ * 系统主页面
+ */
+Ext.namespace('Divo');
+Ext.namespace('Divo.app');
+Ext.QuickTips.init();
 
-var logInWindow, loggedIn;
-var appViewport;
-var mainViewportLoaded = false;
-var mTlb;
-var menuTree, shortcutTree, contentPane;
-var subSysMenu;
-var uiMsgQue;
 var uiDcInc;
 
-var AUTH_COOKIE_NAME = 'ext_spring_loggedInCookie';
-var session;
+/* 菜单树面板 */
+Divo.app.MenuPanel = function() {
+  // region : 'west'
+  Divo.app.MenuPanel.superclass.constructor.call(this, {
+        autoScroll : true,
+        animate : true,
+        border : false,
+        id : 'menu-tree',
+        // no use root
+        rootVisible : false,
+        lines : false,
+        layout : 'fit',
+        loader : new Ext.tree.TreeLoader({
+              dataUrl : 'system/loadMenu'
+            }),
 
-Ext.onReady(function() {
-  Ext.BLANK_IMAGE_URL = CFG_PATH_ICONS + "/s.gif";
+        // 虽然不显示, 还需定义
+        root : new Ext.tree.AsyncTreeNode({
+              id : 'root',
+              resourceId : '0',
+              text : '请先选择子系统',
+              href : '',
+              expanded : true
+            })
 
-  uiMsgQue = new Ext.util.MixedCollection();
-  session = new Ext.util.MixedCollection();
-  uiDcInc = new Ext.util.MixedCollection();
-  initUiDcIncludes(uiDcInc);
-  // session.add("language", CFG_DEFAULT_LANGUAGE);
-
-  loggedIn = (readCookie(AUTH_COOKIE_NAME) == null) ? false : true;
-  logInWindow = new App.dc.DcLogin({
-        authServerUrl : CFG_AUTHSERVER_URL
       });
-  logInWindow.addListener('logonSuccess', function() {
-        onLogonSuccess();
-      });
 
-  if (!Ext.isEmpty(Ext.get('app-loading'))) {
-    Ext.get('app-loading').remove();
-    Ext.get('app-loading-mask').fadeOut({remove:true});
-  }
+  this.getLoader().on("beforeload", function(treeLoader, node) {
+        treeLoader.baseParams.resourceId = node.attributes.resourceId;
+      }, this);
+  this.getSelectionModel().on('beforeselect', function(sm, node) {
+        return node.isLeaf();
+      }, this);
+  this.on('beforeexpandnode', function(node, deep, anim) {
+        this.getLoader().load(node);
+      }, this);
+}
 
-  if (!loggedIn) {
-    logInWindow.show();
-    setTimeout('logInWindow.focusUserName()', 200);
-  } else {
-    showApp();
-  }
-
-  function onLogonSuccess() {
-    loggedIn = true;
-    createCookie(AUTH_COOKIE_NAME, '1');
-    logInWindow.hide();
-    showApp();
-  }
-
-  function showApp() {
-    if (!mainViewportLoaded) {
-      createToolbar();
-      createMenuTree();
-      initAppViewport();
-      getCurUserInfos();
-    }
-    document.getElementById("content_iframe").src = "help/showAbout";
-  }
-
-  function initAppViewport() {
-    contentPane = new Ext.TabPanel({
-          region : 'center',
-          deferredRender : false,
-          activeTab : 0,
-          plain : true,
-          items : [{
-                contentEl : 'content',
-                title : '欢迎',
-                autoScroll : true,
-                layout : 'fit'
-              }]
-        });
-
-    appViewport = new Ext.Viewport({
-          layout : 'border',
-          items : [{
-                region : "north",
-                height : 76,
-                items : [mTlb]
-              }, new Ext.Panel({
-                    layout : 'accordion',
-                    region : 'west',
-                    split : true,
-                    width : 220,
-                    title : '菜单',
-                    minSize : 175,
-                    maxSize : 300,
-                    collapsible : true,
-                    items : [{
-                          title : '应用程序菜单',
-                          layout : 'fit',
-                          border : false,
-                          items : [menuTree]
-                        }, {
-                          title : '其他',
-                          border : false,
-                          html : ""
-                        }]
-                  }), contentPane, {
-                region : "south",
-                border : false,
-                frame : true,
-                height : 25,
-                html : "版权copyRight2009-"
-              }, {
-                region : "east",
-                border : false,
-                width : 0
-              }],
-          listeners : {
-            render : function() {
-              Ext.Ajax.request({
-                    url : 'resource/loadSubSystem',
-                    success : successFn
-                  })
+Ext.extend(Divo.app.MenuPanel, Ext.tree.TreePanel, {
+      selectMenu : function(menuId) {
+        if (menuId) {
+          if (this.root.attributes.resourceId == menuId) {
+            this.selectPath(this.root.getPath());
+          } else {
+            var curnode;
+            this.root.cascade(function(n) {
+                  if (n.isLeaf() && n.attributes.resourceId == menuId) {
+                    curnode = n;
+                  }
+                });
+            if (curnode) {
+              this.selectPath(curnode.getPath());
             }
           }
-        }); // end viewport
-  }
-
-  function createMenuTree() {
-    menuTree = new N21.Other.MenuTree();
-    menuTree.on("openMenuLink", function(guiID, guiText, params) {
-          openMenuLink(guiID, guiText, params);
-        })
-    // menuTree.on("openMenuLinkInNewTab", function(guiID, guiText, params) {
-    // openMenuLinkInNewTab(guiID, guiText, params);
-    // })
-
-    // TODO
-    // menuTree.getLoader().on("loadexception", function(loader, node, response)
-    // {
-    // alert(loader);
-    // onBackendSessionExpired();
-    // });
-  }
-
-  // viewport 渲染后，加载子系统菜单项
-  function successFn(response) {
-    var data = Ext.decode(response.responseText);
-    if (data != null && data.success) {
-      subSys = data.subSystems;
-      for (var i = 0; i < subSys.length; i++) {
-        var menuCode = subSys[i].id;
-        var menuName = subSys[i].resourceName;
-
-        subSysMenu.add({
-              id : 'menu-' + menuCode,
-              code : menuCode,
-              text : menuName,
-              handler : loadModuleMenu
-            });
+        }
       }
+    });
+
+/* 操作界面主面板 */
+Divo.app.MainPanel = function() {
+  var html = [
+      '<div id="welcome-div">',
+      '<div style="float:left;"><img src="resources/img/layout-icon.gif" /></div>',
+      '<div style="margin-left:100px;">', '<h2>欢迎使用！</h2>', '<p></p>', '</div>'];
+
+  Divo.app.MainPanel.superclass.constructor.call(this, {
+        id : 'menu-content-panel',
+        region : 'center',
+        margins : '3 3 3 0',
+        resizeTabs : true,
+        minTabWidth : 90,
+        tabWidth : 150,
+        enableTabScroll : true,
+        activeTab : 0,
+        deferredRender : false,
+        items : [{
+              id : 'welcome-panel',
+              title : '欢迎',
+              layout : 'fit',
+              bodyStyle : 'padding:25px',
+              html : html.join(''),
+              autoScroll : true
+            }]
+      });
+}
+
+Ext.extend(Divo.app.MainPanel, Ext.TabPanel, {
+  NEW_LINE : '\n',
+  // CFG_DEPLOYMENT_TYPE : 'DEV',
+  loadContent : function(href, menuId, title, iconCls) {
+    var ifrId = 'frame-' + menuId;
+    var tabId = 'contants-tab-' + menuId;
+    var icls = iconCls;
+
+    if (Ext.isEmpty(document.getElementById(ifrId))
+        && !Ext.isEmpty(window.frames[ifrId])) {
+      delete window.frames[ifrId];
     }
-  }
 
-  /**
-   * Called whenever a NO_ACTIVE_SESSION error is returned by the server
-   */
-
-  function onBackendSessionExpired() {
-    // alert(1);
-    eraseCookie(AUTH_COOKIE_NAME);
-    logInWindow.show();
-  }
-
-  /**
-   * Load a UI url into a content tab. Params: ifrID - Id of the iframe in
-   * tabpanel tab where the UI is loaded guiID - UI code params - extra params
-   */
-  function loadMenuLink(ifrID, guiID, params) {
-    if (guiID.substr(0, 3) == "REP") {
-      document.getElementById(ifrID).src = CFG_BACKENDSERVER_URL
-          + "?_p_report_id=" + guiID;
-    } else {
-      var htmlString = buildHtml(session.get("language"), guiID, uiDcInc
-              .get(guiID));
-      // alert(htmlString);
-      window.frames[ifrID].document.open("text/html", "replace");
-      window.frames[ifrID].document.write(htmlString);
-      window.frames[ifrID].document.close();
-    }
-  }
-
-  /**
-   * Open a menu-link. It is called by the menu tree onclick event handler. If
-   * UI is already loaded but tab is not active then activate tab. If UI is
-   * already loaded and tab is active then reload UI. If UI is not loaded,
-   * create a new tab load UI into it and activate it.
-   */
-  function openMenuLink(guiID, guiText, params) {
-    var tabID = "tabPanel_" + params.menuid;
-    var ifrID = "iframe_" + params.menuid;
-    _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params);
-  }
-
-  /**
-   * Open a menu-link in a new tab. Creates a new tab and load the UI regardless
-   * of how many tabs are opened with the same UI
-   *
-   */
-  function openMenuLinkInNewTab(guiID, guiText, params) {
-    var tabID = "tabPanel_" + params.menuid + "_" + (new Date()).getTime();
-    var ifrID = "iframe_" + params.menuid + "_" + (new Date()).getTime();
-    _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params);
-  }
-
-  /**
-   * Implements the UI loading mechanism.
-   */
-  function _openMenuLinkImpl(tabID, ifrID, guiID, guiText, params) {
-    //alert(ifrID+' => window.frames='+window.frames[ifrID]);
-    //alert(ifrID+' => document.getElementById'+document.getElementById(ifrID));
-    if (Ext.isEmpty(document.getElementById(ifrID))
-        && !Ext.isEmpty(window.frames[ifrID])) {
-      // alert('am frames no docgetElemById');
-      delete window.frames[ifrID];
-    }
-    // alert(ifrID+' => window.frames='+window.frames[ifrID]);
-    if (!Ext.isEmpty(document.getElementById(ifrID))) {
-      if (contentPane.getActiveTab().getId() == tabID) {
-        loadMenuLink(ifrID, guiID, params);
+    if (!Ext.isEmpty(document.getElementById(ifrId))) {
+      if (this.getActiveTab().getId() == tabId) {
+        this.loadMenuLink(ifrId, href);
       } else {
-        contentPane.activate(tabID);
+        this.activate(tabId);
       }
     } else {
-      contentPane.add(new Ext.Panel({
-        title : guiText,
-        id : tabID,
+      this.add(new Ext.Panel({
+        title : title,
+        id : tabId,
         autoScroll : true,
+        iconCls : icls,
         layout : 'fit',
         closable : true,
-        html : '<div style="width:100%;height:100%;overflow: hidden;" id="div_'
-            + params.menuid
-            + '" ><iframe id="'
-            + ifrID
+        html : '<iframe id="'
+            + ifrId
             + '" name="'
-            + ifrID
-            + '" src="about:blank" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>'
+            + ifrId
+            + '" src="about:blank" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe>'
       }));
-      contentPane.activate(tabID);
-      loadMenuLink(ifrID, guiID, params);
-      // alert("olkk");
+      this.activate(tabId);
+      this.loadMenuLink(ifrId, href);
     }
-  }
 
-  function getBlank() {
-    return "<html></html>";
-  }
+    this.doLayout();
+  },
+  loadMenuLink : function(ifrId, href) {
+    var curIframe = window.frames[ifrId];
 
-  function loadModuleMenu(item) {
-    menuTree.getLoader().baseParams.module = item.code;
-    menuTree.getRootNode().setText(item.text);
-    menuTree.getLoader().load(menuTree.getRootNode(), function(l, n, r) {
-          l.expand();
-        });
-  }
+    var htmlString = this.buildHtml(href);
+    curIframe.document.open("text/html", "replace");
+    curIframe.document.write(htmlString);
+    curIframe.document.close();
+  },
+  buildHtml : function(href) {
+    var out = '';
+    out += '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
+        + this.NEW_LINE;
+    out += '<html>' + this.NEW_LINE;
+    out += this.buildHtmlHead(href);
+    out += this.buildHtmlBody();
+    out += '</html>' + this.NEW_LINE;
+    out += '';
+    return out;
+  },
+  buildHtmlHead : function(href) {
+    var out = '';
+    out += '<head>' + this.NEW_LINE;
+    out += '  <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8"/>'
+        + this.NEW_LINE;
+    if (CFG_DEPLOYMENT_TYPE == 'DEV') { // 开发模式(DEV)
+      out += '  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"/>'
+          + this.NEW_LINE;
+    } else { // 生产模式(PROD)
+      out += '  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="PRIVATE"/>'
+          + this.NEW_LINE;
+    }
 
-  function doLockSession() {
-    Ext.Ajax.request({
-          url : CFG_BACKENDSERVER_URL
-              + "?_p_form=DC_MAIN&_p_action=custom&_p_custom_action=lockSession",
-          scope : this,
-          callback : function(o, s, r) {
-            var respText = Ext.decode(r.responseText);
-            if (respText.success && respText.message == "OK") {
-              // Ext.getCmp("menu-login").enable();
-              // Ext.getCmp("menu-logout").disable();
-              logInWindow.fields.get("username").disable();
-              logInWindow.show();
-            } else {
-              if (!Ext.isEmpty(respText.message)) {
-                Ext.Msg.alert('Error', urldecode(respText.message));
-              } else {
-                Ext.Msg.alert('Error',
-                    'Cannot lock session. Connection to server lost.');
-              }
-            }
-          }
-        });
-  }
+    out += this.buildImportExtjs();
+    out += this.buildImportEkingBase();
+    out += this.buildImportDoc(href);
+    out += '</head>' + this.NEW_LINE;
+    out += '';
+    return out;
+  },
+  buildHtmlBody : function() {
+    var out = '';
+    out += '<body>' + this.NEW_LINE;
+    out += '</body>' + this.NEW_LINE;
+    out += '';
+    return out;
+  },
+  buildImportExtjs : function() {
+    var out = '';
+    out += '  <link rel="stylesheet" type="text/css" href="resources/ext/resources/css/ext-all.css"/>'
+        + this.NEW_LINE;
+    out += '  <link rel="stylesheet" type="text/css" href="resources/css/default.css"/>'
+        + this.NEW_LINE;
+    out += ' <link rel="stylesheet" type="text/css" href="resources/css/app.css"/>'
+        + this.NEW_LINE;
+    out += ' <link rel="stylesheet" type="text/css" href="resources/css/portal.css"/>'
+        + this.NEW_LINE; // 窗体拖拽
+    out += '  <script type="text/javascript" src="resources/ext/ext-base.js" ><\/script>'
+        + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/ext/ext-all.js" ><\/script>'
+        + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/ext/ext-basex.js" ><\/script>'
+        + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/ext/ext-lang-zh_CN.js"><\/script>'
+        + this.NEW_LINE;
+    if (CFG_DEPLOYMENT_TYPE == 'DEV') {
+      out += '  <script type="text/javascript" src="resources/ext/debug.js" ><\/script>'
+          + this.NEW_LINE;
+    }
 
-  function doLogout() {
-    eraseCookie(AUTH_COOKIE_NAME);
-    Ext.Ajax.request({
-          url : "./j_spring_security_logout",
-          //scope : this,
-          success : function(response) {
-            document.location.href = './';
-          },
-          failure : function(response) {
-            Ext.Msg.alert('错误', '无法访问服务器。');
-          }
-        });
-  }
+    if (Ext.isIE) {
+      out += '<script id="ie-deferred-loader" defer="defer" src="//:"></script>'
+          + this.NEW_LINE;
+    }
 
-  // build title and menu
-  function createToolbar() {
+    out += '';
+    return out;
+  },
+  buildImportEkingBase : function() {
+    var out = '';
+    out += '  <script type="text/javascript" src="resources/js/lib/app.core.js'
+        + '"><\/script>' + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/js/lib/app.base.grid.js'
+        + '"><\/script>' + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/js/lib/app.base.edit.grid.js'
+        + '"><\/script>' + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/js/lib/app.base.form.js'
+        + '"><\/script>' + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/js/lib/utils.js'
+        + '"><\/script>' + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/js/lib/app.column.tree.js'
+        + '"><\/script>' + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/js/lib/app.tdgi.borderLayout.js'
+        + '"><\/script>' + this.NEW_LINE;
+    out += '  <script type="text/javascript" src="resources/js/lib/app.base.component.js'
+        + '"><\/script>' + this.NEW_LINE;
+
+    out += '';
+    return out;
+  },
+  buildImportDoc : function(jsUI) {
+    var basePath = 'resources/js/';
+    var out = '';
+    var ts = '';
+    // if (this.CFG_DEPLOYMENT_TYPE == 'DEV') {
+    // ts = '?_t_=' + (new Date()).getTime();
+    // }
+
+    var pDcArray = uiDcInc.get(jsUI)
+    if (pDcArray != undefined) {
+      for (var j = 0; j < pDcArray.length; j++) {
+        out += '<script  type="text/javascript" src="' + basePath + pDcArray[j]
+            + ts + '"><\/script>' + this.NEW_LINE;
+      }
+    }
+
+    out += '';
+    return out;
+  }
+});
+
+Divo.app.Main = function() {
+  /* -------------------- private属性 -------------------- */
+  // var menuBar, menuTree, mainPanel, viewport;
+  // var subSysMenu;
+  // var maxPanelNum = 4;
+  var aboutWin, menuBar, menuComponent, mainPanel, viewport, pwdWin;
+  var sysConfig, subSysMenu, thumbTemplate;
+  var maxPanelNum = 3;
+
+  /* -------------------- private方法 -------------------- */
+  // 创建菜单栏
+  function createMenus() {
     subSysMenu = new Ext.menu.Menu({
           id : 'sys-menu',
           items : []
@@ -326,93 +275,317 @@ Ext.onReady(function() {
           },
           items : [{
                 id : "menu-logout",
-                text : L('/SessionMenu/LogOut'),
+                icon : 'resources/img/icon/logoff.png',
+                text : '注销',
                 handler : function() {
                   doLogout();
                 },
                 scope : this,
                 disabled : false
-              }, "-", {
-                id : "menu-lock",
-                text : L('/SessionMenu/LockScrenn'),
+              }, '-', {
+                id : "menu-change-pwd",
+                icon : 'resources/img/icon/key.png',
+                text : '修改密码',
                 handler : function() {
-                  doLockSession();
+                  pwdWin.show();
                 },
                 scope : this,
                 disabled : false
+              }, '-', {
+                id : "menu-lock",
+                text : '锁屏',
+                handler : function() {
+                  // doLockSession();
+                },
+                scope : this,
+                disabled : true
               }]
         });
 
     var aboutMenu = new Ext.menu.Menu({
-      id : 'about-menu',
-      style : {
-        overflow : 'visible'
-      },
-      items : [{
-            text : '关于',
-            handler : function() {
-              document.getElementById("content_iframe").src = "help/showAbout"
-            },
-            scope : this
-          }, {
-            text : '在线帮助',
-            handler : function() {
-              document.getElementById("content_iframe").src = "help/howto"
-            },
-            scope : this
-            // disabled : true
-        }]
-    });
+          id : 'about-menu',
+          style : {
+            overflow : 'visible'
+          },
+          items : [{
+                text : '关于',
+                handler : function() {
+                  aboutWin.show();
+                },
+                scope : this
+              }, {
+                text : '在线帮助',
+                handler : function() {
+                },
+                scope : this,
+                disabled : true
+              }]
+        });
 
     menuBar = new Ext.Toolbar({
           id : 'menu-toolbar',
-          items : [new Ext.Toolbar.Separator(), {
-                text : '子系统',
-                icon : CFG_PATH_ICONS + '/subsys.gif',
-                menu : subSysMenu
-              }, {
+          items : [
+              new Ext.Toolbar.Separator(),
+              {
+                icon : 'resources/img/subsys.gif',
+                text : '首页',
+                handler : function() {
+                  goToIndex();
+                },
+                scope : this,
+                disabled : false
+              },
+              {
                 text : '会话',
-                icon : CFG_PATH_ICONS + '/user.gif',
+                icon : 'resources/img/session.gif',
                 menu : sessionMenu
-              }, {
+              },
+              {
                 text : '帮助',
-                icon : CFG_PATH_ICONS + '/help.gif',
+                icon : 'resources/img/help.gif',
                 menu : aboutMenu
-              }, '->', '<span id="cur-user-name"></span>']
+              },
+              {
+                id : "menu-logout2",
+                icon : 'resources/img/icon/logoff.png',
+                text : '注销',
+                handler : function() {
+                  doLogout();
+                },
+                scope : this,
+                disabled : false
+              },
+              '->',
+              '当前用户:&nbsp;&nbsp;<span id="cur-user-name">'
+                  + sysConfig.user_name + '</span>']
+        });
+  }
+
+  /**
+   * 加载子系统的菜单,并关闭mainPanel中已打开的面板
+   */
+  function loadModuleMenu(item) {
+    onCloseMainPanelTabs();
+
+    menuTree.getLoader().baseParams.module = item.code;
+    menuTree.getRootNode().setText(item.text);
+    // menuTree.getRootNode().attributes.resourceId = item.code;
+    menuTree.getLoader().load(menuTree.getRootNode(), function(l, n, r) {
+          l.expand();
         });
 
-    mTlb = new Ext.Panel({
+  }
+
+  // 关闭全部打开的主面板Tab Panel
+  function onCloseMainPanelTabs() {
+    var ps = []
+    var items = mainPanel.items.items;
+    for (var i = 0; i < items.length; i++) {
+      ps.push(items[i].id);
+    }
+    for (var i = 0; i < ps.length; i++) {
+      mainPanel.remove(mainPanel.getItem(ps[i]), true);
+    }
+  }
+
+  // 创建布局
+  function createViewport() {
+
+    aboutWin = new Divo.app.AboutWin({
+          sysConfig : sysConfig
+        });
+
+    pwdWin = new Divo.app.ChangePwdFormWin({
+          curUserName : sysConfig.user_name
+        });
+
+    var statusBar = new Ext.BoxComponent({
+          region : 'south',
+          height : 18,
+          autoEl : {
+            html : '<center>&nbsp;&copy;' + sysConfig.copyright + '</center>'
+          }
+        });
+
+    menuTree = new Divo.app.MenuPanel();
+    mainPanel = new Divo.app.MainPanel();
+
+    mainPanel.on('tabchange', function(tp, tab) {
+          if (tab) {
+            menuTree.selectMenu(tab.menuId);
+          }
+        });
+
+    // 限制最多能打开的面板,防止浏览器过载崩溃
+    mainPanel.on('beforeadd', function(container, component, index) {
+          if (index > maxPanelNum) {
+            var items = container.items.items;
+            var menuId = items[0].id;
+            var tab = mainPanel.getItem(menuId)
+            mainPanel.remove(tab, true);
+          }
+        });
+
+    // 防止IFRAME销毁后仍然占用内存
+    mainPanel.on('beforeremove', function(o, p) {
+          var iFrame = p.getEl().dom;
+          if (iFrame.src) {
+            iFrame.src = "javascript:false";
+          }
+        });
+
+    var menuComponent = new Ext.Panel({
+          region : 'west',
+          id : 'west-panel', // see Ext.getCmp() below
+          title : '系统导航',
+          split : true,
+          autoScroll : true,
+          width : 200,
+          minSize : 175,
+          maxSize : 400,
+          layout : 'fit',
+          collapsible : true,
+          // collapsedTitle : true,
+          collapseMode : 'mini',
+          margins : '3 0 3 3',
+          items : [menuTree]
+        });
+
+    menuTree.on('click', function(node, e) {
+          if (node.isLeaf() && node.attributes.url.length > 0) {
+            e.stopEvent();
+
+            mainPanel.loadContent(node.attributes.url,
+                node.attributes.resourceId, node.text, node.attributes.iconCls);
+            viewport.doLayout();
+          } else {
+            e.stopEvent();
+          }
+        });
+
+    var titleBar = new Ext.Panel({
       region : 'north',
       id : 'north-panel',
       split : false,
-      height : 76,
+      height : 56,
       border : false,
       collapsible : false,
       margins : '0 0 0 0',
       layout : 'border',
       items : [{
         region : 'north',
-        html : "<table style='width:100%;background-color:#006EC7;border:0;' cellspacing='0'><tr><td align='left' width='120'><img src='resources/img/eaton.gif'/></td><td class='product-name'>"
-            + L('/Application/Name')
-            + "</td><td align='right'><img src='resources/img/eaton-ipm.gif'/></td></tr></table>",
+        html : '<div id="titlebar"><input type=hidden value="" id="activeFrameId">'
+            + '</input><h1>'
+            + sysConfig.application_name
+            + sysConfig.version
+            + '</h1></div>'
+        // + '</input><h1>' + sysConfig.application_name + '</h1></div>'
+        ,
         border : false,
-        height : 48
+        height : 28
       }, {
         region : 'center',
         border : false,
-        height : 28,
+        height : 26,
         items : [menuBar]
       }]
     });
+
+    viewport = new Ext.Viewport({
+          layout : 'tdgi_border',
+          items : [titleBar, statusBar, menuComponent, mainPanel],
+          listeners : {
+            render : function() {
+              Ext.Ajax.request({
+                    url : 'system/loadSubSystem',
+                    success : successFn
+                  });
+            }
+          }
+        });
+
+    viewport.doLayout();
   }
 
-  // 获取当前用户的信息
-  function getCurUserInfos() {
-    var curUser = getCurUser();
-    if (curUser) {
-      Ext.get('cur-user-name').dom.innerHTML = "当前用户:&nbsp;&nbsp;" + curUser;
-    } else {
-      Ext.get('cur-user-name').dom.innerHTML = "当前用户:&nbsp;&nbsp;";
+  // viewport 渲染后，加载子系统菜单项
+  function successFn(response) {
+    var data = Ext.decode(response.responseText);
+
+    if (data != null && data.success) {
+      subSys = data.subSystems;
+      for (var i = 0; i < subSys.length; i++) {
+        var menuCode = subSys[i].resourceId;
+        var menuName = subSys[i].text;
+
+        subSysMenu.add({
+              id : 'menu-' + subSys[i].resourceId,
+              code : subSys[i].resourceId,
+              text : subSys[i].text,
+              handler : loadModuleMenu
+            });
+      }
+    }
+
+  }
+
+  // 注销
+  function doLogout() {
+    Ext.Ajax.request({
+          url : "common/logout",
+          scope : this,
+          callback : function(o, s, r) {
+            var respText = Ext.decode(r.responseText);
+            if (respText.success && respText.message == "OK") {
+              viewport.destroy();
+              window.location.href = 'common/index';
+            } else {
+              if (!Ext.isEmpty(respText.message)) {
+                Ext.Msg.alert('错误', respText.message);
+              } else {
+                Ext.Msg.alert('错误', '因为不能取得服务端信息，不能正常注销。');
+              }
+            }
+          }
+        });
+  }
+
+  // 回到首页
+  function goToIndex() {
+    window.location.href = 'common/index';
+  }
+
+  function getSysConfig() {
+    if (sysConfig == null) {
+      Ext.Ajax.request({
+            url : "common/get_sys_config",
+            scope : this,
+            async : false,
+            callback : function(o, s, r) {
+              var resp = Ext.decode(r.responseText);
+              sysConfig = {
+                user_name : resp.user_name,
+                application_name : resp.application_name,
+                vendor : resp.vendor,
+                copyright : resp.copyright,
+                run_mode : resp.run_mode,
+                version : resp.version,
+                website : resp.website
+              }
+            }
+          });
     }
   }
-});
+
+  /* ----------------------- public方法 ----------------------- */
+  return {
+    init : function() {
+      uiDcInc = new Ext.util.MixedCollection();
+      initUiDcIncludes(uiDcInc);
+      getSysConfig();
+      createMenus();
+      createViewport();
+    }
+  }
+}();
+
+Ext.onReady(Divo.app.Main.init, Divo.app.Main, true);

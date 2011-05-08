@@ -25,8 +25,9 @@
   <import resource="log/applicationContext-log.xml" />
   <!--
   <import resource="cache/applicationContext-memcached.xml" />
-  -->
   <import resource="security/applicationContext-security.xml" />
+  -->
+
   <import resource="email/applicationContext-email.xml" />
   <import resource="jms/applicationContext-jms-simple.xml" />
   <import resource="jms/applicationContext-jms-advanced.xml" />

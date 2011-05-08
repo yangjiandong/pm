@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,7 @@ import org.ssh.pm.common.dao.UserDao;
 import org.ssh.pm.common.dao.UserJdbcDao;
 import org.ssh.pm.common.entity.Role;
 import org.ssh.pm.common.entity.User;
+import org.ssh.pm.common.web.UserSession;
 import org.ssh.pm.jms.simple.NotifyMessageProducer;
 import org.ssh.pm.jmx.server.ServerConfig;
 
@@ -294,4 +298,80 @@ public class AccountManager {
     public String getNowString() {
         return this.userJdbcDao.getNowString("yyyy.MM.dd HH:mm:ss");
     }
+
+    /**
+     * 检查当前用户信息的合法性
+     */
+    @Transactional(readOnly = true)
+    public Map<String, Object> checkUserLegality(HttpServletRequest request)
+            throws ServiceException {
+        HttpSession session = request.getSession(true);
+        session.removeAttribute("userSession");
+
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        String userName = request.getParameter("username");
+        String password = request.getParameter("password");
+        String clientIp = request.getRemoteAddr();
+
+        boolean checked = true;
+        String message = "";
+
+        User user = userDao.findUniqueBy("loginName", userName);
+
+        if (user != null) {
+            if (encoder.encodePassword(password, null).equals(user.getPassword())) {
+                if (!user.getStatus().equals("disabled")) {
+
+                  UserSession userSession = new UserSession(user);
+                  userSession.setClientIp(clientIp);
+                  session.setAttribute("userSession", userSession);
+                } else {
+                    checked = false;
+                    message = "用户被禁用";
+                }
+            } else {
+                checked = false;
+                message = "密码错误";
+            }
+            userName = user.getName();
+            if (userName.equals("")) userName = user.getLoginName();
+        } else {
+            checked = false;
+            message = "用户名错误";
+        }
+        map.put("success", checked);
+        map.put("message", message);
+        map.put("userName",userName );
+        return map;
+    }
+
+    /**
+     * 用户注销
+     */
+    @Transactional(readOnly = true)
+    public Map<String, Object> logout(HttpServletRequest request) throws ServiceException {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        String message = "注销失败";
+        boolean checked = false;
+
+        try {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+            checked = true;
+            message = "OK";
+        } catch (Exception e) {
+            e.printStackTrace();
+            checked = false;
+            message = "注销时，后台发生异常，注销失败";
+        }
+        map.put("success", checked);
+        map.put("message", message);
+
+        return map;
+    }
+
 }

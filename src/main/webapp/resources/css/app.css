@@ -142,3 +142,27 @@ html,body {
 .x-grid-hide-gridsummary .x-grid3-gridsummary-row-inner {
   display: none;
 }
+
+#login-logo {
+  background: url(../img/logo.jpg) no-repeat center center;
+}
+
+/*login*/
+.user {
+  background: url("../img/user.gif") no-repeat 1px 2px;
+}
+
+.key {
+  background: url("../img/key.gif") no-repeat 1px 2px;
+}
+
+.key,.user {
+  background-color: #FFFFFF;
+  padding-left: 20px;
+  font-weight: bold;
+  color: #000033;
+}
+
+.key.x-form-invalid,.user.x-form-invalid {
+  border: 2px solid #dd7870;
+}

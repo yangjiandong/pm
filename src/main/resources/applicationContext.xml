@@ -24,6 +24,18 @@
     </property>
   </bean>
 
+  <!-- sys config info -->
+  <bean id="sysConfigData" class="org.ssh.pm.utils.SysConfigData">
+    <property name="productName" value="${sysconfig.productName}"/>
+    <property name="version" value="${sysconfig.version}"/>
+    <property name="buildId" value="${sysconfig.buildId}"/>
+    <property name="copyright" value="${sysconfig.copyright}"/>
+    <property name="vendor" value="${sysconfig.vendor}"/>
+    <property name="year" value="${sysconfig.year}"/>
+    <property name="website" value="${sysconfig.website}"/>
+    <property name="runMode" value="DEV"/>
+  </bean>
+
   <context:annotation-config />
 
   <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->

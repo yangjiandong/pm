@@ -79,7 +79,7 @@
     <filter-class>org.ssh.pm.common.filter.AuthFilter</filter-class>
     <init-param>
       <param-name>redirectURL</param-name>
-      <param-value>/common/index</param-value>
+      <param-value>/common/login</param-value>
     </init-param>
     <init-param>
       <param-name>mainURL</param-name>

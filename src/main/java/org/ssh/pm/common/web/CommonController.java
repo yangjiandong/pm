@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import net.sf.json.JSONArray;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springside.modules.utils.JsonViewUtil;
@@ -28,7 +30,6 @@ import org.ssh.pm.common.service.CategoryService;
 import org.ssh.pm.common.service.HzService;
 import org.ssh.pm.common.service.ResourcesService;
 import org.ssh.pm.log.LogAction;
-import org.ssh.pm.orm.hibernate.DynamicDataSource;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
@@ -206,5 +207,31 @@ public class CommonController {
             e.printStackTrace();
 
         }
+    }
+
+    @RequestMapping("/login")
+    public ModelAndView index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(true);
+        session.removeAttribute("userSession");
+
+        return new ModelAndView("login");
+    }
+
+    /**
+     * 检查用户登录信息的合法性
+     */
+    @RequestMapping("/logon")
+    public void checkUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> map = accountManager.checkUserLegality(request);
+        JsonViewUtil.buildCustomJSONDataResponse(response, map);
+    }
+
+    /**
+     * 用户注销
+     */
+    @RequestMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> map = accountManager.logout(request);
+        JsonViewUtil.buildCustomJSONDataResponse(response, map);
     }
 }
