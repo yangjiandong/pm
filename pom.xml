@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sshapp</groupId>
-  <artifactId>personnel_management</artifactId>
+  <artifactId>springside-colf</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Personnel management System</name>
+  <name>use springside to get all...</name>
   <url></url>
 
   <parent>
@@ -31,10 +31,10 @@
 
   <developers>
     <developer>
-      <id>ek</id>
-      <name>eksoft</name>
-      <email>eksoft@gmail.com</email>
-      <url>http://eksoft.net/</url>
+      <id>young</id>
+      <name>yangjiandong</name>
+      <email>young.jiandong@gmail.com</email>
+      <url>http://www.gmail.com/</url>
       <organization>UFO</organization>
       <organizationUrl>http://www.UFO.org</organizationUrl>
       <roles>
@@ -43,7 +43,7 @@
       </roles>
       <timezone>+8</timezone>
       <properties>
-        <picUrl>http://eksoft.net/logo.gif</picUrl>
+        <picUrl>http://www.google.com</picUrl>
       </properties>
     </developer>
   </developers>

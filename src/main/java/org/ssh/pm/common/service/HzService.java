@@ -268,7 +268,7 @@ public class HzService {
             session.clear();
             // this.hzDao.batchCreate(all);
         } catch (Exception e) {
-            logger.error("装载汉字数据出错:" + e);
+            logger.error("装载汉字数据出错:",e);
             throw new ServiceException("导入汉字库时，服务器发生异常");
         } finally {
             //br.close();

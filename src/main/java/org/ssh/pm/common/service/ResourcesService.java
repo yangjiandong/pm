@@ -171,7 +171,7 @@ public class ResourcesService extends EntityService<Resource, Long> {
                 if (entity.isTransient()) {
                     entity.setLeaf(true);
                 } else {
-                    if (resourceDao.findBy("parentId", entity.getId()).size() > 0)
+                    if (resourceDao.findBy("parentId", entity.getResourceId()).size() > 0)
                         entity.setLeaf(false);
                     else
                         entity.setLeaf(true);
@@ -225,18 +225,20 @@ public class ResourcesService extends EntityService<Resource, Long> {
                     continue;
 
                 re = new Resource();
-                re.setId(Long.valueOf(star[0]));
-                re.setName(star[1]);
-                re.setUrls(star[2]);
+                re.setResourceId(Long.valueOf(star[0]));
+                re.setText(star[1]);
+                re.setUrl(star[2]);
                 re.setLeaf(star[3].equals("1")?true:false);
                 re.setParentId(Long.valueOf(star[4]));
                 re.setResourceType(star[5]);
                 re.setOrderNo(Long.valueOf(star[6]));
+                re.setState(star[7]);
+                re.setIconCls(star[8]);
 
                 this.resourceDao.save(re);
             }
         } catch (Exception e) {
-            logger.error("装载资源数据出错:" + e);
+            logger.error("装载资源数据出错:" , e);
             throw new ServiceException("导入资源时，服务器发生异常");
         } finally {
             //br.close();

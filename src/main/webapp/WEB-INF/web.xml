@@ -4,8 +4,8 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
   version="2.5">
 
-  <display-name>Personnel Management</display-name>
-  <description>personnel management system</description>
+  <display-name>J2EE Web Application</display-name>
+  <description>show your application</description>
 
   <context-param>
     <param-name>webAppRootKey</param-name>
@@ -18,7 +18,7 @@
     -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:/applicationContext-dynamic-datasource.xml,classpath*:/applicationContext-sshapp.xml</param-value>
+    <param-value>classpath*:/applicationContext.xml,classpath*:/applicationContext-sshapp.xml</param-value>
   </context-param>
 
   <listener>

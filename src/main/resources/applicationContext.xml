@@ -13,6 +13,7 @@
     <property name="ignoreResourceNotFound" value="true" />
     <property name="locations">
       <list>
+        <value>classpath*:/version.properties</value>
         <!-- 标准配置 -->
         <value>classpath*:/application.properties</value>
         <!-- 本地开发环境配置 -->
@@ -95,19 +96,25 @@
         <entry key="post-insert">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <!--
             <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
+            -->
           </list>
         </entry>
         <entry key="post-update">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <!--
             <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
+            -->
           </list>
         </entry>
         <entry key="post-delete">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <!--
             <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
+            -->
           </list>
         </entry>
 

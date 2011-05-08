@@ -19,6 +19,8 @@
       message varchar(255)
     );
 
+   other/tables_sqlServer.sql
+
    5. 示例存储过程
 
    --oracle

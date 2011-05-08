@@ -14,14 +14,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 @Table(name = "T_RESOURCES")
 public class Resource {
-    private Long id;
-    private String name;
-
-    private String urls;
+    private Long resourceId;
+    private String text;
+    private String url;
     private Long parentId;
     private Long orderNo; // 资源排序字段
     private String note;
-    private Boolean leaf;
+    private boolean leaf;
+    private String state;
     //1,module
     //2,menu
     //3,submenu
@@ -30,12 +30,12 @@ public class Resource {
     private String iconCls;
 
     @Id
-    public Long getId() {
-        return id;
+    public Long getResourceId() {
+        return resourceId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
     }
 
     @Column(length = 200)
@@ -64,12 +64,12 @@ public class Resource {
     }
 
     @Column(length = 200)
-    public String getUrls() {
-        return urls;
+    public String getUrl() {
+        return url;
     }
 
-    public void setUrls(String urls) {
-        this.urls = urls;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public boolean isLeaf() {
@@ -80,18 +80,17 @@ public class Resource {
         this.leaf = leaf;
     }
 
-    @Column(nullable = false, length = 1)
-    public String getResourceType() {
-        return resourceType;
-    }
-
     public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
     }
 
+    public String getResourceType() {
+        return resourceType;
+    }
+
     @Transient
     public boolean isTransient() {
-        return this.id == null;
+        return this.resourceId == null;
     }
 
     @Override
@@ -100,21 +99,28 @@ public class Resource {
     }
 
     @Column(nullable = false, length = 50)
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
 
-	public String getIconCls() {
-		return iconCls;
-	}
+    public String getIconCls() {
+        return iconCls;
+    }
 
-	public void setIconCls(String iconCls) {
-		this.iconCls = iconCls;
-	}
+    public void setIconCls(String iconCls) {
+        this.iconCls = iconCls;
+    }
 
+    @Column(length = 1, nullable = false)
+    public String getState() {
+        return state;
+    }
 
+    public void setState(String state) {
+        this.state = state;
+    }
 }
