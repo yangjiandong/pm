@@ -325,6 +325,8 @@ public class AccountManager {
 
                   UserSession userSession = new UserSession(user);
                   userSession.setClientIp(clientIp);
+                  //
+                  userSession.setModuleId(1L);
                   session.setAttribute("userSession", userSession);
                 } else {
                     checked = false;

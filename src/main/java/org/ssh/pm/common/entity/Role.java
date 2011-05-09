@@ -13,10 +13,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springside.modules.orm.grid.ViewField;
 
 import com.google.common.collect.Lists;
 
@@ -27,8 +29,9 @@ import com.google.common.collect.Lists;
 @Entity
 @Table(name = "T_ROLES")
 public class Role extends IdEntity {
-
+    @ViewField(header = "角色名称")
     private String name;
+    @ViewField(header = "描述")
     private String desc;
 
     //有序的关联对象集合
@@ -83,5 +86,10 @@ public class Role extends IdEntity {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Transient
+    public boolean isTransient() {
+        return this.id == null;
     }
 }

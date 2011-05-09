@@ -17,17 +17,17 @@
 <link rel="stylesheet"
   href="<c:url value='/resources/ext/resources/css/ext-all.css'/>"
   type="text/css" />
-<link rel="stylesheet"
-  href="<c:url value='/resources/css/default.css'/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value='/resources/css/app.css'/>"
   type="text/css" />
 <link rel="stylesheet" href="<c:url value='/resources/css/ext_icon.css'/>"
   type="text/css" />
+<% //if client_browser_name == 'Mozilla'%>
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/ext-patch.css"/>" />
+<% //end %>
 
-<script type="text/javascript"
-  src="<c:url value='/resources/ext/ext-base.js'/>"></script>
-<script type="text/javascript"
-  src="<c:url value='/resources/ext/ext-all.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/ext/ext-base-debug.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/ext/ext-all-debug.js'/>"></script>
+
 <script type="text/javascript"
   src="<c:url value='/resources/ext/ext-basex.js'/>"></script>
 <script type="text/javascript"

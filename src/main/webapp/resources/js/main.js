@@ -182,12 +182,9 @@ Ext.extend(Divo.app.MainPanel, Ext.TabPanel, {
     var out = '';
     out += '  <link rel="stylesheet" type="text/css" href="resources/ext/resources/css/ext-all.css"/>'
         + this.NEW_LINE;
-    out += '  <link rel="stylesheet" type="text/css" href="resources/css/default.css"/>'
-        + this.NEW_LINE;
     out += ' <link rel="stylesheet" type="text/css" href="resources/css/app.css"/>'
         + this.NEW_LINE;
-    out += ' <link rel="stylesheet" type="text/css" href="resources/css/portal.css"/>'
-        + this.NEW_LINE; // 窗体拖拽
+    
     out += '  <script type="text/javascript" src="resources/ext/ext-base.js" ><\/script>'
         + this.NEW_LINE;
     out += '  <script type="text/javascript" src="resources/ext/ext-all.js" ><\/script>'
