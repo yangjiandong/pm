@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springside.modules.utils.JsonViewUtil;
 import org.springside.modules.utils.spring.SpringContextHolder;
@@ -149,7 +150,7 @@ public class CommonController {
 
 
     @RequestMapping("/get_datasource_info")
-    public void getDatabaseInfo(HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody Map<String, Object> getDatabaseInfo(HttpServletRequest request, HttpServletResponse response) {
         DataSource ds = (DataSource) SpringContextHolder.getBean("dataSource");
 
         Map<String, Object> map = new HashMap<String, Object>();
@@ -200,13 +201,14 @@ public class CommonController {
 //        }catch(SQLException se){
 //
 //        }
+        return map;
 
-        try {
-            JsonViewUtil.buildCustomJSONDataResponse(response, map);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
+//        try {
+//            JsonViewUtil.buildCustomJSONDataResponse(response, map);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//        }
     }
 
     @RequestMapping("/login")
