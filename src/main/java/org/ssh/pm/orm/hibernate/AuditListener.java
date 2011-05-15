@@ -35,25 +35,35 @@ public class AuditListener implements SaveOrUpdateEventListener {
             AuditableEntity entity = (AuditableEntity) object;
             //String loginName = SpringSecurityUtils.getCurrentUserName();
             String loginName = "自定义";
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                    .getRequest();
-            UserSession u = (UserSession) request.getSession().getAttribute("userSession");
-            if (u != null) {
-                loginName = u.getAccount().getUserName();
-            }
 
             AccountManager manager = (AccountManager) SpringContextHolder.getBean("accountManager");
 
             if (entity.getId() == null) {
                 //创建新对象
                 entity.setCreateTime(manager.getNowString());
+
                 if (entity.getCreateBy() == null) {
+                    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                            .getRequestAttributes()).getRequest();
+                    UserSession u = (UserSession) request.getSession().getAttribute("userSession");
+                    if (u != null) {
+                        loginName = u.getAccount().getUserName();
+                    }
                     entity.setCreateBy(loginName);
                 }
             } else {
                 //修改旧对象
                 entity.setLastModifyTime(manager.getNowString());
-                entity.setLastModifyBy(loginName);
+
+                if (entity.getLastModifyBy() == null) {
+                    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                            .getRequestAttributes()).getRequest();
+                    UserSession u = (UserSession) request.getSession().getAttribute("userSession");
+                    if (u != null) {
+                        loginName = u.getAccount().getUserName();
+                    }
+                    entity.setLastModifyBy(loginName);
+                }
 
                 logger.info("{}对象(ID:{}) 被 {} 在 {} 修改", new Object[] { event.getEntityName(), entity.getId(),
                         loginName, new Date() });
