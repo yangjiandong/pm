@@ -14,12 +14,6 @@ Personnel_Management System
                noCompressionUserAgents="gozilla, traviata"
                compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain"  />
 
-
-
-
-
-
-
 具体参数说明如下：
 
 1) compression="on" 打开压缩功能
