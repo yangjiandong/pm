@@ -4,7 +4,7 @@ Personnel_Management System
 2011.05.15
 ----------
 
-Tomcat的gzip压缩功能
+   1. Tomcat的gzip压缩功能
 
  <Connector port="8080" protocol="HTTP/1.1"
                connectionTimeout="20000"
@@ -26,6 +26,10 @@ Tomcat的gzip压缩功能
 2) compressionMinSize="2048" 启用压缩的输出内容大小，这里面默认为2KB
 3) noCompressionUserAgents="gozilla, traviata" 对于以下的浏览器，不启用压缩
 4) compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain"　压缩类型
+
+   2. nan21 java
+   https://github.com/nan21/dnet
+
 
 2011.04.27
 ----------
