@@ -44,6 +44,10 @@ spring -- 知识库
    CommonController.getDatabaseInfo
    common/datasource
 
+   4. java process file
+   other/java.file.txt
+
+
    --END
 
 
