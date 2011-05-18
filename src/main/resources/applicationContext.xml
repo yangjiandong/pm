@@ -13,14 +13,27 @@
     <property name="ignoreResourceNotFound" value="true" />
     <property name="locations">
       <list>
+        <value>classpath*:/version.properties</value>
         <!-- 标准配置 -->
         <value>classpath*:/application.properties</value>
         <!-- 本地开发环境配置 -->
         <value>classpath*:/application.local.properties</value>
-        <!-- 服务器生产环境配置 -->
-        <value>file:/var/showcase/application.server.properties</value>
+        <!-- 服务器生产环境配置 CONFIG_DIR 为环境变量-->
+        <value>file:///${CONFIG_DIR}/showcase/application.server.properties</value>
       </list>
     </property>
+  </bean>
+
+  <!-- sys config info -->
+  <bean id="sysConfigData" class="org.ssh.pm.utils.SysConfigData">
+    <property name="productName" value="${sysconfig.productName}"/>
+    <property name="version" value="${sysconfig.version}"/>
+    <property name="buildId" value="${sysconfig.buildId}"/>
+    <property name="copyright" value="${sysconfig.copyright}"/>
+    <property name="vendor" value="${sysconfig.vendor}"/>
+    <property name="year" value="${sysconfig.year}"/>
+    <property name="website" value="${sysconfig.website}"/>
+    <property name="runMode" value="DEV"/>
   </bean>
 
   <context:annotation-config />
@@ -51,12 +64,17 @@
     <property name="password" value="${quartz.jdbc.password}" />
   </bean>
 
+  <!-- 复制hibernate默认策略,暂时不用 -->
+  <bean id="namingStrategy" class="org.ssh.pm.orm.hibernate.AppNamingStrategy"/>
+
   <!-- Hibernate配置 -->
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
     <property name="dataSource" ref="dataSource" />
+    <!--
     <property name="namingStrategy">
       <bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
     </property>
+    -->
     <property name="hibernateProperties">
       <props>
         <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -69,10 +87,12 @@
         <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
         <prop key="hibernate.cache.use_query_cache">false</prop>
         <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+        <!--
         <prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</prop>
         <prop key="hibernate.search.worker.batch_size">1000</prop>
         <prop key="hibernate.search.default.indexBase">d:/index</prop>
         <prop key="hibernate.search.analyzer">org.apache.lucene.analysis.cjk.CJKAnalyzer</prop>
+        -->
       </props>
     </property>
     <!-- 放宽包名,只要是entity -->
@@ -88,19 +108,25 @@
         <entry key="post-insert">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <!--
             <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
+            -->
           </list>
         </entry>
         <entry key="post-update">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <!--
             <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
+            -->
           </list>
         </entry>
         <entry key="post-delete">
           <list>
             <bean class="org.ssh.pm.orm.hibernate.HistoryListener" />
+            <!--
             <bean class="org.hibernate.search.event.FullTextIndexEventListener" />
+            -->
           </list>
         </entry>
 

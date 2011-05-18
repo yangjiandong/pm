@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sshapp</groupId>
-  <artifactId>personnel_management</artifactId>
+  <artifactId>springside-colf</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Personnel management System</name>
+  <name>use springside to get all...</name>
   <url></url>
 
   <parent>
@@ -31,10 +31,10 @@
 
   <developers>
     <developer>
-      <id>yjd</id>
+      <id>young</id>
       <name>yangjiandong</name>
       <email>young.jiandong@gmail.com</email>
-      <url>http://freecode.javaeye.com/</url>
+      <url>http://www.gmail.com/</url>
       <organization>UFO</organization>
       <organizationUrl>http://www.UFO.org</organizationUrl>
       <roles>
@@ -43,7 +43,7 @@
       </roles>
       <timezone>+8</timezone>
       <properties>
-        <picUrl>http://www.mxjava.com/logo.gif</picUrl>
+        <picUrl>http://www.google.com</picUrl>
       </properties>
     </developer>
   </developers>
@@ -52,7 +52,7 @@
     <contributor>
       <name>UFO</name>
       <email>UFO@bingosoft.net</email>
-      <url>http://freecode.javaeye.com/</url>
+      <url>http://eksoft.net/</url>
       <organization>Infrastucture</organization>
       <organizationUrl>
     http://AlienOrganization.com
@@ -72,6 +72,8 @@
     <jdbc.driver.groupId>com.h2database</jdbc.driver.groupId>
     <jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
     <jdbc.driver.version>${h2.version}</jdbc.driver.version>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss.SSS</maven.build.timestamp.format>
+    <buildDate>${maven.build.timestamp}</buildDate>
   </properties>
 
   <!-- 依赖项定义 -->
@@ -182,22 +184,26 @@
       <artifactId>hibernate-ehcache</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-search</artifactId>
-      <version>3.2.1.Final</version>
-    </dependency>
+    <!--
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-search</artifactId>
+        <version>3.2.1.Final</version>
+      </dependency>
+      -->
     <!-- lucene start -->
-    <dependency>
-      <groupId>org.apache.lucene</groupId>
-      <artifactId>lucene-analyzers</artifactId>
-      <version>2.4.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.lucene</groupId>
-      <artifactId>lucene-highlighter</artifactId>
-      <version>2.4.0</version>
-    </dependency>
+    <!--
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-analyzers</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-highlighter</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+      -->
 
     <dependency>
       <groupId>javassist</groupId>
@@ -285,11 +291,11 @@
 
     <!-- use tomcat 6 -->
     <!--
-      <dependency>
-        <groupId>org.apache.tomcat</groupId>
-        <artifactId>jasper-el</artifactId>
-        <version>6.0.18</version>
-      </dependency>
+        <dependency>
+          <groupId>org.apache.tomcat</groupId>
+          <artifactId>jasper-el</artifactId>
+          <version>6.0.18</version>
+        </dependency>
       -->
     <!-- web end -->
 
@@ -688,6 +694,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <version>2.8</version>
         <configuration>
+          <wtpversion>2.0</wtpversion>
           <sourceExcludes>
             <sourceExclude>**/.svn/</sourceExclude>
           </sourceExcludes>
@@ -695,6 +702,13 @@
           <buildOutputDirectory>src/main/webapp/WEB-INF/classes</buildOutputDirectory>
         </configuration>
       </plugin>
+
+	  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-idea-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>
+
       <!--
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -735,6 +749,45 @@
           </instrumentation>
         </configuration>
       </plugin>
+
+      <!--
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>hibernate3-maven-plugin</artifactId>
+          <version>2.2</version>
+          <executions>
+            <execution>
+              <phase>process-classes</phase>
+              <goals>
+                <goal>hbm2ddl</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <components>
+              <component>
+                <name>hbm2ddl</name>
+                <implementation>annotationconfiguration</implementation>
+              </component>
+              <component>
+                <name>hbmdoc</name>
+              </component>
+            </components>
+            <componentProperties>
+
+              <configurationfile>src/main/resources/hbm2ddl/hibernate.cfg.xml</configurationfile>
+              <propertyfile>
+                 src/main/resources/hbm2ddl/database.properties
+              </propertyfile>
+              <outputfilename>schema.ddl</outputfilename>
+              <drop>false</drop>
+              <create>true</create>
+              <export>false</export>
+              <format>true</format>
+            </componentProperties>
+          </configuration>
+        </plugin>
+        -->
 
       <!-- docbook -->
       <plugin>

@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springside.modules.orm.grid.ViewField;
 import org.springside.modules.utils.reflection.ConvertUtils;
 import org.ssh.pm.orm.hibernate.AuditableEntity;
 
@@ -32,16 +33,23 @@ import com.google.common.collect.Lists;
 @Entity
 @Table(name = "T_USERS")
 public class User extends AuditableEntity {
+    @ViewField(header = "登录名")
     private String loginName;
-    private String plainPassword;
-    private String shaPassword;
+    @ViewField
+    private String password;
+    @ViewField(header = "用户名")
     private String name;
+    @ViewField(header = "邮箱")
     private String email;
+    @ViewField(header = "status")
     private String status;
+    @ViewField
     private Integer version;
 
     //有序的关联对象集合
     private List<Role> roleList = Lists.newArrayList();
+
+    //private List<PartDB> partDBList = Lists.newArrayList();
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Id_Generator")
@@ -65,7 +73,7 @@ public class User extends AuditableEntity {
         this.version = version;
     }
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 20)
     public String getLoginName() {
         return loginName;
     }
@@ -74,28 +82,7 @@ public class User extends AuditableEntity {
         this.loginName = loginName;
     }
 
-    /**
-     * 演示用明文密码.
-     */
-    public String getPlainPassword() {
-        return plainPassword;
-    }
-
-    public void setPlainPassword(String plainPassword) {
-        this.plainPassword = plainPassword;
-    }
-
-    /**
-     * 演示用SHA1散列密码.
-     */
-    public String getShaPassword() {
-        return shaPassword;
-    }
-
-    public void setShaPassword(String shaPassword) {
-        this.shaPassword = shaPassword;
-    }
-
+    @Column(length = 50)
     public String getName() {
         return name;
     }
@@ -104,6 +91,7 @@ public class User extends AuditableEntity {
         this.name = name;
     }
 
+    @Column(length = 50)
     public String getEmail() {
         return email;
     }
@@ -112,6 +100,7 @@ public class User extends AuditableEntity {
         this.email = email;
     }
 
+    @Column(length = 10)
     public String getStatus() {
         return status;
     }
@@ -145,8 +134,46 @@ public class User extends AuditableEntity {
         return ConvertUtils.convertElementPropertyToString(roleList, "name", ", ");
     }
 
+//    //多对多定义
+//    @ManyToMany
+//    //中间表定义,表名采用默认命名规则
+//    @JoinTable(name = "T_USER_DB", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "DBCODE") })
+//    //Fecth策略定义
+//    @Fetch(FetchMode.SUBSELECT)
+//    public List<PartDB> getPartDBList() {
+//        return partDBList;
+//    }
+//
+//    public void setPartDBList(List<PartDB> partDBList) {
+//        this.partDBList = partDBList;
+//    }
+//
+//    @Transient
+//    @JsonIgnore
+//    public String getDBNames() {
+//        return ConvertUtils.convertElementPropertyToString(partDBList, "dbname", ", ");
+//    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Transient
+    public String getUserName() {
+        return name.equals("") ? loginName : name;
+    }
+
+    @Transient
+    public boolean isTransient() {
+        return this.id == null;
     }
 }

@@ -1,12 +1,14 @@
 1. ocx 页面访问
 
-2. 权限控制,
+ok 2. 权限控制,
 
    spring security
 
-   or 拦截器
+ok   or 拦截器
 
-3. 缓存,
+ok 3. 缓存,
+
+   暂时采用ehcache
 
 4. 分布式
 
@@ -22,5 +24,7 @@
 
 8. docbook
 
+   zdoc
+   http://code.google.com/p/nutz/wiki/zdoc_overview
 
    --END

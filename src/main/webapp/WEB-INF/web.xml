@@ -4,8 +4,8 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
   version="2.5">
 
-  <display-name>Personnel Management</display-name>
-  <description>personnel management system</description>
+  <display-name>J2EE Web Application</display-name>
+  <description>show your application</description>
 
   <context-param>
     <param-name>webAppRootKey</param-name>
@@ -18,7 +18,7 @@
     -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:/applicationContext-dynamic-datasource.xml,classpath*:/applicationContext-sshapp.xml</param-value>
+    <param-value>classpath*:/applicationContext.xml,classpath*:/applicationContext-sshapp.xml</param-value>
   </context-param>
 
   <listener>
@@ -63,12 +63,39 @@
   </filter-mapping>
 
   <!-- SpringSecurity filter-->
+  <!--
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  -->
+
+  <filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>org.ssh.pm.common.filter.AuthFilter</filter-class>
+    <init-param>
+      <param-name>redirectURL</param-name>
+      <param-value>/common/login</param-value>
+    </init-param>
+    <init-param>
+      <param-name>mainURL</param-name>
+      <param-value>/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>checkSessionKey</param-name>
+      <param-value>userSession</param-value>
+    </init-param>
+    <init-param>
+      <param-name>notCheckURLList</param-name>
+      <param-value>/common/**,/resources/**</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 

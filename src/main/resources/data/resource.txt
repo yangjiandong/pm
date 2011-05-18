@@ -1,9 +1,7 @@
-﻿id,name,urls,leaf,parentId,resourceType,orderNo
-1,系统管理,,0,0,1,1
+﻿resourceId,text,url,leaf,parentId,resourceType,orderNo,state,iconCls
+1,系统管理,../common/module?parentId=1,0,0,1,1,1,sys
+11,系统管理,,0,1,2,11,1,sysCls
+111,角色管理,UI111,1,11,3,111,1,roleCls
+112,用户管理,UI112,1,11,3,112,1,userCls
 
-11,系统管理,,0,1,2,11
-111,角色管理,UI111,1,11,3,131
-112,用户管理,UI112,1,11,3,132
-
-12,基础字典,,0,1,2,12
-121,分类字典,UI121,1,12,3,121
+2,成本核算,../common/module?parentId=2,0,0,1,2,1,hcost

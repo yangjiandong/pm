@@ -49,7 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         boolean accountNonLocked = true;
 
         OperatorDetails userDetails = new OperatorDetails(user.getLoginName(),
-                user.getShaPassword(), enabled, accountNonExpired, credentialsNonExpired,
+                user.getPassword(), enabled, accountNonExpired, credentialsNonExpired,
                 accountNonLocked, grantedAuths);
         // 加入登录时间信息和用户角色
         userDetails.setLoginTime(new Date());

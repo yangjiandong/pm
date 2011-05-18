@@ -6,19 +6,15 @@
 <tiles-definitions>
 
   <!--
-  <definition name="index" template="/views/index.jsp"/>
-  -->
+    <definition name="index" template="/views/index.jsp"/>
+    -->
   <definition name="help/showAbout" template="/views/help/showAbout.jsp"/>
+
+  <definition name="default" template="/views/default.jsp"/>
+  <definition name="login" template="/views/login.jsp"/>
 
   <!-- Master Page Layout -->
   <definition name="page" template="/views/layouts/page.jsp"/>
-
-  <!-- init data -->
-  <definition name="index" extends="page">
-    <put-attribute name="title" value="初始化数据..." type="string" />
-    <put-attribute name="content" value="/views/default.jsp" type="template" />
-  </definition>
-
   <definition name="topic" template="/views/topic.jsp"/>
 
   <definition name="showBook" extends="page">
