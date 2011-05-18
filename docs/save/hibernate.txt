@@ -153,4 +153,10 @@ public class Child2 extends Parent {
 
   private String address;
 
+   8. hibernate get db time
+   ------------------------------------------------------------
+
+   select current_timestamp() from 自己的VO对象
+
+
    --END

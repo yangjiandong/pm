@@ -1,0 +1,256 @@
+proguard-maven-plugin
+Overview
+
+The proguard-maven-plugin is maven2 plugin to execute ProGuard
+Parameters
+
+Regular proguard:proguard parameters
+
+    libs JVM libraries usually not in dependency list
+
+        <libs>
+            <lib>${java.home}/lib/rt.jar</lib>
+            <lib>${java.home}/lib/jsse.jar</lib>
+        </libs>
+
+    You can use inFilter to apply ProGuard classpathentry Filters to input jar
+
+        <inFilter>!org/microemu/app/classloader/**</inFilter>
+
+    exclusions allow fine grain filter for dependency if includeDependency is enabled
+
+        <exclusions>
+            <exclusion>
+                <groupId>org.grp</groupId><artifactId>art1</artifactId>
+            </exclusion>
+            <exclusion>
+                <!-- org.grp:art2 without classifier will still be included -->
+                <groupId>org.grp</groupId><artifactId>art2</artifactId><classifier>app<classifier>
+            </exclusion>
+        </exclusions>
+
+    assembly allows to bundle project dependency to resulting jar with different options e.g. -injars ProGuard args. Some flagged as library doesn`t need to be processed by ProGuard are added as -libraryjars and added to resulting jar by plugin after ProGuard is finished. For clarity param includeDependency will just add -libraryjars arg to ProGuard and Dependency is not included in resulting jar.
+
+    You can use assembly to apply ProGuard classpathentry Filters to dependency jars
+
+        <assembly>
+            <inclusions>
+                <inclusion>
+                    <!-- add jar already prepossessed with different options -->
+                    <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId><classifier>4applet</classifier><library>true</library>
+                    <!-- filter will not apply -->
+                </inclusion>
+                <inclusion>
+                    <!-- filter out some classes see ProGuard classpathentry Filters -->
+                    <groupId>org.microemu</groupId><artifactId>microemu-javase</artifactId>
+                    <filter>!org/microemu/app/classloader/**</filter>
+                </inclusion>
+                <inclusion>
+                    <groupId>org.microemu</groupId><artifactId>microemu-javase-swing</artifactId>
+                </inclusion>
+            </inclusions>
+        </assembly>
+
+    ProGuard options
+
+    Some ProGuard options are created automatically
+        -dontobfuscate When obfuscate is false
+        -libraryjars Are created base on libs and your project dependencies when includeDependency is true (by default).
+        -verbose When executing maven -X
+        -printmapping $project.build.directory/proguard_map.txt and -printseeds $project.build.directory/proguard_seeds.txt
+
+    Additional ProGuard configuration can be added using options or proguardInclude
+
+Usage
+
+Replace project artifact with obfuscated one. Original jar would be preserved in file project.build.finalName.jar_proguard_base.jar
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals><goal>proguard</goal></goals>
+                   </execution>
+                </executions>
+                <configuration>
+                    <options>
+                        <option>-allowaccessmodification</option>
+                        <option>-keep public class * extends java.applet.Applet { *; }</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                    </libs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+Create new file $project.build.finalName-small.jar
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals><goal>proguard</goal></goals>
+                   </execution>
+                </executions>
+                <configuration>
+                    <obfuscate>true</obfuscate>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-small.jar</outjar>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                        <lib>${java.home}/lib/jsse.jar</lib>
+                    </libs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+Complex Applet creation example. See full MicroEmulator project sources for more details
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.microemu</groupId>
+            <artifactId>microemu-midp</artifactId>
+            <version>${version}</version>
+            <classifier>4applet</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.microemu</groupId>
+            <artifactId>microemu-javase-swing</artifactId>
+            <version>${version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sun</groupId>
+            <artifactId>applet-jsobject</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals><goal>proguard</goal></goals>
+                   </execution>
+                </executions>
+                <configuration>
+                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
+                    <assembly>
+                        <inclusions>
+                            <inclusion>
+                                <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId><classifier>4applet</classifier><library>true</library>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.microemu</groupId><artifactId>microemu-midp</artifactId><classifier>4applet</classifier><library>true</library>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.microemu</groupId><artifactId>microemu-javase</artifactId>
+                                <filter>!org/microemu/app/classloader/**</filter>
+                            </inclusion>
+                            <inclusion>
+                                <groupId>org.microemu</groupId><artifactId>microemu-javase-swing</artifactId>
+                            </inclusion>
+                        </inclusions>
+                    </assembly>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.microemu</groupId><artifactId>microemu-midp</artifactId>
+                        </exclusion>
+                    </exclusions>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                        <lib>${java.home}/lib/jsse.jar</lib>
+                    </libs>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+Use different version of ProGuard
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals><goal>proguard</goal></goals>
+                   </execution>
+                </executions>
+                <configuration>
+                    <proguardVersion>4.0betta1</proguardVersion>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                    </libs>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.proguard</groupId>
+                        <artifactId>proguard</artifactId>
+                        <version>4.0betta1</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+war example ?:
+
+        <plugin>
+            <groupId>com.pyx4me</groupId>
+            <artifactId>proguard-maven-plugin</artifactId>
+            <version>2.0.4</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>proguard</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <obfuscate>true</obfuscate>
+                <includeDependency>false</includeDependency>
+                <injar>${project.artifactId}-v${project.version}.war</injar>
+                <outjar>${project.artifactId}-v${project.version}-obf.war</outjar>
+                <outputDirectory>${project.build.directory}</outputDirectory>
+                <maxMemory>256m</maxMemory>
+                <libs>
+                    <!--  Java Runtime -->
+                    <lib>${java.home}/../Classes/classes.jar</lib>
+                    <lib>${java.home}/../Classes/jce.jar</lib>
+                </libs>
+                <options>
+                    <option>-allowaccessmodification</option>
+                    <option>-dontskipnonpubliclibraryclasses</option>
+                    <option>-dontskipnonpubliclibraryclassmembers</option>
+                </options>
+            </configuration>
+        </plugin>

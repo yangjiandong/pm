@@ -47,6 +47,25 @@ spring -- 知识库
    4. java process file
    other/java.file.txt
 
+   5. java thread
+
+   --进行A时,同时进行B
+   1. //A:main Thread code here
+   2.
+   3. new Thread(){
+   4.     public void run() {
+   5.         OldMethod();//原来的一些程序操作，时间较长
+   6.     }
+   7. }.start();//创建一个新的线程运行run()中的程序
+   8.
+   9. //B:main Thread code here
+
+   6. maven 混淆
+
+   proguard-maven-plugin
+   http://pyx4me.com/pyx4me-maven-plugins/proguard-maven-plugin/
+
+   other/proguard.txt
 
    --END
 
