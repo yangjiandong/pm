@@ -533,7 +533,7 @@
     <!-- poi end -->
 
     <dependency>
-      <groupId>org.kjkoster.zapcat</groupId>
+      <groupId>zapcat</groupId>
       <artifactId>zapcat</artifactId>
       <version>1.2</version>
       <scope>runtime</scope>
@@ -703,7 +703,7 @@
         </configuration>
       </plugin>
 
-	  <plugin>
+    <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-idea-plugin</artifactId>
         <version>2.2</version>
