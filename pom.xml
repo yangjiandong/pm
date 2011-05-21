@@ -533,7 +533,7 @@
     <!-- poi end -->
 
     <dependency>
-      <groupId>zapcat</groupId>
+      <groupId>org.kjkoster.zapcat</groupId>
       <artifactId>zapcat</artifactId>
       <version>1.2</version>
       <scope>runtime</scope>
