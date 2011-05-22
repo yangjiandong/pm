@@ -158,5 +158,9 @@ public class Child2 extends Parent {
 
    select current_timestamp() from 自己的VO对象
 
-
+   9. 三种查询
+   ------------------------------------------------------------
+   
+   other/h_sql.txt
+   
    --END
